@@ -22,7 +22,14 @@
 hs_err_pid*
 
 # IDE files
+## IntelliJ
 .idea
+
+## Eclipse
+.settings
+.settings/*
+.project
+.classpath
 
 # local database storage
 localDB
