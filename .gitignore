@@ -34,5 +34,10 @@ hs_err_pid*
 # local database storage
 localDB
 
+
+# maven build / test
+
+friendar-rest-api/?/
+friendar-rest-api/target/
 # Mac files
 *.DS_Store
