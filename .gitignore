@@ -41,3 +41,7 @@ friendar-rest-api/?/
 friendar-rest-api/target/
 # Mac files
 *.DS_Store
+
+# deployment ssh key
+
+ssh_key
