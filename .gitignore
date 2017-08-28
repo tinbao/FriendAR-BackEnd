@@ -24,6 +24,11 @@ hs_err_pid*
 # IDE files
 ## IntelliJ
 .idea
+.classpath
+.project
+friendar-rest-api.iml
+AppUser.java
+AppTest.java
 
 ## Eclipse
 .settings
