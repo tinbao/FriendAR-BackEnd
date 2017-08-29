@@ -38,6 +38,23 @@ public class Main {
         final HttpServer server = startServer();
         System.out.println(String.format("Jersey app started with WADL available at "
                 + "%sapplication.wadl\nHit enter to stop it...", BASE_URI));
-    }
+		// register shutdown hook
+		Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+			@Override
+			public void run() {
+				System.out.println("Stopping server..");
+				server.shutdownNow();
+			}
+		}, "shutdownHook"));
+
+		// run
+		try {
+			server.start();
+			System.out.println("Press CTRL^C to exit..");
+			Thread.currentThread().join();
+		} catch (Exception e) {
+			System.err.println("There was an error while starting Grizzly HTTP server.");
+		}
+	}
 }
 
