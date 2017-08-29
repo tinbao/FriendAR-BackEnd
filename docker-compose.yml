@@ -9,13 +9,9 @@ services:
     volumes:
       - .:/var/www/html   # I will share my code so I map this path
   db:
-    image: postgres:alpine
+    build: ./DB/
     restart: always
     volumes:
       - ./localDB:/var/lib/postgresql
     ports:
       - "5432:5432"
-    environment:
-      POSTGRES_USER: pguser
-      POSTGRES_PASSWORD: pguser
-      POSTGRES_DB: pgdb
