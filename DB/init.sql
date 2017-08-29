@@ -1,4 +1,4 @@
-CREATE TABLE User(
+CREATE TABLE IF NOT EXISTS User(
     userID  TEXT PRIMARY KEY NOT NULL,
     fullName TEXT,
     username TEXT NOT NULL,
@@ -10,14 +10,14 @@ CREATE TABLE User(
     locationLastUpdated TIMESTAMP NOT NULL
 );
 
-CREATE TABLE Place(
+CREATE TABLE IF NOT EXISTS Place(
     placeID TEXT PRIMARY KEY NOT NULL,
     placeName TEXT,
     lat DECIMAL,
     long DECIMAL
 );
 
-CREATE TABLE Meeting(
+CREATE TABLE IF NOT EXISTS Meeting(
     meetingID TEXT NOT NULL,
     placeID TEXT REFERENCES Place (placeID) NOT NULL,
     meetingName TEXT,
@@ -25,14 +25,14 @@ CREATE TABLE Meeting(
     PRIMARY KEY (meetingID, placeID)
 );
 
-CREATE TABLE MeetingUser(
+CREATE TABLE IF NOT EXISTS MeetingUser(
     meetingUserID TEXT NOT NULL,
     meetingID TEXT REFERENCES Meeting (meetingID) NOT NULL,
     userID TEXT REFERENCES [User] (userID) NOT NULL,
     PRIMARY KEY (meetingUserID, meetingID, userID)
 );
 
-CREATE TABLE Friendship(
+CREATE TABLE IF NOT EXISTS Friendship(
     friendshipID TEXT NOT NULL,
     userA_ID TEXT REFERENCES [User] (userID) NOT NULL,
     userB_ID TEXT REFERENCES [User] (userID) NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE Friendship(
 );
 
 
-CREATE TABLE Mesage(
+CREATE TABLE IF NOT EXISTS Mesage(
     messageID TEXT NOT NULL,
     meetingID TEXT REFERENCES [User] (userID) NOT NULL,
     userID TEXT REFERENCES [User] (userID) NOT NULL,
