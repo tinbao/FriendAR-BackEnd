@@ -7,4 +7,4 @@ mvn(){
 mvn pmd:check
 mvn pmd:cpd-check
 mvn clean test
-docker-compose build --force-rm --no-cache --pull
+docker-compose build --force-rm --no-cache --pull | grep -v 'Download.* http'
