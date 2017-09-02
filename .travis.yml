@@ -3,4 +3,4 @@ language: java
 services:
   - docker
 script:
-  - ./travis.sh
+  - ./tests.sh
