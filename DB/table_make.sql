@@ -21,7 +21,7 @@ CREATE TABLE Meeting(
     meetingID TEXT NOT NULL,
     placeID TEXT REFERENCES Place (placeID) NOT NULL,
     meetingName TEXT,
-    timeDate TIMESTAMP NOT NULL
+    timeDate CURRENT_TIMESTAMP NOT NULL
     PRIMARY KEY (meetingID, placeID)
 );
 
@@ -38,7 +38,6 @@ CREATE TABLE Friendship(
     userB_ID TEXT REFERENCES [User] (userID) NOT NULL,
     PRIMARY KEY(friendshipID, userA_ID, userB_ID)
 );
-
 
 CREATE TABLE Mesage(
     messageID TEXT NOT NULL,
