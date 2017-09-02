@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS Users(
     email TEXT NOT NULL,
     latitude DECIMAL,
     longtitude DECIMAL,
-    locationLastUpdated TIMESTAMP NOT NULL
+    locationLastUpdated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS Places(
@@ -21,7 +21,7 @@ CREATE TABLE IF NOT EXISTS Meetings(
     meetingID SERIAL PRIMARY KEY NOT NULL,
     placeID SERIAL REFERENCES Places (placeID) NOT NULL,
     meetingName TEXT,
-    timeDate TIMESTAMP NOT NULL
+    timeDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS MeetingUsers(
