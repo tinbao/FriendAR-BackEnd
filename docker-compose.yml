@@ -11,5 +11,3 @@ services:
     restart: always
     volumes:
       - ./localDB:/var/lib/postgresql
-    ports:
-      - "5432:5432"
