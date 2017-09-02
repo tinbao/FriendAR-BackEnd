@@ -11,8 +11,8 @@ services:
     restart: always
     volumes:
       - ./localDB:/var/lib/postgresql
-
--    environment:
- -      POSTGRES_USER: pguser
- -      POSTGRES_PASSWORD: pguser
- -      POSTGRES_DB: pgdb
+  
+  environment:
+        POSTGRES_USER: pguser
+        POSTGRES_PASSWORD: pguser
+        POSTGRES_DB: pgdb
