@@ -13,6 +13,6 @@ services:
       - ./localDB:/var/lib/postgresql
   
     environment:
-        POSTGRES_USER: pguser
-        POSTGRES_PASSWORD: pguser
-        POSTGRES_DB: pgdb
+      POSTGRES_USER: pguser
+      POSTGRES_PASSWORD: pguser
+      POSTGRES_DB: pgdb
