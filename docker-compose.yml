@@ -12,7 +12,7 @@ services:
     volumes:
       - ./localDB:/var/lib/postgresql
   
-  environment:
+    environment:
         POSTGRES_USER: pguser
         POSTGRES_PASSWORD: pguser
         POSTGRES_DB: pgdb
