@@ -1,6 +1,6 @@
 #!/bin/bash
-set -ex
-set -o pipefail
+set -ex # Exit with nonzero exit code if anything fails
+set -o
 
 ssh -V
 sudo apt-add-repository 'deb http://archive.ubuntu.com/ubuntu yakkety main universe multiverse'
