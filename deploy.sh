@@ -5,7 +5,6 @@ server(){
   ssh -i ssh_key -o StrictHostKeyChecking=no ubuntu@01.server.friendar.tk. "$@"
 }
 
-server mkdir -p /home/ubuntu/friendar
 server "cd /home/ubuntu/friendar && ls "
 server "cd /home/ubuntu/friendar && docker-compose down"
 
@@ -20,10 +19,12 @@ server docker volume rm $(server docker volume ls -f dangling=true -q)
 
 echo "remove dir"
 server "rm -rf /home/ubuntu/friendar"
+echo "make dir"
+server mkdir -p /home/ubuntu/friendar
 
 echo "copy files"
 
-git ls-files | xargs -I %  scp -i ssh_key -o StrictHostKeyChecking=no  % ubuntu@01.server.friendar.tk:/home/ubuntu/friendar/%
+tar cpf - ./ | server "tar xpf - -C /home/ubuntu/friendar/"
 server ls -R /home/ubuntu/friendar
 echo "start sever"
 
