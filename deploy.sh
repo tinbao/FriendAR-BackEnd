@@ -3,7 +3,7 @@ set -e # Exit with nonzero exit code if anything fails
 set -o
 
 ssh -V
-sudo apt-get update -y -qq && sudo apt-get install openssh-server -y -qq
+apt-get update -y -qq && apt-get install openssh-server -y -qq
 ssh -V
 ssh -i ssh_key -o StrictHostKeyChecking=no -fnNT -L $(pwd)/docker.sock:/var/run/docker.sock
 export DOCKER_HOST=$(pwd)/docker.sock
