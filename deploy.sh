@@ -23,7 +23,7 @@ server "rm -rf /home/ubuntu/friendar"
 
 echo "copy files"
 
-git ls-files | xargs -I %  scp -i ssh_key % ubuntu@01.server.friendar.tk:/home/ubuntu/friendar/%
+git ls-files | xargs -I %  scp -i ssh_key -o StrictHostKeyChecking=no  % ubuntu@01.server.friendar.tk:/home/ubuntu/friendar/%
 server ls -R /home/ubuntu/friendar
 echo "start sever"
 
