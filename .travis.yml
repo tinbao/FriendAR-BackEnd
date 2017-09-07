@@ -1,6 +1,16 @@
 sudo: required
 language: java
 services:
-  - docker
+- docker
 script:
-  - ./travis.sh
+- "./tests.sh"
+deploy:
+  skip_cleanup: true
+  provider: script
+  script: "./deploy.sh"
+  on:
+    branch: master
+before_install:
+- openssl aes-256-cbc -K $encrypted_12c8071d2874_key -iv $encrypted_12c8071d2874_iv
+  -in ssh_key.enc -out ssh_key -d
+- chmod 400 ssh_key
