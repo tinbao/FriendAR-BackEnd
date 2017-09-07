@@ -6,7 +6,7 @@ import org.glassfish.jersey.server.ResourceConfig;
 
 import java.io.IOException;
 import java.net.URI;
-
+import java.sql.Timestamp;
 import java.io.Serializable;
  
 import javax.persistence.Entity;
@@ -17,14 +17,39 @@ import javax.persistence.Id;
 @Entity
 public class PlaceClass implements Serializable {
 	
-	public PlaceClass(){
-		
-	};
-	
-	public PlaceClass(String name){
-		this.placeName = name;
-	}
-	
+	private int placeID; //not null
 	private String placeName;
-	private Double longtitude, latitude;
+	private double longtitude, latitude;
+	
+	public int getPlaceID() {
+		return placeID;
+	}
+
+	public void setPlaceID(int placeID) {
+		this.placeID = placeID;
+	}
+
+	public String getPlaceName() {
+		return placeName;
+	}
+
+	public void setPlaceName(String placeName) {
+		this.placeName = placeName;
+	}
+
+	public double getLongtitude() {
+		return longtitude;
+	}
+
+	public void setLongtitude(double longtitude) {
+		this.longtitude = longtitude;
+	}
+
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
+	}
 }
