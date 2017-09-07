@@ -17,34 +17,45 @@ import javax.persistence.Id;
 @Entity
 public class UserClass implements Serializable {
  
-	public AppUser() {
- 
+	public UserClass() {
+		
 	};
  
-	public AppUser(String login) {
-		this.login = login;
+	public UserClass(String email, String Password){
+		this.email = email;
+		this.userName = email;
+		this.userPassword = Password;
  
 	};
  
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
- 
-	private String login;
- 
-	public Long getId() {
-		return id;
+	private String userName, email, userPassword;
+	private String fullName;
+	
+	private int userID;
+	private double latitude, longtitude;
+	
+	public int getUserID(){
+		return userID;
 	}
- 
-	public void setId(Long id) {
-		this.id = id;
+	
+	public String getName(){
+		return fullName;
 	}
- 
-	public String getLogin() {
-		return login;
+	
+	public String getEmail(){
+		return this.email;
 	}
- 
-	public void setLogin(String login) {
-		this.login = login;
+	
+	public int getPassword(){
+		return this.userPassword;
 	}
+	
+	public String getUserName(){
+		return this.userName;
+	}
+	
+	
+	
 }
