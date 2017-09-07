@@ -15,7 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class MeetingUserClass implements Serializable {
+public class MeetingClass implements Serializable {
 	private int meetingID, placeID; //not null
 	private String meetingName;
 	private Timestamp timeDate;

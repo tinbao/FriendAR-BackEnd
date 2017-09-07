@@ -19,28 +19,6 @@ public class FriendshipClass implements Serializable {
 	private int friendshipID, //not null
 				userA_ID, //not null
 				userB_ID; //not null
-	
-	package tk.friendar.api;
-
-import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
-import org.glassfish.jersey.server.ResourceConfig;
-
-import java.io.IOException;
-import java.net.URI;
-
-import java.io.Serializable;
- 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-
-@Entity
-public class FriendshipClass implements Serializable {
-	private int friendshipID, //not null
-				userA_ID, //not null
-				userB_ID; //not null
 
 	public int getFriendshipID() {
 		return friendshipID;
@@ -65,7 +43,5 @@ public class FriendshipClass implements Serializable {
 	public void setUserB_ID(int userB_ID) {
 		this.userB_ID = userB_ID;
 	}
-	
-}
 	
 }
