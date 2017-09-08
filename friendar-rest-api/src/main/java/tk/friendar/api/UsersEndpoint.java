@@ -9,10 +9,10 @@ import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 /**
- * Root resource (exposed at "UserClass" path)
+ * Root resource (exposed at "UsersDB" path)
  */
-@Path("users")
-public class users {
+@Path("UsersEndpoint")
+public class UsersEndpoint {
 
     /**
      * Method handling HTTP GET requests. The returned object will be sent
@@ -22,18 +22,18 @@ public class users {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UserClass> get() {
+    public List<UsersDB> get() {
         try (Session session = HibernateSingletonFactory.getInstance().openSession()) {
-            return session.createCriteria(UserClass.class).list();
+            return session.createCriteria(UsersDB.class).list();
         }
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public UserClass create(String userJson) throws JSONException {
+    public UsersDB create(String userJson) throws JSONException {
         JSONObject json = new JSONObject(userJson);
-        UserClass user = new UserClass();
+        UsersDB user = new UsersDB();
 
         user.setFullName(json.getString("fullName"));
         user.setUsersname(json.getString("usersname"));
@@ -54,9 +54,9 @@ public class users {
     @Path("{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public UserClass get(@PathParam("id") String id) {
+    public UsersDB get(@PathParam("id") String id) {
         try (Session session = HibernateSingletonFactory.getInstance().openSession()) {
-            return session.get(UserClass.class, Integer.valueOf(id));
+            return session.get(UsersDB.class, Integer.valueOf(id));
         }
     }
 }

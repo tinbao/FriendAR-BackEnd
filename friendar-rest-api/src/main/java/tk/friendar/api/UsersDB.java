@@ -7,7 +7,7 @@ import java.sql.Timestamp;
 
 @Entity
 @Table(name = "users")
-public class UserClass implements Serializable {
+public class UsersDB implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

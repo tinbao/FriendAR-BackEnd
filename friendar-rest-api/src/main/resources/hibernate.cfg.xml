@@ -22,12 +22,12 @@
         <!--<property name="hibernate.hbm2ddl.auto">create-drop</property>--> <!-- not needed as we have our own init script -->
 
         <!-- Annotated entity classes -->
-        <mapping class="tk.friendar.api.UserClass"/>
-        <mapping class="tk.friendar.api.PlaceClass"/>
-        <mapping class="tk.friendar.api.MeetingClass"/>
-        <mapping class="tk.friendar.api.MessageClass"/>
-        <mapping class="tk.friendar.api.MeetingUserClass"/>
-        <mapping class="tk.friendar.api.FriendshipClass"/>
+        <mapping class="tk.friendar.api.UsersDB"/>
+        <mapping class="tk.friendar.api.PlaceDB"/>
+        <mapping class="tk.friendar.api.MeetingDB"/>
+        <mapping class="tk.friendar.api.MessageDB"/>
+        <mapping class="tk.friendar.api.MeetingUserDB"/>
+        <mapping class="tk.friendar.api.FriendshipDB"/>
 
     </session-factory>
 </hibernate-configuration>
