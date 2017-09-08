@@ -13,6 +13,9 @@ import javax.persistence.Id;
 
 @Entity
 public class FriendshipClass implements Serializable {
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int friendshipID, //not null
 				userA_ID, //not null
 				userB_ID; //not null

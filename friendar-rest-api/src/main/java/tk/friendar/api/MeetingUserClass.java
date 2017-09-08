@@ -12,8 +12,12 @@ import javax.persistence.Id;
 
 @Entity
 public class MeetingUserClass implements Serializable {
-	private int meetingUserID, //not null
-				meetingID, //not null
+	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int meetingUserID; //not null
+	
+	private int meetingID, //not null
 				userID; // not nulll
 
 	public int getMeetingUserID() {

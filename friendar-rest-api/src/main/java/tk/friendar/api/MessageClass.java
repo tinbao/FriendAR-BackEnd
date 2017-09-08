@@ -13,6 +13,8 @@ import javax.persistence.Id;
 @Entity
 public class MessageClass implements Serializable {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int messageID; //not null
 	private int meetingID; //not null
 	private int userID; //not null

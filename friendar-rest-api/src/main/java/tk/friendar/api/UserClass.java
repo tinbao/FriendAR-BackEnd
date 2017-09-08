@@ -14,6 +14,8 @@ import javax.persistence.Id;
 @Entity
 public class UserClass implements Serializable {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int userID; //not null
 	private String fullName,
 			userName, //not null
@@ -23,6 +25,12 @@ public class UserClass implements Serializable {
 	private double latitude, longtitude;
 	private Timestamp locationLastUpdated;
 	
+	public void setSalt(String newSalt){
+		this.salt = newSalt;
+	}
+	public string getSalt(){
+		return this.salt;
+	}
 	public int getUserID() {
 		return userID;
 	}

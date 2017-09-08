@@ -13,6 +13,8 @@ import javax.persistence.Id;
 @Entity
 public class PlaceClass implements Serializable {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int placeID; //not null
 	private String placeName;
 	private double longtitude, latitude;
