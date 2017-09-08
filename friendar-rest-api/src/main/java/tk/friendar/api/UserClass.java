@@ -1,10 +1,9 @@
 package tk.friendar.api;
 
 
-import java.sql.Timestamp;
-import java.io.Serializable;
-
 import javax.persistence.*;
+import java.io.Serializable;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "users")
@@ -12,14 +11,14 @@ public class UserClass implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int userID; //not null
-    private String fullName,
+    int userID; //not null
+    String fullName,
             usersname, //not null
             userspassword, //not null
             salt, //not null, not setter or getter yet
             email; //not null
-    private double latitude, longtitude;
-    private Timestamp locationLastUpdated;
+    double latitude, longtitude;
+    Timestamp locationLastUpdated;
 
     public void setSalt(String newSalt) {
         this.salt = newSalt;

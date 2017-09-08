@@ -1,14 +1,10 @@
 package tk.friendar.api;
 
 import org.hibernate.Session;
-import org.hibernate.SessionFactory;
+import org.json.JSONException;
+import org.json.JSONObject;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
@@ -29,6 +25,29 @@ public class users {
     public List<UserClass> get() {
         try (Session session = HibernateSingletonFactory.getInstance().openSession()) {
             return session.createCriteria(UserClass.class).list();
+        }
+    }
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public UserClass create(String userJson) throws JSONException {
+        JSONObject json = new JSONObject(userJson);
+        UserClass user = new UserClass();
+
+        user.setFullName(json.getString("fullName"));
+        user.setUsersname(json.getString("usersname"));
+        user.setUserspassword(json.getString("userspassword"));
+        user.setSalt(json.getString("salt"));
+        user.setEmail(json.getString("email"));
+        user.setLatitude(json.getDouble("latitude"));
+        user.setLongtitude(json.getDouble("longtitude"));
+
+        try (Session session = HibernateSingletonFactory.getInstance().openSession()) {
+            session.beginTransaction();
+            session.save(user);
+            session.getTransaction().commit();
+            return user;
         }
     }
 
