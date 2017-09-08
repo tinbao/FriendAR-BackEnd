@@ -26,7 +26,7 @@ public class UserClass implements Serializable {
 	public void setSalt(String newSalt){
 		this.salt = newSalt;
 	}
-	public string getSalt(){
+	public String getSalt(){
 		return this.salt;
 	}
 	public int getUserID() {
