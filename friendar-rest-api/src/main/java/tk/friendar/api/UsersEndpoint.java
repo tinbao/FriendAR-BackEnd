@@ -41,7 +41,7 @@ public class UsersEndpoint {
         user.setSalt(json.getString("salt"));
         user.setEmail(json.getString("email"));
         user.setLatitude(json.getDouble("latitude"));
-        user.setLongtitude(json.getDouble("longtitude"));
+        user.setLongitude(json.getDouble("longitude"));
 
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             session.beginTransaction();

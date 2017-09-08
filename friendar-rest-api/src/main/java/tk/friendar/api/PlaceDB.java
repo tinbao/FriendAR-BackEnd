@@ -1,19 +1,17 @@
 package tk.friendar.api;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
+@Table(name = "places")
 public class PlaceDB implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int placeID; //not null
     private String placeName;
-    private double longtitude, latitude;
+    private double longitude, latitude;
 
     public int getPlaceID() {
         return placeID;
@@ -31,12 +29,12 @@ public class PlaceDB implements Serializable {
         this.placeName = placeName;
     }
 
-    public double getLongtitude() {
-        return longtitude;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setLongtitude(double longtitude) {
-        this.longtitude = longtitude;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public double getLatitude() {

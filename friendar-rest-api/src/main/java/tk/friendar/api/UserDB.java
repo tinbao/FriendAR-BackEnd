@@ -17,7 +17,7 @@ public class UserDB implements Serializable {
             userspassword, //not null
             salt, //not null, not setter or getter yet
             email; //not null
-    private double latitude, longtitude;
+    private double latitude, longitude;
     private Timestamp locationLastUpdated;
 
     public void setSalt(String newSalt) {
@@ -68,12 +68,12 @@ public class UserDB implements Serializable {
         this.latitude = latitude;
     }
 
-    public double getLongtitude() {
-        return longtitude;
+    public double getLongitude() {
+        return longitude;
     }
 
-    public void setLongtitude(double longtitude) {
-        this.longtitude = longtitude;
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 
     public Timestamp getLocationLastUpdated() {
