@@ -1,6 +1,7 @@
 package tk.friendar.api;
 
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -25,9 +26,8 @@ public class users {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public UserClass get(@PathParam("id") String id) {
-        Session session = HibernateSingletonFactory.getInstance();
-        UserClass user = session.get(UserClass.class, Integer.valueOf(id));
-        session.close();
-        return user;
+        try (Session session = HibernateSingletonFactory.getInstance().openSession()) {
+            return session.get(UserClass.class, Integer.valueOf(id));
+        }
     }
 }
