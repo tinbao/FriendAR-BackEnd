@@ -12,7 +12,7 @@ import java.util.List;
  * Root resource (exposed at "UserClass" path)
  */
 @Path("users")
-public class users {
+public class UsersEndpoint {
 
     /**
      * Method handling HTTP GET requests. The returned object will be sent
