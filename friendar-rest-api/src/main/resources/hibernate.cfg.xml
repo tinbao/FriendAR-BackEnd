@@ -8,7 +8,7 @@
 
         <!-- Connection settings -->
         <property name="hibernate.connection.driver_class">org.postgresql.Driver</property>
-       <property name="hibernate.connection.url">jdbc:postgresql://db/pgdb</property>
+        <property name="hibernate.connection.url">jdbc:postgresql://db/pgdb</property>
         <property name="hibernate.connection.username">pguser</property>
         <property name="hibernate.connection.password">pguser</property>
 
@@ -18,16 +18,16 @@
         <!-- Print executed SQL to stdout -->
         <property name="show_sql">true</property>
 
-        <!-- Drop and re-create all database on startup --> 
+        <!-- Drop and re-create all database on startup -->
         <!--<property name="hibernate.hbm2ddl.auto">create-drop</property>--> <!-- not needed as we have our own init script -->
 
         <!-- Annotated entity classes -->
         <mapping class="tk.friendar.api.UserClass"/>
-	<mapping class="tk.friendar.api.PlaceClass"/>
-	<mapping class="tk.friendar.api.MeetingClass"/>
-	<mapping class="tk.friendar.api.MessageClass"/>
-	<mapping class="tk.friendar.api.MeetingUserClass"/>
-	<mapping class="tk.friendar.api.FriendshipClass"/>
-      
+        <mapping class="tk.friendar.api.PlaceClass"/>
+        <mapping class="tk.friendar.api.MeetingClass"/>
+        <mapping class="tk.friendar.api.MessageClass"/>
+        <mapping class="tk.friendar.api.MeetingUserClass"/>
+        <mapping class="tk.friendar.api.FriendshipClass"/>
+
     </session-factory>
 </hibernate-configuration>
