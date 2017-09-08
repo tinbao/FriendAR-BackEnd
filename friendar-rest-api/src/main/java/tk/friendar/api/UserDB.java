@@ -11,14 +11,14 @@ public class UserDB implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    int userID; //not null
-    String fullName,
+    private int userID; //not null
+    private String fullName,
             usersname, //not null
             userspassword, //not null
             salt, //not null, not setter or getter yet
             email; //not null
-    double latitude, longtitude;
-    Timestamp locationLastUpdated;
+    private double latitude, longtitude;
+    private Timestamp locationLastUpdated;
 
     public void setSalt(String newSalt) {
         this.salt = newSalt;
