@@ -6,15 +6,16 @@ import org.hibernate.cfg.Configuration;
 
 public class HibernateSingletonFactory {
 
-   private static SessionFactory instance = null;
+   private static Session instance = null;
    
    private HibernateSingletonFactory() {
       // Exists only to defeat instantiation.
    }
    
-   public static ClassicSingleton getInstance() {
+   public static Session getInstance() {
       if(instance == null) {
-         instance = SessionFactory = new Configuration().configure().buildSessionFactory();
+         SessionFactory factory = new Configuration().configure().buildSessionFactory();
+         instance = factory.openSession();
       }
       return instance;
    }
