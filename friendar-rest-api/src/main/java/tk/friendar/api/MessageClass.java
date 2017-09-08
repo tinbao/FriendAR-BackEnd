@@ -1,6 +1,7 @@
 package tk.friendar.api;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
  
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -15,6 +16,8 @@ public class MessageClass implements Serializable {
 	private int messageID; //not null
 	private int meetingID; //not null
 	private int userID; //not null
+	private String content;
+	private Timestamp timeSent;
 	
 	public int getMessageID() {
 		return messageID;
@@ -33,5 +36,17 @@ public class MessageClass implements Serializable {
 	}
 	public void setUserID(int userID) {
 		this.userID = userID;
+	}
+	public String getContent() {
+		return content;
+	}
+	public void setContent(String content) {
+		this.content = content;
+	}
+	public Timestamp getTimeSent() {
+		return timeSent;
+	}
+	public void setTimeSent(Timestamp timeSent) {
+		this.timeSent = timeSent;
 	}
 }
