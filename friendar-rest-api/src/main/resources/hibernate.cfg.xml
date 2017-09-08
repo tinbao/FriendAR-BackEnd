@@ -23,11 +23,11 @@
 
         <!-- Annotated entity classes -->
         <mapping class="tk.friendar.api.UserClass"/>
-		<mapping class="tk.friendar.api.PlaceClass"/>
-		<mapping class="tk.friendar.api.MeetingClass"/>
-		<mapping class="tk.friendar.api.MessageClass"/>
-		<mapping class="tk.friendar.api.MeetingUserClass"/>
-		<mapping class="tk.friendar.api.FriendshipClass"/>
-        
+	<mapping class="tk.friendar.api.PlaceClass"/>
+	<mapping class="tk.friendar.api.MeetingClass"/>
+	<mapping class="tk.friendar.api.MessageClass"/>
+	<mapping class="tk.friendar.api.MeetingUserClass"/>
+	<mapping class="tk.friendar.api.FriendshipClass"/>
+      
     </session-factory>
 </hibernate-configuration>
