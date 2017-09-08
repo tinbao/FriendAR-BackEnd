@@ -9,7 +9,7 @@ import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 /**
- * Root resource (exposed at "UserDB" path)
+ * Root resource (exposed at "users" path)
  */
 @Path("users")
 public class UsersEndpoint {
