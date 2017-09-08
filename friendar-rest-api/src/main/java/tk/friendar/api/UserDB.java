@@ -20,16 +20,8 @@ public class UserDB implements Serializable {
     private double latitude, longitude;
     private Timestamp locationLastUpdated;
 
-    public void setSalt(String newSalt) {
-        this.salt = newSalt;
-    }
-
     public int getUserID() {
         return userID;
-    }
-
-    public void setUserID(int userID) {
-        this.userID = userID;
     }
 
     public String getFullName() {
@@ -46,10 +38,6 @@ public class UserDB implements Serializable {
 
     public void setUsersname(String userName) {
         this.usersname = userName;
-    }
-
-    public void setUserspassword(String userPassword) {
-        this.userspassword = userPassword;
     }
 
     public String getEmail() {
@@ -82,5 +70,13 @@ public class UserDB implements Serializable {
 
     public void setLocationLastUpdated(Timestamp locationLastUpdated) {
         this.locationLastUpdated = locationLastUpdated;
+    }
+
+    public boolean validPassword(String password) {
+        return password.matches(securePasswordHash(this.userspassword, this.salt));
+    }
+
+    private String securePasswordHash(String password, String salt) {
+        return null; // todo deliberately fails for now, as hasn't been implemented.
     }
 }
