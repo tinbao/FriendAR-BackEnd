@@ -1,8 +1,5 @@
 package tk.friendar.api;
 
-import java.io.IOException;
-import java.net.URI;
-import java.sql.Timestamp;
 import java.io.Serializable;
  
 import javax.persistence.Entity;
