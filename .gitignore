@@ -31,8 +31,6 @@ hs_err_pid*
 .project
 .classpath
 friendar-rest-api.iml
-AppUser.java
-AppTest.java
 # local database storage
 localDB
 
