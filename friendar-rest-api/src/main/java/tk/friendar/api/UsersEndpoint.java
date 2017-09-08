@@ -9,7 +9,7 @@ import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 /**
- * Root resource (exposed at "UserClass" path)
+ * Root resource (exposed at "UserDB" path)
  */
 @Path("users")
 public class UsersEndpoint {
@@ -22,18 +22,18 @@ public class UsersEndpoint {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UserClass> get() {
-        try (Session session = HibernateSingletonFactory.getInstance().openSession()) {
-            return session.createCriteria(UserClass.class).list();
+    public List<UserDB> get() {
+        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+            return session.createCriteria(UserDB.class).list();
         }
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public UserClass create(String userJson) throws JSONException {
+    public UserDB create(String userJson) throws JSONException {
         JSONObject json = new JSONObject(userJson);
-        UserClass user = new UserClass();
+        UserDB user = new UserDB();
 
         user.setFullName(json.getString("fullName"));
         user.setUsersname(json.getString("usersname"));
@@ -43,7 +43,7 @@ public class UsersEndpoint {
         user.setLatitude(json.getDouble("latitude"));
         user.setLongtitude(json.getDouble("longtitude"));
 
-        try (Session session = HibernateSingletonFactory.getInstance().openSession()) {
+        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             session.beginTransaction();
             session.save(user);
             session.getTransaction().commit();
@@ -54,9 +54,9 @@ public class UsersEndpoint {
     @Path("{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public UserClass get(@PathParam("id") String id) {
-        try (Session session = HibernateSingletonFactory.getInstance().openSession()) {
-            return session.get(UserClass.class, Integer.valueOf(id));
+    public UserDB get(@PathParam("id") String id) {
+        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+            return session.get(UserDB.class, Integer.valueOf(id));
         }
     }
 }

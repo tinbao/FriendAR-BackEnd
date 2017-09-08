@@ -3,11 +3,11 @@ package tk.friendar.api;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-public class HibernateSingletonFactory {
+public class SessionFactorySingleton {
 
     private static SessionFactory instance = null;
 
-    private HibernateSingletonFactory() {
+    private SessionFactorySingleton() {
         // Exists only to defeat instantiation.
     }
 
