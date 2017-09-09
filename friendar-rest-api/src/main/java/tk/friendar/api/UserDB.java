@@ -4,6 +4,14 @@ package tk.friendar.api;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+
+import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import org.apache.commons.codec.binary.Base64;
 
 @Entity
 @Table(name = "users")
@@ -14,12 +22,17 @@ public class UserDB implements Serializable {
     private int userID; //not null
     private String fullName,
             usersname, //not null
-            userspassword, //not null
-            salt, //not null, not setter or getter yet
+            usersPassword, //not null
             email; //not null
     private double latitude, longitude;
     private Timestamp locationLastUpdated;
-
+	
+	private static final int iterations = 20*1000;
+    private static final int saltLen = 32;
+    private static final int desiredKeyLen = 256;
+	private static final byte[] salt;
+	private final char[] passChar;
+	
     public int getUserID() {
         return userID;
     }
@@ -73,10 +86,39 @@ public class UserDB implements Serializable {
     }
 
     public boolean validPassword(String password) {
-        return password.matches(securePasswordHash(this.userspassword, this.salt));
+        return usersPassword.matches(checkPassword(password, salt));
     }
+	
+	private String checkPassword(String usersPassword2, byte[] salt2) {
+		// TODO Auto-generated method stub
+		return String.valueOf(hashPas(passChar, salt, iterations, desiredKeyLen));
+	}
 
-    private String securePasswordHash(String password, String salt) {
-        return null; // todo deliberately fails for now, as hasn't been implemented.
-    }
+	private void setUserPassword(String password) throws Exception {
+		if(password == null || password.length() == 0){
+			throw new IllegalArgumentException("Empty passwords are not supported.");
+		}
+		passChar = password.toCharArray();
+		salt = createSalt(salt, saltLen);
+		usersPassword = String.valueOf(hashPas(passChar, salt, iterations, desiredKeyLen));
+	}
+	
+	private static byte[] createSalt(byte[] emptySalt, int lenSalt){
+		emptySalt = SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLen);
+		return emptySalt;
+	}
+	
+	private static char[] hashPas(char[] password, byte[] salt, int iterationNum, int keyLen){
+		try {
+           SecretKeyFactory skf = SecretKeyFactory.getInstance( "PBKDF2WithHmacSHA512" );
+           PBEKeySpec spec = new PBEKeySpec( password, salt, iterationNum, keyLen );
+           SecretKey key = skf.generateSecret( spec );
+           char[] res = Base64.encodeBase64String(key.getEncoded()).toCharArray();
+           return res;
+ 
+       } catch( NoSuchAlgorithmException | InvalidKeySpecException e ) {
+           throw new RuntimeException( e );
+       }
+	}
+    
 }
