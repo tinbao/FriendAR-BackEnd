@@ -30,8 +30,8 @@ public class UserDB implements Serializable {
 	private static final int iterations = 20*1000;
     private static final int saltLen = 32;
     private static final int desiredKeyLen = 256;
-	private static final byte[] salt;
-	private final char[] passChar;
+	private static byte[] salt;
+	private static char[] passChar;
 	
     public int getUserID() {
         return userID;
