@@ -4,14 +4,15 @@ package tk.friendar.api;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+
+/* to be uncommented when deploying authentication
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
-
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.Base64;*/
 
 @Entity
 @Table(name = "users")
@@ -27,7 +28,8 @@ public class UserDB implements Serializable {
     private double latitude, longitude;
     private Timestamp locationLastUpdated;
 	
-	/*private static final int iterations = 20*1000;
+	/* --to be uncommented when deploying authentication
+	private static final int iterations = 20*1000;
     private static final int saltLen = 32;
     private static final int desiredKeyLen = 256;
 	private static byte[] salt;
@@ -85,6 +87,16 @@ public class UserDB implements Serializable {
         this.locationLastUpdated = locationLastUpdated;
     }
 
+	public String getUsersPassword() {
+		return usersPassword;
+	}
+
+	public void setUsersPassword(String usersPassword) {
+		this.usersPassword = usersPassword;
+	}
+	
+	//to be uncommented when deploying authentication
+	
     /*public boolean validPassword(String password) {
         return usersPassword.matches(checkPassword(password, salt));
     }
