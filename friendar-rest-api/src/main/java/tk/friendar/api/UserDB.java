@@ -89,8 +89,9 @@ public class UserDB implements Serializable {
         return usersPassword.matches(checkPassword(password, salt));
     }
 	
-	private String checkPassword(String usersPassword2, byte[] salt2) {
+	private String checkPassword(String usersPassword, byte[] salt) {
 		// TODO Auto-generated method stub
+		passChar = usersPassword.toCharArray();
 		return String.valueOf(hashPas(passChar, salt, iterations, desiredKeyLen));
 	}
 
@@ -103,7 +104,7 @@ public class UserDB implements Serializable {
 		usersPassword = String.valueOf(hashPas(passChar, salt, iterations, desiredKeyLen));
 	}
 	
-	private static byte[] createSalt(byte[] emptySalt, int lenSalt){
+	private static byte[] createSalt(byte[] emptySalt, int saltLen){
 		emptySalt = SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLen);
 		return emptySalt;
 	}
