@@ -95,14 +95,14 @@ public class UserDB implements Serializable {
 		return String.valueOf(hashPas(passChar, salt, iterations, desiredKeyLen));
 	}
 
-	private void setUserPassword(String password) throws Exception {
+	/*private void setUserPassword(String password) throws Exception {
 		if(password == null || password.length() == 0){
 			throw new IllegalArgumentException("Empty passwords are not supported.");
 		}
 		passChar = password.toCharArray();
 		salt = createSalt(salt, saltLen);
 		usersPassword = String.valueOf(hashPas(passChar, salt, iterations, desiredKeyLen));
-	}
+	}*/
 	
 	private static byte[] createSalt(byte[] emptySalt, int saltLen){
 		emptySalt = SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLen);
