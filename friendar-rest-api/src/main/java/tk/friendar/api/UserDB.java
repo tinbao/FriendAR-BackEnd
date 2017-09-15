@@ -90,6 +90,10 @@ public class UserDB implements Serializable {
 	public String getUsersPassword() {
 		return usersPassword;
 	}
+
+	public void setUsersPassword(String usersPassword) {
+		this.usersPassword = setUsersPassword(usersPassword);
+	}
 	
 	//to be uncommented when deploying authentication
 	
