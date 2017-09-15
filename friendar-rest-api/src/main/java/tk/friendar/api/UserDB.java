@@ -92,7 +92,7 @@ public class UserDB implements Serializable {
 	}
 
 	public void setUsersPassword(String usersPassword) {
-		this.usersPassword = setUserPassword(usersPassword);
+		this.usersPassword = setUsersPassword(usersPassword);
 	}
 	
 	//to be uncommented when deploying authentication
@@ -129,7 +129,7 @@ public class UserDB implements Serializable {
            char[] res = Base64.encodeBase64String(key.getEncoded()).toCharArray();
            return res;
  
-       } catch( InvalidKeySpecException e ) {
+       } catch( NoSuchAlgorithmException e || InvalidKeySpecException e ) {
            throw new RuntimeException( e );
        }
 	}
