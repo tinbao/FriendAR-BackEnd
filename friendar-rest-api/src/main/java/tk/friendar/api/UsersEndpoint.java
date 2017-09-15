@@ -32,21 +32,26 @@ public class UsersEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public UserDB create(String userJson) throws JSONException {
-        JSONObject json = new JSONObject(userJson);
-        UserDB user = new UserDB();
+        try {
 
-        user.setFullName(json.getString("fullName"));
-        user.setUsersname(json.getString("usersname"));
-        user.setUsersPassword(json.getString("userspassword"));
-        user.setEmail(json.getString("email"));
-        user.setLatitude(json.getDouble("latitude"));
-        user.setLongitude(json.getDouble("longitude"));
+            JSONObject json = new JSONObject(userJson);
+            UserDB user = new UserDB();
 
-        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
-            session.beginTransaction();
-            session.save(user);
-            session.getTransaction().commit();
-            return user;
+            user.setFullName(json.getString("fullName"));
+            user.setUsersname(json.getString("usersname"));
+            user.setUsersPassword(json.getString("userspassword"));
+            user.setEmail(json.getString("email"));
+            user.setLatitude(json.getDouble("latitude"));
+            user.setLongitude(json.getDouble("longitude"));
+
+            try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+                session.beginTransaction();
+                session.save(user);
+                session.getTransaction().commit();
+                return user;
+            }
+        } catch (Exception e) {
+            throw new JSONException(e);
         }
     }
 
