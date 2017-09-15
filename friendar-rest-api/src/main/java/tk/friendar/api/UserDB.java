@@ -129,9 +129,8 @@ public class UserDB implements Serializable {
            char[] res = Base64.encodeBase64String(key.getEncoded()).toCharArray();
            return res;
  
-       } catch( NoSuchAlgorithmException e || InvalidKeySpecException e ) {
+       } catch( NoSuchAlgorithmException | InvalidKeySpecException e ) {
            throw new RuntimeException( e );
        }
 	}
-    
 }
