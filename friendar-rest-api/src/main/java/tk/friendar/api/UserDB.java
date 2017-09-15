@@ -6,7 +6,7 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 
 /* to be uncommented when deploying authentication*/
-//import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import javax.crypto.SecretKey;
@@ -129,7 +129,7 @@ public class UserDB implements Serializable {
            char[] res = Base64.encodeBase64String(key.getEncoded()).toCharArray();
            return res;
  
-       } catch( InvalidKeySpecException e ) {
+       } catch( NoSuchAlgorithmException | InvalidKeySpecException e ) {
            throw new RuntimeException( e );
        }
 	}
