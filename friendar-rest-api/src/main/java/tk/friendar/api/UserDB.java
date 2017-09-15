@@ -97,7 +97,7 @@ public class UserDB implements Serializable {
 	
 	//to be uncommented when deploying authentication
 	
-    public boolean validPassword(String password) {
+    public boolean validPassword(String password) throws Exception{
         return usersPassword.matches(checkPassword(password, salt));
     }
 	
