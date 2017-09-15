@@ -27,8 +27,7 @@ public class UserDB implements Serializable {
             email; //not null
     private double latitude, longitude;
     private Timestamp locationLastUpdated;
-	
-	/*to be uncommented when deploying authentication*/
+    
 	private static final int iterations = 20*1000;
     private static final int saltLen = 32;
     private static final int desiredKeyLen = 256;
