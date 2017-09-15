@@ -5,14 +5,14 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-/* to be uncommented when deploying authentication
+/* to be uncommented when deploying authentication*/
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
-import org.apache.commons.codec.binary.Base64;*/
+import org.apache.commons.codec.binary.Base64;
 
 @Entity
 @Table(name = "users")
@@ -28,12 +28,12 @@ public class UserDB implements Serializable {
     private double latitude, longitude;
     private Timestamp locationLastUpdated;
 	
-	/* --to be uncommented when deploying authentication
+	/*to be uncommented when deploying authentication*/
 	private static final int iterations = 20*1000;
     private static final int saltLen = 32;
     private static final int desiredKeyLen = 256;
 	private static byte[] salt;
-	private static char[] passChar;*/
+	private static char[] passChar;
 	
     public int getUserID() {
         return userID;
@@ -97,7 +97,7 @@ public class UserDB implements Serializable {
 	
 	//to be uncommented when deploying authentication
 	
-    /*public boolean validPassword(String password) {
+    public boolean validPassword(String password) {
         return usersPassword.matches(checkPassword(password, salt));
     }
 	
@@ -105,23 +105,23 @@ public class UserDB implements Serializable {
 		// TODO Auto-generated method stub
 		passChar = usersPassword.toCharArray();
 		return String.valueOf(hashPas(passChar, salt, iterations, desiredKeyLen));
-	}*/
+	}
 
-	/*private void setUserPassword(String password) throws Exception {
+	private void setUserPassword(String password) throws Exception {
 		if(password == null || password.length() == 0){
 			throw new IllegalArgumentException("Empty passwords are not supported.");
 		}
 		passChar = password.toCharArray();
 		salt = createSalt(salt, saltLen);
 		usersPassword = String.valueOf(hashPas(passChar, salt, iterations, desiredKeyLen));
-	}*/
+	}
 	
-	/*private static byte[] createSalt(byte[] emptySalt, int saltLen){
+	private static byte[] createSalt(byte[] emptySalt, int saltLen){
 		emptySalt = SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLen);
 		return emptySalt;
-	}*/
+	}
 	
-	/*private static char[] hashPas(char[] password, byte[] salt, int iterationNum, int keyLen){
+	private static char[] hashPas(char[] password, byte[] salt, int iterationNum, int keyLen){
 		try {
            SecretKeyFactory skf = SecretKeyFactory.getInstance( "PBKDF2WithHmacSHA512" );
            PBEKeySpec spec = new PBEKeySpec( password, salt, iterationNum, keyLen );
@@ -132,6 +132,6 @@ public class UserDB implements Serializable {
        } catch( NoSuchAlgorithmException | InvalidKeySpecException e ) {
            throw new RuntimeException( e );
        }
-	}*/
+	}
     
 }
