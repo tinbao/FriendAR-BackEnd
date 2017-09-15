@@ -2,6 +2,7 @@ package tk.friendar.api;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.*;
 
 @Entity
 @Table(name = "places")
@@ -12,6 +13,9 @@ public class PlaceDB implements Serializable {
     private int placeID; //not null
     private String placeName;
     private double longitude, latitude;
+	
+	@OneToMany
+	private ArrayList<MeetingDB> meetings = new ArrayList<MeetingDB>();
 
     public int getPlaceID() {
         return placeID;
@@ -44,4 +48,12 @@ public class PlaceDB implements Serializable {
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
+
+	public ArrayList<MeetingDB> getMeetings() {
+		return meetings;
+	}
+
+	public void setMeetings(ArrayList<MeetingDB> meetings) {
+		this.meetings = meetings;
+	}
 }

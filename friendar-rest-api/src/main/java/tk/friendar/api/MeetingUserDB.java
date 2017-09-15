@@ -13,8 +13,8 @@ public class MeetingUserDB implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int meetingUserID; //not null
 
-    private int meetingID, //not null
-            userID; // not nulll
+    /*private int meetingID, //not null
+            userID; // not nulll*/
 
     public int getMeetingUserID() {
         return meetingUserID;
@@ -24,7 +24,7 @@ public class MeetingUserDB implements Serializable {
         this.meetingUserID = meetingUserID;
     }
 
-    public int getMeetingID() {
+    /*public int getMeetingID() {
         return meetingID;
     }
 
@@ -38,6 +38,6 @@ public class MeetingUserDB implements Serializable {
 
     public void setUserID(int userID) {
         this.userID = userID;
-    }
+    }*/
 
 }
