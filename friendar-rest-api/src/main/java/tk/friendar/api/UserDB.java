@@ -90,10 +90,6 @@ public class UserDB implements Serializable {
 	public String getUsersPassword() {
 		return usersPassword;
 	}
-
-	public void setUsersPassword(String usersPassword) {
-		this.usersPassword = usersPassword;
-	}
 	
 	//to be uncommented when deploying authentication
 	
@@ -107,7 +103,7 @@ public class UserDB implements Serializable {
 		return String.valueOf(hashPas(passChar, salt, iterations, desiredKeyLen));
 	}
 
-	private void setUserPassword(String password) throws Exception {
+	private void setUsersPassword(String password) throws Exception {
 		if(password == null || password.length() == 0){
 			throw new IllegalArgumentException("Empty passwords are not supported.");
 		}
