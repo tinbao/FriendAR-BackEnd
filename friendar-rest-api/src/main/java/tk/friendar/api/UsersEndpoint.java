@@ -37,8 +37,7 @@ public class UsersEndpoint {
 
         user.setFullName(json.getString("fullName"));
         user.setUsersname(json.getString("usersname"));
-        user.setUserspassword(json.getString("userspassword"));
-        user.setSalt(json.getString("salt"));
+        user.setUsersPassword(json.getString("userspassword"));
         user.setEmail(json.getString("email"));
         user.setLatitude(json.getDouble("latitude"));
         user.setLongitude(json.getDouble("longitude"));
