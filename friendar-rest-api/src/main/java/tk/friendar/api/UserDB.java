@@ -121,7 +121,7 @@ public class UserDB implements Serializable {
 		return emptySalt;
 	}
 	
-	private static char[] hashPas(char[] password, byte[] salt, int iterationNum, int keyLen){
+	private static char[] hashPas(char[] password, byte[] salt, int iterationNum, int keyLen)throws Exception{
 		try {
            SecretKeyFactory skf = SecretKeyFactory.getInstance( "PBKDF2WithHmacSHA512" );
            PBEKeySpec spec = new PBEKeySpec( password, salt, iterationNum, keyLen );
