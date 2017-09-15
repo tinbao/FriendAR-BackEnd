@@ -131,8 +131,8 @@ public class UserDB implements Serializable {
  
        } catch( NoSuchAlgorithmException e) {
            throw new RuntimeException( e );
-       } catch (InvalidKeySpecException e){
-		   throw new RuntimeException( e );
+       } catch (InvalidKeySpecException ex){
+		   throw new RuntimeException( ex );
 	   }
 	}
 }
