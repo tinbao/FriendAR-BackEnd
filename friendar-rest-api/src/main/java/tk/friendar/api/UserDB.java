@@ -92,7 +92,7 @@ public class UserDB implements Serializable {
 	}
 
 	public void setUsersPassword(String usersPassword) {
-		this.usersPassword = setUsersPassword(usersPassword);
+		this.usersPassword = setUserPassword(usersPassword);
 	}
 	
 	//to be uncommented when deploying authentication
@@ -107,13 +107,13 @@ public class UserDB implements Serializable {
 		return String.valueOf(hashPas(passChar, salt, iterations, desiredKeyLen));
 	}
 
-	private void setUsersPassword(String password) throws Exception {
+	private String setUserPassword(String password) throws Exception {
 		if(password == null || password.length() == 0){
 			throw new IllegalArgumentException("Empty passwords are not supported.");
 		}
 		passChar = password.toCharArray();
 		salt = createSalt(salt, saltLen);
-		usersPassword = String.valueOf(hashPas(passChar, salt, iterations, desiredKeyLen));
+		return String.valueOf(hashPas(passChar, salt, iterations, desiredKeyLen));
 	}
 	
 	private static byte[] createSalt(byte[] emptySalt, int saltLen){
