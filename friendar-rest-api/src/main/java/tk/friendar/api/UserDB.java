@@ -101,7 +101,7 @@ public class UserDB implements Serializable {
         return usersPassword.matches(checkPassword(password, salt));
     }
 	
-	private String checkPassword(String usersPassword, byte[] salt) throws Exceptionp{
+	private String checkPassword(String usersPassword, byte[] salt) throws Exception{
 		// TODO Auto-generated method stub
 		passChar = usersPassword.toCharArray();
 		return String.valueOf(hashPas(passChar, salt, iterations, desiredKeyLen));
