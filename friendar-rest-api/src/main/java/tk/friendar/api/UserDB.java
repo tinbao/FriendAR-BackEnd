@@ -125,8 +125,7 @@ public class UserDB implements Serializable {
            SecretKeyFactory skf = SecretKeyFactory.getInstance( "PBKDF2WithHmacSHA512" );
            PBEKeySpec spec = new PBEKeySpec( password, salt, iterationNum, keyLen );
            SecretKey key = skf.generateSecret( spec );
-           char[] res = Base64.encodeBase64String(key.getEncoded()).toCharArray();
-           return res;
+            return Base64.encodeBase64String(key.getEncoded()).toCharArray();
  
        } catch( NoSuchAlgorithmException | InvalidKeySpecException e) {
            throw new RuntimeException( e );
