@@ -92,7 +92,7 @@ public class UserDB implements Serializable {
 	}
 
 	public void setUsersPassword(String usersPassword) {
-		this.usersPassword = setUsersPassword(usersPassword);
+		this.usersPassword = setUserPassword(usersPassword);
 	}
 	
 	//to be uncommented when deploying authentication
