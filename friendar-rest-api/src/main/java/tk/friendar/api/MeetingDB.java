@@ -1,20 +1,21 @@
 package tk.friendar.api;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.*;
 
 @Entity
 public class MeetingDB implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int meetingID, placeID; //not null
+    private int meetingID; //not null
     private String meetingName;
     private Timestamp timeDate;
+	
+	@OneToMany
+	private ArrayList<MeetingUserDB> meetingUsers = new ArrayList<MeetingUserDB>();
 
     public int getMeetingID() {
         return meetingID;
@@ -32,14 +33,6 @@ public class MeetingDB implements Serializable {
         this.timeDate = timeDate;
     }
 
-    public int getPlaceID() {
-        return placeID;
-    }
-
-    public void setPlaceID(int placeID) {
-        this.placeID = placeID;
-    }
-
     public String getMeetingName() {
         return meetingName;
     }
@@ -47,4 +40,12 @@ public class MeetingDB implements Serializable {
     public void setMeetingName(String meetingName) {
         this.meetingName = meetingName;
     }
+
+	public ArrayList<MeetingUserDB> getMeetingUsers() {
+		return meetingUsers;
+	}
+
+	public void setMeetingUsers(ArrayList<MeetingUserDB> meetingUsers) {
+		this.meetingUsers = meetingUsers;
+	}
 }

@@ -13,8 +13,8 @@ public class MessageDB implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int messageID; //not null
-    private int meetingID; //not null
-    private int userID; //not null
+    //private int meetingID; //not null
+    //private int userID; //not null
     private String content;
     private Timestamp timeSent;
 
@@ -26,7 +26,7 @@ public class MessageDB implements Serializable {
         this.messageID = messageID;
     }
 
-    public int getMeetingID() {
+    /*public int getMeetingID() {
         return meetingID;
     }
 
@@ -40,7 +40,7 @@ public class MessageDB implements Serializable {
 
     public void setUserID(int userID) {
         this.userID = userID;
-    }
+    }*/
 
     public String getContent() {
         return content;

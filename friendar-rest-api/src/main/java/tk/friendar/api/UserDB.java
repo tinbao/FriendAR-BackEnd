@@ -4,6 +4,7 @@ package tk.friendar.api;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.*;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -32,6 +33,15 @@ public class UserDB implements Serializable {
     private static final int desiredKeyLen = 256;
 	private static byte[] salt;
 	private static char[] passChar;
+	
+	@OneToMany
+	private ArrayList<FriendshipDB> friends = new ArrayList<FriendshipDB>();
+	
+	@OneToMany
+	private ArrayList<MeetingUserDB> meetingUsers = new ArrayList<MeetingUserDB>();
+	
+	@OneToMany
+	private ArrayList<MessageDB> chats = new ArrayList<MessageDB>();
 	
     public int getUserID() {
         return userID;
@@ -84,6 +94,30 @@ public class UserDB implements Serializable {
     public void setLocationLastUpdated(Timestamp locationLastUpdated) {
         this.locationLastUpdated = locationLastUpdated;
     }
+	
+	public ArrayList<FriendshipDB> getFriends() {
+		return friends;
+	}
+
+	public void setFriends(ArrayList<FriendshipDB> friends) {
+		this.friends = friends;
+	}
+
+	public ArrayList<MeetingUserDB> getMeetingUsers() {
+		return meetingUsers;
+	}
+
+	public void setMeetingUsers(ArrayList<MeetingUserDB> meetingUsers) {
+		this.meetingUsers = meetingUsers;
+	}
+
+	public ArrayList<MessageDB> getChats() {
+		return chats;
+	}
+
+	public void setChats(ArrayList<MessageDB> chats) {
+		this.chats = chats;
+	}
 
 	public String getUsersPassword() {
 		return usersPassword;

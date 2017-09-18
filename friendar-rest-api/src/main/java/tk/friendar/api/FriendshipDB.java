@@ -11,9 +11,9 @@ public class FriendshipDB implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int friendshipID, //not null
-            userA_ID, //not null
-            userB_ID; //not null
+    private int friendshipID; //not null
+           // userA_ID, //not null
+           // userB_ID; //not null
 
     public int getFriendshipID() {
         return friendshipID;
@@ -23,7 +23,7 @@ public class FriendshipDB implements Serializable {
         this.friendshipID = friendshipID;
     }
 
-    public int getUserA_ID() {
+    /*public int getUserA_ID() {
         return userA_ID;
     }
 
@@ -37,6 +37,6 @@ public class FriendshipDB implements Serializable {
 
     public void setUserB_ID(int userB_ID) {
         this.userB_ID = userB_ID;
-    }
+    }*/
 
 }
