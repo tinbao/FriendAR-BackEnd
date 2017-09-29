@@ -1,20 +1,26 @@
 package tk.friendar.api;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+//import org.hibernate.annotations.Table;
+import javax.persistence.*;
 import javax.persistence.Id;
 import java.io.Serializable;
 
 @Entity
+@Table(name = "meetingusers")
 public class MeetingUserDB implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "meetinguserid", nullable=false)
     private int meetingUserID; //not null
 
-    /*private int meetingID, //not null
-            userID; // not nulll*/
+    @ManyToOne
+    @JoinColumn(name="meetingid")
+    private MeetingDB meetingID; //not null
+
+    @ManyToOne
+    @JoinColumn(name="userid")
+    private UserDB userID; // not nulll*/
 
     public int getMeetingUserID() {
         return meetingUserID;
@@ -24,20 +30,20 @@ public class MeetingUserDB implements Serializable {
         this.meetingUserID = meetingUserID;
     }
 
-    /*public int getMeetingID() {
+    public MeetingDB getMeetingID() {
         return meetingID;
     }
 
-    public void setMeetingID(int meetingID) {
+    public void setMeetingID(MeetingDB meetingID) {
         this.meetingID = meetingID;
     }
 
-    public int getUserID() {
+    public UserDB getUserID() {
         return userID;
     }
 
-    public void setUserID(int userID) {
+    public void setUserID(UserDB userID) {
         this.userID = userID;
-    }*/
+    }
 
 }

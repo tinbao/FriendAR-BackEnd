@@ -1,11 +1,14 @@
 package tk.friendar.api;
 
+import org.hibernate.FetchMode;
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -22,9 +25,14 @@ public class UsersEndpoint {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UserDB> get() {
+    public List<UserDB> get() throws JSONException {
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
-            return session.createCriteria(UserDB.class).list();
+            List users = session.createCriteria(UserDB.class)
+                    .setFetchMode("friends", FetchMode.EAGER)
+                    .list();
+            return users;
+        }catch(Exception e){
+            throw new JSONException(e.toString());
         }
     }
 
@@ -60,7 +68,9 @@ public class UsersEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public UserDB get(@PathParam("id") String id) {
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
-            return session.get(UserDB.class, Integer.valueOf(id));
+            UserDB user1 =  session.get(UserDB.class, Integer.valueOf(id));
+            //user1.friends;
+            return user1;
         }
     }
 }

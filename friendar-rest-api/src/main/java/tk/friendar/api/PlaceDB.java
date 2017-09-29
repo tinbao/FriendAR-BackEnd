@@ -10,12 +10,14 @@ public class PlaceDB implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "placeid", nullable = false)
     private int placeID; //not null
+
     private String placeName;
     private double longitude, latitude;
-	
-	@OneToMany
-	private ArrayList<MeetingDB> meetings = new ArrayList<MeetingDB>();
+
+    @OneToMany (targetEntity = MeetingDB.class, mappedBy = "placeID", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    public Collection<MeetingDB> meetings = new ArrayList<MeetingDB>();
 
     public int getPlaceID() {
         return placeID;
@@ -49,7 +51,7 @@ public class PlaceDB implements Serializable {
         this.latitude = latitude;
     }
 
-	public ArrayList<MeetingDB> getMeetings() {
+	public Collection<MeetingDB> getMeetings() {
 		return meetings;
 	}
 
