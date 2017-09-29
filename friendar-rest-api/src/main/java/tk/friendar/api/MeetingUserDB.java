@@ -2,7 +2,6 @@ package tk.friendar.api;
 
 //import org.hibernate.annotations.Table;
 import javax.persistence.*;
-import javax.persistence.Id;
 import java.io.Serializable;
 
 @Entity

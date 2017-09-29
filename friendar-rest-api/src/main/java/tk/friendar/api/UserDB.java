@@ -1,12 +1,6 @@
 package tk.friendar.api;
 
 
-
-import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.FetchProfile;
-
-import javax.persistence.Entity;
-
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -23,9 +17,6 @@ import org.apache.commons.codec.binary.Base64;
 
 
 @Entity
-//@FetchProfile(name = "customer-with-orders", fetchOverrides = {
-//        @FetchProfile.FetchOverride(entity = UserDB.class, association = "friends",  mode = FetchMode.JOIN)
-//})
 @Table(name = "users")
 public class UserDB implements Serializable {
 
