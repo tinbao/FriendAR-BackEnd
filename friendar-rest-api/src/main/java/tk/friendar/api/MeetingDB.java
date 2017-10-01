@@ -6,16 +6,26 @@ import java.sql.Timestamp;
 import java.util.*;
 
 @Entity
+@Table(name = "meetings")
 public class MeetingDB implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "meetingid", nullable = false)
     private int meetingID; //not null
+
     private String meetingName;
     private Timestamp timeDate;
-	
-	@OneToMany
-	private ArrayList<MeetingUserDB> meetingUsers = new ArrayList<MeetingUserDB>();
+
+    @OneToMany (targetEntity = MeetingUserDB.class, mappedBy = "meetingID", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+	public Collection<MeetingUserDB> meetingUsers = new ArrayList<MeetingUserDB>();
+
+    @OneToMany (targetEntity = MessageDB.class, mappedBy = "meetingID", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    public Collection<MessageDB> messages = new ArrayList<MessageDB>();
+
+    @ManyToOne
+    @JoinColumn(name = "placeid")
+    PlaceDB placeID;
 
     public int getMeetingID() {
         return meetingID;
@@ -41,11 +51,18 @@ public class MeetingDB implements Serializable {
         this.meetingName = meetingName;
     }
 
-	public ArrayList<MeetingUserDB> getMeetingUsers() {
+	public Collection<MeetingUserDB> getMeetingUsers() {
 		return meetingUsers;
 	}
 
 	public void setMeetingUsers(ArrayList<MeetingUserDB> meetingUsers) {
 		this.meetingUsers = meetingUsers;
 	}
+
+    public void setPlaceID(PlaceDB placeID){
+        this.placeID = placeID;
+    }
+    public PlaceDB getPlaceID(){
+        return this.placeID;
+    }
 }
