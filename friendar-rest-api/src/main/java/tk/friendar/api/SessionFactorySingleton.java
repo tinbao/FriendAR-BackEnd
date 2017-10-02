@@ -12,9 +12,7 @@ public class SessionFactorySingleton {
     }
 
     public static SessionFactory getInstance() {
-        if (instance == null) {
-            instance = new Configuration().configure().buildSessionFactory();
-        }
-        return instance;
+        return new Configuration().configure().buildSessionFactory();
+        // not a singleton as this gets closed, after a request.
     }
 }
