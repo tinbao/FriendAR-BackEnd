@@ -36,14 +36,14 @@ public class UserDB implements Serializable {
     private static byte[] salt;
     private static char[] passChar;
 
-    @OneToMany (targetEntity = FriendshipDB.class, mappedBy = "userA_ID", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
-    //@OneToMany (targetEntity = FriendshipDB.class, mappedBy = "userB_ID", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToMany (targetEntity = FriendshipDB.class, mappedBy = "userA_ID", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+    //@OneToMany (targetEntity = FriendshipDB.class, mappedBy = "userB_ID", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
     public List<FriendshipDB> friends = new ArrayList<>();
 
-    @OneToMany (targetEntity = MeetingUserDB.class, mappedBy = "userID", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToMany (targetEntity = MeetingUserDB.class, mappedBy = "userID", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
     public Collection<MeetingUserDB> meetings = new ArrayList<MeetingUserDB>();
 
-    @OneToMany (targetEntity = MessageDB.class, mappedBy = "userID", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToMany (targetEntity = MessageDB.class, mappedBy = "user", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
     public Collection<MessageDB> messages = new ArrayList<MessageDB>();
 
     public int getUserID() {

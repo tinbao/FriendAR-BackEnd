@@ -1,5 +1,7 @@
 package tk.friendar.api;
 
+import org.hibernate.Session;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -17,15 +19,15 @@ public class MeetingDB implements Serializable {
     private String meetingName;
     private Timestamp timeDate;
 
-    @OneToMany (targetEntity = MeetingUserDB.class, mappedBy = "meetingID", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToMany (targetEntity = MeetingUserDB.class, mappedBy = "meetingID", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	public Collection<MeetingUserDB> meetingUsers = new ArrayList<MeetingUserDB>();
 
-    @OneToMany (targetEntity = MessageDB.class, mappedBy = "meetingID", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToMany (targetEntity = MessageDB.class, mappedBy = "meeting", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
     public Collection<MessageDB> messages = new ArrayList<MessageDB>();
 
     @ManyToOne
     @JoinColumn(name = "placeid")
-    PlaceDB placeID;
+    PlaceDB place;
 
     public int getMeetingID() {
         return meetingID;
@@ -59,10 +61,12 @@ public class MeetingDB implements Serializable {
 		this.meetingUsers = meetingUsers;
 	}
 
-    public void setPlaceID(PlaceDB placeID){
-        this.placeID = placeID;
+    public void setPlace(int placeID){
+        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+            this.place = session.get(PlaceDB.class,placeID);
+        }
     }
-    public PlaceDB getPlaceID(){
-        return this.placeID;
+    public PlaceDB getPlace(){
+        return this.place;
     }
 }

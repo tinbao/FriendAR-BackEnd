@@ -1,5 +1,7 @@
 package tk.friendar.api;
 
+import org.hibernate.Session;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.sql.Timestamp;
@@ -15,11 +17,11 @@ public class MessageDB implements Serializable {
 
     @ManyToOne
     @JoinColumn(name="meetingID")
-    private MeetingDB meetingID; //not null
+    private MeetingDB meeting; //not null
 
     @ManyToOne
     @JoinColumn(name="userid")
-    private UserDB userID; //not null
+    private UserDB user; //not null
 
     private String content;
     private Timestamp timeSent;
@@ -32,20 +34,24 @@ public class MessageDB implements Serializable {
         this.messageID = messageID;
     }
 
-    public MeetingDB getMeetingID() {
-        return meetingID;
+    public MeetingDB getMeeting() {
+        return meeting;
     }
 
-    public void setMeetingID(MeetingDB meetingID) {
-        this.meetingID = meetingID;
+    public void setMeeting(int meetingID) {
+        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+            this.meeting = session.get(MeetingDB.class,meetingID);
+        }
     }
 
-    public UserDB getUserID() {
-        return userID;
+    public UserDB getUser() {
+        return user;
     }
 
-    public void setUserID(UserDB userID) {
-        this.userID = userID;
+    public void setUser(int userID) {
+        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+            this.user = session.get(UserDB.class,userID);
+        }
     }
 
     public String getContent() {

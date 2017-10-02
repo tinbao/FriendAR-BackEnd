@@ -16,7 +16,7 @@ public class PlaceDB implements Serializable {
     private String placeName;
     private double longitude, latitude;
 
-    @OneToMany (targetEntity = MeetingDB.class, mappedBy = "placeID", cascade = CascadeType.ALL, fetch=FetchType.EAGER)
+    @OneToMany (targetEntity = MeetingDB.class, mappedBy = "place", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
     public Collection<MeetingDB> meetings = new ArrayList<MeetingDB>();
 
     public int getPlaceID() {

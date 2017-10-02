@@ -25,10 +25,9 @@ public class UsersEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public List<UserDB> get() throws JSONException {
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
-            List users = session.createCriteria(UserDB.class)
-                    .setFetchMode("friends", FetchMode.EAGER)
+            return session.createCriteria(UserDB.class)
+                    .setFetchMode("friends", FetchMode.DEFAULT)
                     .list();
-            return users;
         }catch(Exception e){
             throw new JSONException(e.toString());
         }

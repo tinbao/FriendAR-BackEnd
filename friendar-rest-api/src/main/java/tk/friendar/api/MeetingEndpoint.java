@@ -38,7 +38,7 @@ public class MeetingEndpoint {
 
         try {
             meeting.setMeetingName(json.getString("Meeting"));
-            meeting.setPlaceID(json.getInt("placeID"));
+            meeting.setPlace(json.getInt("placeID"));
             meeting.setTimeDate(Timestamp.valueOf(json.getString("time")));
         } catch (Exception e) {
             System.out.print(e.toString());

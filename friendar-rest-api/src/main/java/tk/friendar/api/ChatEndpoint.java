@@ -37,8 +37,8 @@ public class ChatEndpoint {
 
         try {
             message.setContent(json.getString("content"));
-            message.setMeetingID(json.getInt("meetingID"));
-            message.setUserID(json.getInt("userID"));
+            message.setMeeting(json.getInt("meetingID"));
+            message.setUser(json.getInt("userID"));
         } catch (Exception e) {
             System.out.print(e.toString());
         }
