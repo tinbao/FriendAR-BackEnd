@@ -13,6 +13,8 @@ import javax.crypto.SecretKey;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import org.apache.commons.codec.binary.Base64;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 @Entity
 @Table(name = "users")
@@ -98,7 +100,11 @@ public class UserDB implements Serializable {
         this.locationLastUpdated = locationLastUpdated;
     }
 
-    public List<FriendshipDB> getFriends() {
+    public List<UserDB> getFriends() {
+        List<UserDB> friends = new ArrayList<>();
+        for (FriendshipDB friend :this.friends){
+            friends.add(friend.getUserB_ID());
+        }
         return friends;
     }
     public void setFriends(List<FriendshipDB> friends) {
@@ -164,5 +170,23 @@ public class UserDB implements Serializable {
         } catch( NoSuchAlgorithmException | InvalidKeySpecException e) {
             throw new RuntimeException( e );
         }
+    }
+
+    JSONObject toJson(Boolean nextLevelDeep) throws JSONException {
+        JSONObject userJSON = new JSONObject();
+        userJSON.put("id", this.getUserID());
+        userJSON.put("username", this.getUsersname());
+        userJSON.put("fullName", this.getFullName());
+        userJSON.put("email", this.getEmail());
+        userJSON.put("latitude", this.getLatitude());
+        userJSON.put("longitude", this.getLongitude());
+        userJSON.put("locationLastUpdated", this.getLocationLastUpdated());
+        if (nextLevelDeep) {
+            for (UserDB friend : this.getFriends()) {
+                userJSON.append("friends", friend.toJson(false));
+            }
+        }
+        return userJSON;
+
     }
 }

@@ -1,6 +1,5 @@
 package tk.friendar.api;
 
-import org.hibernate.FetchMode;
 import org.hibernate.Session;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,13 +22,18 @@ public class UsersEndpoint {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<UserDB> get() throws JSONException {
+    public String get() throws JSONException {
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
-            return session.createCriteria(UserDB.class)
-                    .setFetchMode("friends", FetchMode.DEFAULT)
-                    .list();
-        }catch(Exception e){
-            throw new JSONException(e.toString());
+
+            List<UserDB> usersDB = session.createCriteria(UserDB.class).list();
+            JSONObject json = new JSONObject();
+            for (UserDB user : usersDB) {
+                json.append("users", user.toJson(true));
+            }
+
+            return json.toString();
+        } catch (Exception e) {
+            return e.toString();
         }
     }
 
@@ -63,11 +67,13 @@ public class UsersEndpoint {
     @Path("{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public UserDB get(@PathParam("id") String id) {
+    public String get(@PathParam("id") String id) {
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
-            UserDB user1 =  session.get(UserDB.class, Integer.valueOf(id));
-            //user1.friends;
-            return user1;
+            try {
+                return session.get(UserDB.class, Integer.valueOf(id)).toJson(true).toString();
+            } catch (JSONException e) {
+                return e.toString();
+            }
         }
     }
 }
