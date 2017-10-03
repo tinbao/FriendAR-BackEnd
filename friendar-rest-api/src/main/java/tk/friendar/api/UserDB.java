@@ -32,10 +32,10 @@ public class UserDB implements Serializable {
     private double latitude, longitude;
     private Timestamp locationLastUpdated;
 
-    private static final int iterations = 20*1000;
+    private static final int iterations = 5;
     private static final int saltLen = 32;
     private static final int desiredKeyLen = 256;
-    private static byte[] salt;
+    private byte[] salt;
     private static char[] passChar;
 
     @OneToMany (targetEntity = FriendshipDB.class, mappedBy = "userA_ID", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
@@ -151,13 +151,8 @@ public class UserDB implements Serializable {
             throw new IllegalArgumentException("Empty passwords are not supported.");
         }
         passChar = password.toCharArray();
-        salt = createSalt(salt, saltLen);
+        this.salt = SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLen);
         return String.valueOf(hashPas(passChar, salt, iterations, desiredKeyLen));
-    }
-
-    private static byte[] createSalt(byte[] emptySalt, int saltLen)throws Exception{
-        emptySalt = SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLen);
-        return emptySalt;
     }
 
     private static char[] hashPas(char[] password, byte[] salt, int iterationNum, int keyLen)throws Exception{
