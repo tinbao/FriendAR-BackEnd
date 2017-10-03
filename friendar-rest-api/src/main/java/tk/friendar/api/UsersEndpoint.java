@@ -40,15 +40,15 @@ public class UsersEndpoint {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public UserDB create(String userJson) throws JSONException {
+    public String create(String userJson) throws JSONException {
         try {
 
             JSONObject json = new JSONObject(userJson);
             UserDB user = new UserDB();
 
             user.setFullName(json.getString("fullName"));
-            user.setUsersname(json.getString("usersname"));
-            user.setUsersPassword(json.getString("userspassword"));
+            user.setUsersname(json.getString("username"));
+            user.setUsersPassword(json.getString("usersPassword"));
             user.setEmail(json.getString("email"));
             user.setLatitude(json.getDouble("latitude"));
             user.setLongitude(json.getDouble("longitude"));
@@ -57,7 +57,9 @@ public class UsersEndpoint {
                 session.beginTransaction();
                 session.save(user);
                 session.getTransaction().commit();
-                return user;
+                JSONObject returnJson = new JSONObject(user);
+                returnJson.remove("usersPassword");
+                return returnJson.toString();
             }
         } catch (Exception e) {
             throw new JSONException(e);
