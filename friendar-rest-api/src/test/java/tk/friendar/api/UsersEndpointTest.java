@@ -52,9 +52,10 @@ public class UsersEndpointTest {
     @Test
     public void testPost() throws Exception {
 
-        String test_user = "{\"latitude\":678,\"fullname\":\"James Stone\",\"email\":\"jStone@gmail.com\",\"username\":\"JHappy\",\"longitude\":968, \"userpassword\": \"password\", \"salt\": \"salt\"}";
+        //String test01 = "{"latitude":678,"fullName":"James Stone","email":"jStone@gmail.com","username":"JHappy","longitude":968, "usersPassword": "password"}
         //StringEntity value = new StringEntity(test_user);
         //JSONObject test_user = new JSONObject();
+        String test_user = "{\"latitude\":678,\"fullName\":\"James Stone\",\"email\":\"jStone@gmail.com\",\"username\":\"JHappy\",\"longitude\":968, \"usersPassword\": \"password\"}";
         Response msg = target.path("users").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test_user), Response.class);
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
