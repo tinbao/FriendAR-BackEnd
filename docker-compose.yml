@@ -1,11 +1,17 @@
-version: '2'
+version: '2.1'
 services:
   web:
     build: .
     ports:
       - "80:80"
     links:
-      - db 
+      - db
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost"]
+      interval: 10s
+      timeout: 10s
+      retries: 2
+    restart: always
   db:
     build: ./DB/
     restart: always
