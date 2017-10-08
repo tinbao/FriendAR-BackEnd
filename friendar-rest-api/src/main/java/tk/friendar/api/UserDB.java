@@ -23,12 +23,14 @@ public class UserDB implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "userid", nullable=false)
-    public int userID; //not null
+    public int userID;
 
-    public String fullName,
-            usersname, //not null
-            usersPassword, //not null
-            email; //not null
+    public String fullName;
+
+    @Column(unique = true, nullable = false)
+    public String usersname;
+    public String usersPassword;
+    public String email;
     private double latitude, longitude;
     private Timestamp locationLastUpdated;
 
@@ -135,13 +137,16 @@ public class UserDB implements Serializable {
         this.usersPassword = setUserPassword(usersPassword);
     }
 
-    //to be uncommented when deploying authentication
-
-    public boolean validPassword(String password) throws Exception{
-        return usersPassword.matches(checkPassword(password, salt));
+    public boolean validPassword(String password) {
+        try {
+            return usersPassword.matches(checkPassword(password, salt));
+        } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return false; // default to invalid password as a safeguard.
     }
 
-    private String checkPassword(String usersPassword, byte[] salt) throws Exception{
+    private String checkPassword(String usersPassword, byte[] salt) throws InvalidKeySpecException, NoSuchAlgorithmException {
         passChar = usersPassword.toCharArray();
         return String.valueOf(hashPas(passChar, salt, iterations, desiredKeyLen));
     }
@@ -155,16 +160,12 @@ public class UserDB implements Serializable {
         return String.valueOf(hashPas(passChar, salt, iterations, desiredKeyLen));
     }
 
-    private static char[] hashPas(char[] password, byte[] salt, int iterationNum, int keyLen)throws Exception{
-        try {
+    private static char[] hashPas(char[] password, byte[] salt, int iterationNum, int keyLen) throws NoSuchAlgorithmException, InvalidKeySpecException {
             SecretKeyFactory skf = SecretKeyFactory.getInstance( "PBKDF2WithHmacSHA512" );
             PBEKeySpec spec = new PBEKeySpec( password, salt, iterationNum, keyLen );
             SecretKey key = skf.generateSecret( spec );
             return Base64.encodeBase64String(key.getEncoded()).toCharArray();
 
-        } catch( NoSuchAlgorithmException | InvalidKeySpecException e) {
-            throw new RuntimeException( e );
-        }
     }
 
     JSONObject toJson(Boolean nextLevelDeep) throws JSONException {
