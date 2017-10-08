@@ -15,7 +15,9 @@ This project is built and run using `docker` and `docker-compose`.
 
 These can both be downloaded from [here](https://docker.com). 
 
-Once downloaded the projcect and be built and run by running `docker-compose up --build`.
+Once downloaded the project can be built and run by running `docker-compose up --build`.
+If you would like to run it with `db` access add: `-f docker-compose.yml -f docker-compose.dev.yml` ie `docker-compose -f docker-compose.yml -f docker-compose.dev.yml up --build`.
+If you would like to run just the database, this can be done by adding `db` ie `docker-compose -f docker-compose.yml -f docker-compose.dev.yml up db`.
 
 
 # Tests
