@@ -1,15 +1,18 @@
 package tk.friendar.api;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import javax.swing.text.html.parser.Entity;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;
 
+
 /**
- * Root resource (exposed at "places" path)
+ * Root resource (exposed at "users" path)
  */
 @Path("places")
 public class PlacesEndpoint {
@@ -22,16 +25,25 @@ public class PlacesEndpoint {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<PlaceDB> get() {
+    public String get() throws Exception{
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
-            return session.createCriteria(PlaceDB.class).list();
+
+            List<PlaceDB> placesDB = session.createCriteria(PlaceDB.class).list();
+            JSONObject json = new JSONObject();
+            for (PlaceDB place : placesDB) {
+                json.append("places", place);
+            }
+            //return json.toString();
+            return placesDB.toString();
+        } catch (Exception e) {
+            return e.toString();
         }
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public PlaceDB create(String placeJson) throws JSONException {
+    public String create(String placeJson) throws JSONException {
         JSONObject json = new JSONObject(placeJson);
         PlaceDB place = new PlaceDB();
 
@@ -47,7 +59,8 @@ public class PlacesEndpoint {
             session.beginTransaction();
             session.save(place);
             session.getTransaction().commit();
-            return place;
+            JSONObject returnJson = new JSONObject(place);
+            return returnJson.toString();
         }
 
     }
@@ -59,5 +72,49 @@ public class PlacesEndpoint {
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             return session.get(PlaceDB.class, Integer.valueOf(id));
         }
+    }
+
+    @Path("{id}")
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String delete(@PathParam("id") String id) {
+        // Do a call to a DAO Implementation that does a JDBC call to delete resource from  Mongo based on JSON
+        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+            try {
+                session.beginTransaction();
+                PlaceDB place = session.get(PlaceDB.class, Integer.valueOf(id));
+                session.delete(place);
+                session.getTransaction().commit();
+            } catch (HibernateException e) {
+                return e.toString();
+            }
+        }
+        return null;
+    }
+
+    @Path("{id}")
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String put(@PathParam("id") String id, String placeJson) {
+        // Do a call to a DAO Implementation that does a JDBC call to delete resource from  Mongo based on JSON
+        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+            try {
+                session.beginTransaction();
+                PlaceDB place = session.get(PlaceDB.class, Integer.valueOf(id));
+
+                JSONObject json = new JSONObject(placeJson);
+                place.setPlaceName(json.getString("placeName"));
+                place.setLatitude(json.getDouble("latitude"));
+                place.setLongitude(json.getDouble("longitude"));
+                session.update(place);
+                session.getTransaction().commit();
+                return json.toString();
+            } catch (Exception e) {
+                return e.toString();
+            }
+        }
+        //return null;
     }
 }

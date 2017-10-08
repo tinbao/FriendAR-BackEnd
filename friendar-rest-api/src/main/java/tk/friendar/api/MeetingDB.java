@@ -27,7 +27,7 @@ public class MeetingDB implements Serializable {
 
     @ManyToOne
     @JoinColumn(name = "placeid")
-    PlaceDB place;
+    private PlaceDB place;
 
     public int getMeetingID() {
         return meetingID;
