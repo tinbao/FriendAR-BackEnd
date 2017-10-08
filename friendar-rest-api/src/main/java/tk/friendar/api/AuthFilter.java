@@ -7,7 +7,6 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.Response;
-
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
@@ -22,8 +21,8 @@ public class AuthFilter implements ContainerRequestFilter {
         // Automatically allow certain requests.
         String method = containerRequest.getMethod();
         String path = containerRequest.getUriInfo().getPath(true);
-        if ((method.equals("GET") && path.equals("application.wadl")) ||
-                (method.equals("POST") && path.equals("users"))) {
+        if (method.equals("GET") && path.equals("application.wadl") ||
+                method.equals("POST") && path.equals("users")) {
             return;
         }
 
@@ -47,5 +46,4 @@ public class AuthFilter implements ContainerRequestFilter {
             }
         }
     }
-
 }
