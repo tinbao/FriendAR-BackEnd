@@ -62,18 +62,13 @@ public class PlaceDB implements Serializable {
 		this.meetings = meetings;
 	}
 
-    /*JSONObject toJson(Boolean nextLevelDeep) throws JSONException {
+    JSONObject toJson(Boolean nextLevelDeep) throws JSONException {
         JSONObject userJSON = new JSONObject();
         userJSON.put("id", this.getPlaceID());
         userJSON.put("placeName", this.getPlaceName());
         userJSON.put("latitude", this.getLatitude());
         userJSON.put("longitude", this.getLongitude());
-        if (nextLevelDeep) {
-            for (PlaceDB friend : this.getMeetings()) {
-                userJSON.append("meetings", friend.toJson(false));
-            }
-        }
         return userJSON;
 
-    }*/
+    }
 }
