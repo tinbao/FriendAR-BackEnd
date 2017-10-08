@@ -50,7 +50,7 @@ public class PlacesEndpointTest {
         System.out.println("MSG: " + responseMsg);
     }*/
 
-    /*@Test
+    @Test
     public void testPost() throws Exception {
         String test_place = "{\"latitude\":678,\"placeName\":\"James\",\"longitude\":968}";
         Response msg = target.path("places").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test_place), Response.class);
@@ -58,24 +58,24 @@ public class PlacesEndpointTest {
         assertNotNull(msg);
         assertNotNull(output);
         System.out.print("MSG: " + output);
-    }*/
-
-    @Test
-    public void testDelete() throws Exception {
-        javax.ws.rs.core.Response msg = target.path("places").path("9").request().accept(MediaType.APPLICATION_JSON).delete();
     }
 
-    //@Test
-    // public void testPut() throws Exception {
-
-    //String test01 = "{"latitude":678,"fullName":"James Stone","email":"jStone@gmail.com","username":"JHappy","longitude":968, "usersPassword": "password"}
-    //StringEntity value = new StringEntity(test_user);
-    //JSONObject test_user = new JSONObject();
-        /*String test_user = "{\"latitude\":678,\"fullName\":\"James\",\"email\":\"jStone@gmail.com\",\"username\":\"JHappy\",\"longitude\":968, \"usersPassword\": \"password\"}";
-        javax.ws.rs.core.Response msg = target.path("users").path("17").request().accept(MediaType.APPLICATION_JSON).put(Entity.json(test_user));
+    /*@Test
+    public void testDelete() throws Exception {
+        Response msg = target.path("places").path("9").request().accept(MediaType.APPLICATION_JSON).delete();
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
-        assertNotNull(output);*/
-    //System.out.print("MSG20    : " + output);
-    //}
+        assertNotNull(output);
+        System.out.print("MSG: " + output);
+    }*/
+
+    /*@Test
+    public void testPut() throws Exception {
+        String test_place = "{\"latitude\":678,\"placeName\":\"James\",\"longitude\":968}";
+        javax.ws.rs.core.Response msg = target.path("places").path("8").request().accept(MediaType.APPLICATION_JSON).put(Entity.json(test_place));
+        String output = msg.readEntity(String.class);
+        assertNotNull(msg);
+        assertNotNull(output);
+        System.out.print("MSG20    : " + output);
+    }*/
 }
