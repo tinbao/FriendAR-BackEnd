@@ -5,7 +5,6 @@ import org.hibernate.Session;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import javax.swing.text.html.parser.Entity;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.List;

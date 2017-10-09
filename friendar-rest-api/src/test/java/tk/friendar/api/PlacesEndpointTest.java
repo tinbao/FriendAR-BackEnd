@@ -7,10 +7,7 @@ import org.junit.Test;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -43,10 +40,10 @@ public class PlacesEndpointTest {
     /**
      * Test to see that the message "Got it!" is sent in the response.
      */
-    /*@Test
+    @Test
     public void testGetIt() {
         String responseMsg = target.path("places").request().get(String.class);
         assertNotNull(responseMsg);
-        System.out.println("MSG: " + responseMsg);
-    }*/
+        //System.out.println("MSG: " + responseMsg);
+    }
 }
