@@ -49,33 +49,4 @@ public class PlacesEndpointTest {
         assertNotNull(responseMsg);
         System.out.println("MSG: " + responseMsg);
     }*/
-
-    @Test
-    public void testPost() throws Exception {
-        String test_place = "{\"latitude\":678,\"placeName\":\"Jhappy\",\"longitude\":968}";
-        Response msg = target.path("places").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test_place), Response.class);
-        String output = msg.readEntity(String.class);
-        assertNotNull(msg);
-        assertNotNull(output);
-        System.out.print("MSG: " + output);
-    }
-
-    /*@Test
-    public void testDelete() throws Exception {
-        Response msg = target.path("places").path("9").request().accept(MediaType.APPLICATION_JSON).delete();
-        String output = msg.readEntity(String.class);
-        assertNotNull(msg);
-        assertNotNull(output);
-        System.out.print("MSG: " + output);
-    }*/
-
-    /*@Test
-    public void testPut() throws Exception {
-        String test_place = "{\"latitude\":678,\"placeName\":\"James\",\"longitude\":968}";
-        javax.ws.rs.core.Response msg = target.path("places").path("8").request().accept(MediaType.APPLICATION_JSON).put(Entity.json(test_place));
-        String output = msg.readEntity(String.class);
-        assertNotNull(msg);
-        assertNotNull(output);
-        System.out.print("MSG20    : " + output);
-    }*/
 }
