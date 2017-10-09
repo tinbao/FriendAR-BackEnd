@@ -1,6 +1,5 @@
 package tk.friendar.api;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,8 +50,12 @@ public class UsersEndpoint {
             user.setUsersname(json.getString("username"));
             user.setUsersPassword(json.getString("usersPassword"));
             user.setEmail(json.getString("email"));
-            user.setLatitude(json.getDouble("latitude"));
-            user.setLongitude(json.getDouble("longitude"));
+            if(json.has("latitude")) {
+                user.setLatitude(json.getDouble("latitude"));
+            }
+            if(json.has("longitude")) {
+                user.setLongitude(json.getDouble("longitude"));
+            }
 
             try (Session session = SessionFactorySingleton.getInstance().openSession()) {
                 session.beginTransaction();
@@ -79,55 +82,4 @@ public class UsersEndpoint {
             }
         }
     }
-
-    @Path("{id}")
-    @DELETE
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String delete(@PathParam("id") String id) {
-        // Do a call to a DAO Implementation that does a JDBC call to delete resource from  Mongo based on JSON
-        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
-            try {
-                session.beginTransaction();
-                UserDB user = session.get(UserDB.class, Integer.valueOf(id));
-                session.delete(user);
-                session.getTransaction().commit();
-            } catch (HibernateException e) {
-                return e.toString();
-            }
-        }
-        return null;
-    }
-
-    @Path("{id}")
-    @PUT
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public String put(@PathParam("id") String id, String userJson) {
-        // Do a call to a DAO Implementation that does a JDBC call to delete resource from  Mongo based on JSON
-        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
-            try {
-                session.beginTransaction();
-                UserDB user = session.get(UserDB.class, Integer.valueOf(id));
-
-                JSONObject json = new JSONObject(userJson);
-                user.setFullName(json.getString("fullName"));
-                user.setUsersname(json.getString("username"));
-                user.setUsersPassword(json.getString("usersPassword"));
-                user.setEmail(json.getString("email"));
-                user.setLatitude(json.getDouble("latitude"));
-                user.setLongitude(json.getDouble("longitude"));
-                session.update(user);
-                session.getTransaction().commit();
-                JSONObject returnJson = new JSONObject(user);
-                returnJson.remove("usersPassword");
-                return returnJson.toString();
-            } catch (Exception e) {
-                return e.toString();
-            }
-        }
-        //return null;
-    }
-
-
 }
