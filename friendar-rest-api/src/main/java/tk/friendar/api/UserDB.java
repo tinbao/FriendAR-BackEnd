@@ -152,7 +152,7 @@ public class UserDB implements Serializable {
 
     public boolean validPassword(String password) {
         try {
-            return usersPassword.matches(String.valueOf(hashPas(password.toCharArray(), this.salt.getBytes(), iterations, desiredKeyLen)));
+            return usersPassword.equals(String.valueOf(hashPas(password.toCharArray(), this.salt.getBytes(), iterations, desiredKeyLen)));
         } catch (InvalidKeySpecException | NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
