@@ -52,7 +52,7 @@ public class PlacesEndpointTest {
 
     @Test
     public void testPost() throws Exception {
-        String test_place = "{\"latitude\":678,\"placeName\":\"James\",\"longitude\":968}";
+        String test_place = "{\"latitude\":678,\"placeName\":\"Jhappy\",\"longitude\":968}";
         Response msg = target.path("places").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test_place), Response.class);
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
