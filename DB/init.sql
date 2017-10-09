@@ -5,16 +5,16 @@ CREATE TABLE IF NOT EXISTS Users(
     usersPassword TEXT NOT NULL,
     salt TEXT NOT NULL,
     email TEXT NOT NULL,
-    latitude DECIMAL,
-    longitude DECIMAL,
+    latitude DECIMAL DEFAULT NULL,
+    longitude DECIMAL DEFAULT NULL,
     locationLastUpdated TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS Places(
     placeID SERIAL PRIMARY KEY NOT NULL,
     placeName TEXT,
-    latitude DECIMAL,
-    longitude DECIMAL
+    latitude DECIMAL NOT NULL,
+    longitude DECIMAL NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS Meetings(
