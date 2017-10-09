@@ -43,7 +43,11 @@ public class UserDB implements Serializable {
     public Collection<MeetingUserDB> meetings = new ArrayList<MeetingUserDB>();
     @OneToMany(targetEntity = MessageDB.class, mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public Collection<MessageDB> messages = new ArrayList<MessageDB>();
-    private double latitude, longitude;
+    @Column(nullable = true)
+    private double longitude;
+    @Column(nullable = true)
+    private double latitude;
+    @Column(nullable = true)
     private Timestamp locationLastUpdated;
     private String salt;
 
