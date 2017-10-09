@@ -22,13 +22,6 @@ public class PlacesEndpointTest {
         server = Main.startServer();
         // create the client
         Client c = ClientBuilder.newClient();
-
-        // uncomment the following line if you want to enable
-        // support for JSON in the client (you also have to uncomment
-        // dependency on jersey-media-json module in pom.xml and Main.startServer())
-        // --
-        // c.configuration().enable(new org.glassfish.jersey.media.json.JsonJaxbFeature());
-
         target = c.target(Main.BASE_URI);
     }
 
@@ -44,6 +37,5 @@ public class PlacesEndpointTest {
     public void testGetIt() {
         String responseMsg = target.path("places").request().get(String.class);
         assertNotNull(responseMsg);
-        //System.out.println("MSG: " + responseMsg);
     }
 }

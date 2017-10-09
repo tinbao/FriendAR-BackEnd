@@ -47,7 +47,7 @@ public class ChatEndpoint {
             message.setMeeting(json.getInt("meetingID"));
             message.setUser(json.getInt("userID"));
         } catch (Exception e) {
-            return(e.toString());
+            return e.toString();
         }
 
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
