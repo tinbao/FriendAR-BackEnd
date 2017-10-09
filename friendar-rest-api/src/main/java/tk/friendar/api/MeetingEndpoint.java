@@ -23,16 +23,23 @@ public class MeetingEndpoint {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<MeetingDB> get() {
+    public String get() {
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
-            return session.createCriteria(MeetingDB.class).list();
+            List<MeetingDB> meetings = session.createCriteria(MeetingDB.class).list();
+            JSONObject json = new JSONObject();
+            for (MeetingDB meeting : meetings) {
+                json.append("meetings", meeting.toJson(true));
+            }
+            return json.toString();
+        } catch (JSONException e) {
+            return e.toString();
         }
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public MeetingDB create(String meetingJson) throws JSONException {
+    public String create(String meetingJson) throws JSONException {
         JSONObject json = new JSONObject(meetingJson);
         MeetingDB meeting = new MeetingDB();
 
@@ -48,7 +55,7 @@ public class MeetingEndpoint {
             session.beginTransaction();
             session.save(meeting);
             session.getTransaction().commit();
-            return meeting;
+            return meeting.toJson(true).toString();
         }
 
     }
@@ -56,9 +63,11 @@ public class MeetingEndpoint {
     @Path("{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public MeetingDB get(@PathParam("id") String id) {
+    public String get(@PathParam("id") String id) {
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
-            return session.get(MeetingDB.class, Integer.valueOf(id));
+            return session.get(MeetingDB.class, Integer.valueOf(id)).toJson(true).toString();
+        } catch (JSONException e) {
+            return e.toString();
         }
     }
 }

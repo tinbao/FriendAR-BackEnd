@@ -22,16 +22,23 @@ public class ChatEndpoint {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public List<MessageDB> get() {
+    public String get() {
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
-            return session.createCriteria(MessageDB.class).list();
+            List<MessageDB> messages = session.createCriteria(MessageDB.class).list();
+            JSONObject json = new JSONObject();
+            for (MessageDB message : messages) {
+                json.append("messages", message.toJson(true));
+            }
+            return json.toString();
+        } catch (JSONException e) {
+            return e.toString();
         }
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public MessageDB create(String messageJson) throws JSONException {
+    public String create(String messageJson) throws JSONException {
         JSONObject json = new JSONObject(messageJson);
         MessageDB message = new MessageDB();
 
@@ -40,14 +47,15 @@ public class ChatEndpoint {
             message.setMeeting(json.getInt("meetingID"));
             message.setUser(json.getInt("userID"));
         } catch (Exception e) {
-            System.out.print(e.toString());
+            return(e.toString());
         }
 
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             session.beginTransaction();
             session.save(message);
             session.getTransaction().commit();
-            return message;
+            JSONObject messageJSON = new JSONObject(message);
+            return messageJson.toString();
         }
 
     }
@@ -55,9 +63,11 @@ public class ChatEndpoint {
     @Path("{id}")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public MessageDB get(@PathParam("id") String id) {
+    public String get(@PathParam("id") String id) {
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
-            return session.get(MessageDB.class, Integer.valueOf(id));
+            return session.get(MessageDB.class, Integer.valueOf(id)).toJson(true).toString();
+        } catch (JSONException e) {
+            return e.toString();
         }
     }
 }

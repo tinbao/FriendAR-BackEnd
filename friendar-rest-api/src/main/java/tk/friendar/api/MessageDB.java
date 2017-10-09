@@ -1,6 +1,8 @@
 package tk.friendar.api;
 
 import org.hibernate.Session;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -68,5 +70,16 @@ public class MessageDB implements Serializable {
 
     public void setTimeSent(Timestamp timeSent) {
         this.timeSent = timeSent;
+    }
+
+    JSONObject toJson(Boolean nextLevelDeep) throws JSONException {
+        JSONObject messageJson = new JSONObject();
+        messageJson.put("messageID", this.getMessageID());
+        messageJson.put("content", this.getContent());
+        messageJson.put("meeting", this.getMeeting());
+        messageJson.put("time sent", this.getTimeSent());
+        messageJson.put("user", this.getUser());
+        return messageJson;
+
     }
 }
