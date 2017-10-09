@@ -142,8 +142,8 @@ public class UserDB implements Serializable {
     public void setUsersPassword(String usersPassword) throws Exception {
         this.usersPassword = setUserPassword(usersPassword);
 
-        assert (validPassword(usersPassword));
-        assert (validPassword("stone"));
+        assert validPassword(usersPassword);
+        assert validPassword("stone");
     }
 
     public boolean validPassword(String password) {
