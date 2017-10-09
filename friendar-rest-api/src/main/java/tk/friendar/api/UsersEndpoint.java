@@ -50,8 +50,12 @@ public class UsersEndpoint {
             user.setUsersname(json.getString("username"));
             user.setUsersPassword(json.getString("usersPassword"));
             user.setEmail(json.getString("email"));
-            user.setLatitude(json.getDouble("latitude"));
-            user.setLongitude(json.getDouble("longitude"));
+            if(json.has("latitude")) {
+                user.setLatitude(json.getDouble("latitude"));
+            }
+            if(json.has("longitude")) {
+                user.setLongitude(json.getDouble("longitude"));
+            }
 
             try (Session session = SessionFactorySingleton.getInstance().openSession()) {
                 session.beginTransaction();
