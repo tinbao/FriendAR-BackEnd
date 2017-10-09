@@ -54,8 +54,8 @@ public class ChatEndpoint {
             session.beginTransaction();
             session.save(message);
             session.getTransaction().commit();
-            JSONObject messageJSON = new JSONObject(message);
-            return messageJson.toString();
+            //JSONObject messageJSON = new JSONObject(message);
+            return message.toJson(true).toString();
         }
 
     }
