@@ -86,6 +86,13 @@ public class UsersEndpointTest {
         assertNotNull(output);
         System.out.println("MSG_02: " + output);
 
+        String test_05 = "{\"username\": \"Luca Harris\", \"email\": \"asf@gsddf.com\", \"usersPassword\": \"stone\",\"fullName\":\'Simon\', \"latitude\": 123, \"longitude\": 123}";
+        msg = target.path("users").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test_05), Response.class);
+        output = msg.readEntity(String.class);
+        assertNotNull(msg);
+        assertNotNull(output);
+        System.out.println("MSG_05: " + output);
+
         //A user with incomplete data
         String test_03 = "{\"username\": \"Tin\", \"usersPassword\": \"Bao\",\"fullName\":\'ashkan Habibi\'}";
         msg = target.path("users").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test_03), Response.class);

@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Root resource (exposed at "chats" path)
  */
-@Path("chats")
+@Path("messages")
 public class ChatEndpoint {
 
     /**
