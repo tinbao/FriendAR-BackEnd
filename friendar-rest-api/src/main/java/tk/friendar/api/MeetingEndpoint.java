@@ -44,7 +44,7 @@ public class MeetingEndpoint {
         MeetingDB meeting = new MeetingDB();
 
         try {
-            meeting.setMeetingName(json.getString("Meeting"));
+            meeting.setMeetingName(json.getString("meetingName"));
             meeting.setPlace(json.getInt("placeID"));
             meeting.setTimeDate(Timestamp.valueOf(json.getString("time")));
         } catch (Exception e) {

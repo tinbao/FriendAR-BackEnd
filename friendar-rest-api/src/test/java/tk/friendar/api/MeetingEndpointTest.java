@@ -13,7 +13,6 @@ import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.sql.Timestamp;
 
 import static org.junit.Assert.assertNotNull;
 
@@ -71,7 +70,6 @@ public class MeetingEndpointTest {
     public void testPost() throws Exception {
         Response msg;
         String output;
-        Timestamp time = new Timestamp();
         //Complete data
         String test_01 = "{\"meetingName\": 'MCG meeting', \"placeID\": \"2\", \"time\": \"2016-02-03 00:00:00.0\"\"}";
         msg = target.path("meetings").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test_01), Response.class);

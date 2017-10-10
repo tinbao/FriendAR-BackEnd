@@ -82,18 +82,17 @@ public class PlacesEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public String delete(@PathParam("id") String id) {
-        // Do a call to a DAO Implementation that does a JDBC call to delete resource from  Mongo based on JSON
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             try {
                 session.beginTransaction();
                 PlaceDB user = session.get(PlaceDB.class, Integer.valueOf(id));
                 session.delete(user);
                 session.getTransaction().commit();
-            } catch (HibernateException e) {
+                return user.toJson(true).toString();
+            } catch (HibernateException | JSONException e) {
                 return e.toString();
             }
         }
-        return null;
     }
 
 
