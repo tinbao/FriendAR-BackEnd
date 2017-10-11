@@ -7,7 +7,7 @@ mvn(){
 
 if [ "$CI" == "true" ]
 then
-    pg_ctl stop -w
+    sudo kill -9 $(sudo lsof -t -i:5432)
 fi
 
 docker-compose down # ensure we are fresh and clean.
