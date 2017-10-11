@@ -14,9 +14,9 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -48,7 +48,8 @@ public class UserDB implements Serializable {
     @Column(nullable = true)
     private double latitude;
     @Column(nullable = true)
-    private Timestamp locationLastUpdated;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date locationLastUpdated;
     private String salt;
 
     private static char[] hashPas(char[] password, byte[] salt, int iterationNum, int keyLen) throws NoSuchAlgorithmException, InvalidKeySpecException {
@@ -103,11 +104,11 @@ public class UserDB implements Serializable {
         this.longitude = longitude;
     }
 
-    public Timestamp getLocationLastUpdated() {
+    public Date getLocationLastUpdated() {
         return locationLastUpdated;
     }
 
-    public void setLocationLastUpdated(Timestamp locationLastUpdated) {
+    public void setLocationLastUpdated(Date locationLastUpdated) {
         this.locationLastUpdated = locationLastUpdated;
     }
 
