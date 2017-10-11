@@ -1,5 +1,8 @@
 package tk.friendar.api;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -45,5 +48,14 @@ public class FriendshipDB implements Serializable {
 
     public void setUserB_ID(UserDB userB_ID) {
         this.userB_ID = userB_ID;
+    }
+
+    JSONObject toJson() throws JSONException {
+        JSONObject friendshipJSON = new JSONObject();
+        friendshipJSON.put("id", this.getFriendshipID());
+        friendshipJSON.put("userA_ID", this.getUserA_ID());
+        friendshipJSON.put("userB_ID", this.getUserB_ID());
+        return friendshipJSON;
+
     }
 }
