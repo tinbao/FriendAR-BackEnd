@@ -55,15 +55,34 @@ public class UsersEndpointTest {
 
     public void testGetParticularUser(){
         //getting a specific user in form of a string
-        String responseMsg = target.path("users").path("1").request().get(String.class);
-        assertNotNull(responseMsg);
+        String user = target.path("users").path("1").request().get(String.class);
+        assertNotNull(user);
+        assert (user.toLowerCase().indexOf("fullName".toLowerCase()) != -1);
 
+    }
+
+    public void testGetParticularUser_empty(){
+        //getting a specific user that doesn't exist
+        String user = target.path("users").path("30").request().get(String.class);
+        assertNotNull(user);
     }
 
     @Test
     public void testPOSTCompleteUser() throws Exception {
-        //Complete data
+        //Complete data with lat or long
         String test = "{\"username\": \"matt@gmail.com\", \"email\": \"matt@gmail.com\", \"usersPassword\": \"habibi\",\"fullName\":\"Matt Habibi\", \"latitude\": 120, \"longitude\": 120}";
+        Response msg = target.path("users").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test), Response.class);
+        String output = msg.readEntity(String.class);
+        assertNotNull(msg);
+        assertNotNull(output);
+        assert (output.toLowerCase().indexOf("username: ".toLowerCase()) != -1);
+
+    }
+
+    @Test
+    public void testPOSTCompleteUser_NoLatLong() throws Exception {
+        //Complete data without lat or long
+        String test = "{\"username\": \"tin@gmail.com\", \"email\": \"matt@gmail.com\", \"usersPassword\": \"bao\",\"fullName\":\"Tin Bao\"}";
         Response msg = target.path("users").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test), Response.class);
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
@@ -83,12 +102,13 @@ public class UsersEndpointTest {
     }
 
     @Test
-    public void testPOSTwithLatnLng() throws Exception {
-        String test = "{\"username\": \"Luca Harris\", \"email\": \"asf@gsddf.com\", \"usersPassword\": \"stone\",\"fullName\":\'Simon\', \"latitude\": 123, \"longitude\": 123}";
+    public void testPOSTwithoutPassword() throws Exception {
+        String test = "{\"username\": \"Luca Harris\", \"email\": \"asf@gsddf.com\",\"fullName\":\'Simon\', \"latitude\": 123, \"longitude\": 123}";
         Response msg = target.path("users").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test), Response.class);
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
+        assert (output.toLowerCase().indexOf("username: ".toLowerCase()) != -1);
     }
 
     @Test
@@ -121,6 +141,7 @@ public class UsersEndpointTest {
         output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
+        assert (output.toLowerCase().indexOf("username: ".toLowerCase()) != -1);
     }
 
     @Test
@@ -129,6 +150,7 @@ public class UsersEndpointTest {
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
+        assert (output.toLowerCase().indexOf("username: ".toLowerCase()) != -1);
     }
 
     @Test
@@ -155,9 +177,21 @@ public class UsersEndpointTest {
     public void testPutUpdateAllFields() throws Exception {
         //updating a non-existing entry
         String test = "{\"username\": \"james\", \"email\": \"asf@gsddf.com\", \"usersPassword\": \"stone\",\"fullName\":\'Simon\', \"latitude\": 123, \"longitude\": 123}";
-        Response msg = target.path("users").path("15").request().accept(MediaType.APPLICATION_JSON).put(Entity.json(test));
+        Response msg = target.path("users").path("4").request().accept(MediaType.APPLICATION_JSON).put(Entity.json(test));
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
+        assert (output.toLowerCase().indexOf("username: ".toLowerCase()) != -1);
+    }
+
+    @Test
+    public void testPutUpdateAllFields_InvalidUser() throws Exception {
+        //updating a non-existing entry
+        String test = "{\"username\": \"james\", \"email\": \"asf@gsddf.com\", \"usersPassword\": \"stone\",\"fullName\":\'Simon\', \"latitude\": 123, \"longitude\": 123}";
+        Response msg = target.path("users").path("20").request().accept(MediaType.APPLICATION_JSON).put(Entity.json(test));
+        String output = msg.readEntity(String.class);
+        assertNotNull(msg);
+        assertNotNull(output);
+        assert (output.toLowerCase().indexOf("username: ".toLowerCase()) != -1);
     }
 }
