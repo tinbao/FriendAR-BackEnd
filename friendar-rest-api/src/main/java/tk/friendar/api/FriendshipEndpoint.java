@@ -2,14 +2,12 @@ package tk.friendar.api;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.Session;
 import org.hibernate.criterion.Restrictions;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.List;
 
 
 @Path("friendships")
