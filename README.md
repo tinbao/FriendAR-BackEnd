@@ -9,9 +9,12 @@ For [COMP30022](https://handbook.unimelb.edu.au/2017/subjects/comp30022/)
 [![Build Status](https://travis-ci.com/COMP30022/Nitrogen-BackEnd.svg?token=p8yLcFuVj6kMWC4pZF7s&branch=master)](https://travis-ci.com/COMP30022/Nitrogen-BackEnd)
 
 
-# Install
+# Pre-requirements and Install
 
 This project is built and run using `docker` and `docker-compose`.
+
+Docker contains and downloads all the pre-requirements. Once docker is installed, please follow
+the instructions below to run the backend.
 
 These can both be downloaded from [here](https://docker.com). 
 
@@ -31,6 +34,9 @@ This repo uses [git flow](http://nvie.com/posts/a-successful-git-branching-model
 
 This means, all new features are done on a new branch and then when ready pull requested into `master`. 
 Note: for a branch to be successfully merged into master. It has to pass a code review and the tests on travis.
+
+# Deployment instructions
+For deployment, it is deployed through continuous deployment Travis once they are commited to GitHub, pass the tests, and are merged with master.
 
 # License
 
