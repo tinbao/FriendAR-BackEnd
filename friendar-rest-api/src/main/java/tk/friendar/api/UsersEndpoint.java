@@ -6,7 +6,6 @@ import org.json.JSONObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
