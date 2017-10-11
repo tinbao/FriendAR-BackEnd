@@ -30,7 +30,7 @@ public class UsersEndpoint {
             List<UserDB> usersDB = session.createCriteria(UserDB.class).list();
             JSONObject json = new JSONObject();
             for (UserDB user : usersDB) {
-                json.append("users", user.toJson(true));
+                json.append("users: ", user.toJson(true));
             }
 
             return json.toString();
