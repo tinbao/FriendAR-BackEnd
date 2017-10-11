@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,16 +46,23 @@ public class UsersEndpoint {
 
             JSONObject json = new JSONObject(userJson);
             UserDB user = new UserDB();
+            boolean update = false;
 
             user.setFullName(json.getString("fullName"));
             user.setUsersname(json.getString("username"));
             user.setUsersPassword(json.getString("usersPassword"));
             user.setEmail(json.getString("email"));
-            if(json.has("latitude")) {
+            if (json.has("latitude")) {
                 user.setLatitude(json.getDouble("latitude"));
+                update = true;
             }
-            if(json.has("longitude")) {
+            if (json.has("longitude")) {
                 user.setLongitude(json.getDouble("longitude"));
+                update = true;
+            }
+
+            if (update) {
+                user.setLocationLastUpdated(new Date());
             }
 
             try (Session session = SessionFactorySingleton.getInstance().openSession()) {
