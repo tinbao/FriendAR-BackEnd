@@ -7,7 +7,9 @@ mvn(){
 
 if [ "$CI" == "true" ]
 then
+    echo "CI only mode"
     sudo kill -9 $(sudo lsof -t -i:5432)
+    echo "end CI only mode"
 fi
 
 docker-compose down # ensure we are fresh and clean.
