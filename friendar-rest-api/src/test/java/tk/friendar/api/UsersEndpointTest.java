@@ -28,7 +28,7 @@ public class UsersEndpointTest {
         // create the client
         HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder()
                 .nonPreemptive()
-                .credentials("habibia", "habibia")
+                .credentials("matt@gmail.com", "habibi")
                 .build();
 
         ClientConfig clientConfig = new ClientConfig();
@@ -53,29 +53,35 @@ public class UsersEndpointTest {
         assert (allUsers.toLowerCase().indexOf("users: ".toLowerCase()) != -1);
     }
 
+    @Test
     public void testGetParticularUser(){
         //getting a specific user in form of a string
         String user = target.path("users").path("1").request().get(String.class);
         assertNotNull(user);
         assert (user.toLowerCase().indexOf("fullName".toLowerCase()) != -1);
-
     }
 
+    @Test
     public void testGetParticularUser_empty(){
         //getting a specific user that doesn't exist
-        String user = target.path("users").path("30").request().get(String.class);
-        assertNotNull(user);
+        try{
+            String user = target.path("users").path("30").request().get(String.class);
+            assertNotNull(user);
+        } catch (Exception e){
+            System.out.println(e.toString());
+        }
+
     }
 
     @Test
     public void testPOSTCompleteUser() throws Exception {
         //Complete data with lat or long
-        String test = "{\"username\": \"matt@gmail.com\", \"email\": \"matt@gmail.com\", \"usersPassword\": \"habibi\",\"fullName\":\"Matt Habibi\", \"latitude\": 120, \"longitude\": 120}";
+        String test = "{\"username\": \"Luca@gmail.com\", \"email\": \"luca@gmail.com\", \"usersPassword\": \"harris\",\"fullName\":\"Luca Harris\", \"latitude\": 120, \"longitude\": 120}";
         Response msg = target.path("users").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test), Response.class);
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
-        assert (output.toLowerCase().indexOf("username: ".toLowerCase()) != -1);
+        assert (output.toLowerCase().indexOf("username".toLowerCase()) != -1);
 
     }
 
@@ -87,7 +93,7 @@ public class UsersEndpointTest {
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
-        assert (output.toLowerCase().indexOf("username: ".toLowerCase()) != -1);
+        assert (output.toLowerCase().indexOf("username".toLowerCase()) != -1);
 
     }
 
@@ -108,7 +114,7 @@ public class UsersEndpointTest {
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
-        assert (output.toLowerCase().indexOf("username: ".toLowerCase()) != -1);
+        assert (output.toLowerCase().indexOf("org.json.JSONException: JSONObject[\"usersPassword\"] not found.".toLowerCase()) != -1);
     }
 
     @Test
@@ -119,7 +125,7 @@ public class UsersEndpointTest {
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
-        assert output.equals("<html><head><title>Grizzly 2.4.0</title><style><!--div.header {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#003300;font-size:22px;-moz-border-radius-topleft: 10px;border-top-left-radius: 10px;-moz-border-radius-topright: 10px;border-top-right-radius: 10px;padding-left: 5px}div.body {font-family:Tahoma,Arial,sans-serif;color:black;background-color:#FFFFCC;font-size:16px;padding-top:10px;padding-bottom:10px;padding-left:10px}div.footer {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#666633;font-size:14px;-moz-border-radius-bottomleft: 10px;border-bottom-left-radius: 10px;-moz-border-radius-bottomright: 10px;border-bottom-right-radius: 10px;padding-left: 5px}BODY {font-family:Tahoma,Arial,sans-serif;color:black;background-color:white;}B {font-family:Tahoma,Arial,sans-serif;color:black;}A {color : black;}HR {color : #999966;}--></style> </head><body><div class=\"header\">Request failed.</div><div class=\"body\">Request failed.</div><div class=\"footer\">Grizzly 2.4.0</div></body></html>");
+        assert output.equals("org.json.JSONException: JSONObject[\"email\"] not found.");
     }
 
     @Test
@@ -129,7 +135,7 @@ public class UsersEndpointTest {
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
-        assert output.equals("<html><head><title>Grizzly 2.4.0</title><style><!--div.header {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#003300;font-size:22px;-moz-border-radius-topleft: 10px;border-top-left-radius: 10px;-moz-border-radius-topright: 10px;border-top-right-radius: 10px;padding-left: 5px}div.body {font-family:Tahoma,Arial,sans-serif;color:black;background-color:#FFFFCC;font-size:16px;padding-top:10px;padding-bottom:10px;padding-left:10px}div.footer {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#666633;font-size:14px;-moz-border-radius-bottomleft: 10px;border-bottom-left-radius: 10px;-moz-border-radius-bottomright: 10px;border-bottom-right-radius: 10px;padding-left: 5px}BODY {font-family:Tahoma,Arial,sans-serif;color:black;background-color:white;}B {font-family:Tahoma,Arial,sans-serif;color:black;}A {color : black;}HR {color : #999966;}--></style> </head><body><div class=\"header\">Request failed.</div><div class=\"body\">Request failed.</div><div class=\"footer\">Grizzly 2.4.0</div></body></html>");
+        assert output.equals("org.json.JSONException: JSONObject[\"email\"] not found.");
     }
 
     @Test
@@ -137,16 +143,17 @@ public class UsersEndpointTest {
         Response msg;
         String output;
         //Deleting an existing place
-        msg = target.path("users").path("2").request().accept(MediaType.APPLICATION_JSON).delete();
+        msg = target.path("users").path("1").request().accept(MediaType.APPLICATION_JSON).delete();
         output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
+        System.out.println("MSG: " + output);
         assert (output.toLowerCase().indexOf("username: ".toLowerCase()) != -1);
     }
 
     @Test
     public void testAnotherValidDelete() throws Exception {
-        Response msg = target.path("users").path("4").request().accept(MediaType.APPLICATION_JSON).delete();
+        Response msg = target.path("users").path("2").request().accept(MediaType.APPLICATION_JSON).delete();
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);

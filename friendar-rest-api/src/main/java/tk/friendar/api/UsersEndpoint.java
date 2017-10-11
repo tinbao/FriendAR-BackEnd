@@ -50,7 +50,7 @@ public class UsersEndpoint {
             boolean update = false;
 
             user.setFullName(json.getString("fullName"));
-            user.setUsersname(json.getString("username"));
+            user.setUsername(json.getString("username"));
             user.setUsersPassword(json.getString("usersPassword"));
             user.setEmail(json.getString("email"));
             if (json.has("latitude")) {
@@ -75,7 +75,7 @@ public class UsersEndpoint {
                 return returnJson.toString();
             }
         } catch (Exception e) {
-            throw new JSONException(e);
+            return e.toString();
         }
     }
 
@@ -86,7 +86,7 @@ public class UsersEndpoint {
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             try {
                 return session.get(UserDB.class, Integer.valueOf(id)).toJson(true).toString();
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 return e.toString();
             }
         }
@@ -123,7 +123,7 @@ public class UsersEndpoint {
 
                 JSONObject json = new JSONObject(userJson);
                 user.setFullName(json.getString("fullName"));
-                user.setUsersname(json.getString("username"));
+                user.setUsername(json.getString("username"));
                 user.setUsersPassword(json.getString("usersPassword"));
                 user.setEmail(json.getString("email"));
                 user.setLatitude(json.getDouble("latitude"));

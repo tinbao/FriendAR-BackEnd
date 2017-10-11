@@ -33,7 +33,7 @@ public class UserDB implements Serializable {
     public int userID;
     public String fullName;
     @Column(unique = true, nullable = false)
-    public String usersname;
+    public String username;
     public String usersPassword;
     public String email;
     @OneToMany(targetEntity = FriendshipDB.class, mappedBy = "userA_ID", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -72,12 +72,12 @@ public class UserDB implements Serializable {
         this.fullName = fullName;
     }
 
-    public String getUsersname() {
-        return usersname;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUsersname(String userName) {
-        this.usersname = userName;
+    public void setUsername(String userName) {
+        this.username = userName;
     }
 
     public String getEmail() {
@@ -148,7 +148,6 @@ public class UserDB implements Serializable {
         this.usersPassword = setUserPassword(usersPassword);
 
         assert validPassword(usersPassword);
-        assert validPassword("stone");
     }
 
     public boolean validPassword(String password) {
@@ -172,7 +171,7 @@ public class UserDB implements Serializable {
     JSONObject toJson(Boolean nextLevelDeep) throws JSONException {
         JSONObject userJSON = new JSONObject();
         userJSON.put("id", this.getUserID());
-        userJSON.put("username", this.getUsersname());
+        userJSON.put("username", this.getUsername());
         userJSON.put("fullName", this.getFullName());
         userJSON.put("email", this.getEmail());
         userJSON.put("latitude", this.getLatitude());
