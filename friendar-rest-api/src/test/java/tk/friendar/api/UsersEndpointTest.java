@@ -46,29 +46,35 @@ public class UsersEndpointTest {
      * Test to see that the message "Got it!" is sent in the response.
      */
     @Test
-    public void testGetIt() {
-        //getting entire list of places in form of a string
-        String responseMsg = target.path("users").request().get(String.class);
+    public void testGetAllUsers() {
+        //getting entire list of users in form of a string
+        String allUsers = target.path("users").request().get(String.class);
+        assertNotNull(allUsers);
+        assert (allUsers.toLowerCase().indexOf("users: ".toLowerCase()) != -1);
+    }
+
+    public void testGetParticularUser(){
+        //getting a specific user in form of a string
+        String responseMsg = target.path("users").path("1").request().get(String.class);
         assertNotNull(responseMsg);
 
-        //getting a specific entry list of places in form of a string
-        responseMsg = target.path("users").path("1").request().get(String.class);
-        assertNotNull(responseMsg);
     }
 
     @Test
-    public void testPOST() throws Exception {
+    public void testPOSTCompleteUser() throws Exception {
         //Complete data
-        String test = "{\"username\": \"james\", \"email\": \"asf@gsddf.com\", \"usersPassword\": \"stone\",\"fullName\":\'James Stone\'}";
+        String test = "{\"username\": \"matt@gmail.com\", \"email\": \"matt@gmail.com\", \"usersPassword\": \"habibi\",\"fullName\":\"Matt Habibi\", \"latitude\": 120, \"longitude\": 120}";
         Response msg = target.path("users").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test), Response.class);
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
+        assert (output.toLowerCase().indexOf("username: ".toLowerCase()) != -1);
+
     }
 
     @Test
     public void testAnotherPOST() throws Exception {
-        String test = "{\"username\": \"james\", \"email\": \"asf@gsddf.com\", \"usersPassword\": \"stone\",\"fullName\":\'Simon\'}";
+        String test = "{\"username\": \"james\", \"email\": \"asf@gsddf.com\", \"usersPassword\": \"stone\",\"fullName\":\"Simon\"}";
         Response msg = target.path("users").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test), Response.class);
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
