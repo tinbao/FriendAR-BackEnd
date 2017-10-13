@@ -50,12 +50,7 @@ public class ChatEndpointTest {
         //getting entire list of places in form of a string
         String responseMsg = target.path("messages").request().get(String.class);
         assertNotNull(responseMsg);
-        if(responseMsg.toLowerCase().indexOf("messages") != -1){
-            System.out.println("Successfully connected to Database, here's a list of all messages: ");
-        } else if (responseMsg.equalsIgnoreCase("[]")){
-            System.out.println("No messages are recorded.");
-        }
-        System.out.println(responseMsg);
+        assert responseMsg.toLowerCase().contains("messages");
 
         //getting a specific entry list of places in form of a string
         responseMsg = target.path("messages").path("1").request().get(String.class);

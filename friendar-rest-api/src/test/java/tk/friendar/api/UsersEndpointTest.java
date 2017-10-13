@@ -50,7 +50,7 @@ public class UsersEndpointTest {
         //getting entire list of users in form of a string
         String allUsers = target.path("users").request().get(String.class);
         assertNotNull(allUsers);
-        assert (allUsers.toLowerCase().indexOf("users: ".toLowerCase()) != -1);
+        assert allUsers.toLowerCase().contains("users: ".toLowerCase());
     }
 
     @Test
@@ -58,7 +58,7 @@ public class UsersEndpointTest {
         //getting a specific user in form of a string
         String user = target.path("users").path("1").request().get(String.class);
         assertNotNull(user);
-        assert (user.toLowerCase().indexOf("fullName".toLowerCase()) != -1);
+        assert user.toLowerCase().contains("fullName".toLowerCase());
     }
 
     @Test
