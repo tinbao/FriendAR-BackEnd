@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS Users(
     UserID  SERIAL PRIMARY KEY NOT NULL,
     fullName TEXT,
-    usersName TEXT NOT NULL,
+    username TEXT NOT NULL,
     usersPassword TEXT NOT NULL,
     salt TEXT NOT NULL,
     email TEXT NOT NULL,
