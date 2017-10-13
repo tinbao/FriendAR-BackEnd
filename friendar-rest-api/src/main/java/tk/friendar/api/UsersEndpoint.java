@@ -137,6 +137,5 @@ public class UsersEndpoint {
                 return e.toString();
             }
         }
-        //return null;
     }
 }
