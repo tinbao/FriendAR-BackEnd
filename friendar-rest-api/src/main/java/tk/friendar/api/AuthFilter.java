@@ -39,7 +39,7 @@ public class AuthFilter implements ContainerRequestFilter {
 
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             String username = userColonPass[0];
-            UserDB user = (UserDB) session.createCriteria(UserDB.class).add(Restrictions.eq("usersname", username)).uniqueResult();
+            UserDB user = (UserDB) session.createCriteria(UserDB.class).add(Restrictions.eq("username", username)).uniqueResult();
             if (!user.validPassword(userColonPass[1])) {
                 containerRequest.abortWith(UnAuth);
                 return;
