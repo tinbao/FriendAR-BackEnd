@@ -118,16 +118,37 @@ public class UsersEndpoint {
         // Do a call to a DAO Implementation that does a JDBC call to delete resource from  Mongo based on JSON
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             try {
+                Boolean update = false;
                 session.beginTransaction();
                 UserDB user = session.get(UserDB.class, Integer.valueOf(id));
 
                 JSONObject json = new JSONObject(userJson);
-                user.setFullName(json.getString("fullName"));
-                user.setUsername(json.getString("username"));
-                user.setUsersPassword(json.getString("usersPassword"));
-                user.setEmail(json.getString("email"));
-                user.setLatitude(json.getDouble("latitude"));
-                user.setLongitude(json.getDouble("longitude"));
+                if(json.has("fullName")){
+                    user.setFullName(json.getString("fullName"));
+                }
+                if(json.has("username")){
+                    user.setUsername(json.getString("username"));
+                }
+                if(json.has("usersPassword")){
+                    user.setUsersPassword(json.getString("usersPassword"));
+                }
+                if(json.has("email")){
+                    user.setEmail(json.getString("email"));
+                }
+
+                if (json.has("latitude")) {
+                    user.setLatitude(json.getDouble("latitude"));
+                    update = true;
+                }
+                if (json.has("longitude")) {
+                    user.setLongitude(json.getDouble("longitude"));
+                    update = true;
+                }
+
+                if (update) {
+                    user.setLocationLastUpdated(new Date());
+                }
+
                 session.update(user);
                 session.getTransaction().commit();
                 JSONObject returnJson = new JSONObject(user);
