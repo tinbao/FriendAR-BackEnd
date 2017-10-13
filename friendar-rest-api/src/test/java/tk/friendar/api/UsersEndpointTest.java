@@ -45,6 +45,9 @@ public class UsersEndpointTest {
     /**
      * Test to see that the message "Got it!" is sent in the response.
      */
+
+
+    /******************************* @POST tests *******************************/
     @Test
     public void testPOSTCompleteUser() throws Exception {
         //Complete data with lat or long
@@ -72,6 +75,25 @@ public class UsersEndpointTest {
     @Test
     public void testAnotherPOST() throws Exception {
         String test = "{\"username\": \"james\", \"email\": \"asf@gsddf.com\", \"usersPassword\": \"stone\",\"fullName\":\"Simon\"}";
+        Response msg = target.path("users").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test), Response.class);
+        String output = msg.readEntity(String.class);
+        assertNotNull(msg);
+        assertNotNull(output);
+
+    }
+
+    @Test
+    public void testAnotherPOST_NewUser() throws Exception {
+        String test = "{\"username\": \"james\", \"email\": \"user01@yahoo.com\", \"usersPassword\": \"user01\",\"fullName\":\"User 01\"}";
+        Response msg = target.path("users").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test), Response.class);
+        String output = msg.readEntity(String.class);
+        assertNotNull(msg);
+        assertNotNull(output);
+
+    }
+    @Test
+    public void testAnotherPOST_tutor() throws Exception {
+        String test = "{\"username\": \"lucaM@gmail.com\", \"email\": \"lucaM@gmail.com\", \"usersPassword\": \"Morandini\",\"fullName\":\"Luca Morandini\"}";
         Response msg = target.path("users").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test), Response.class);
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
@@ -111,8 +133,7 @@ public class UsersEndpointTest {
     }
 
 
-
-
+    /******************************* @GET tests *******************************/
     @Test
     public void testGetAllUsers() {
         //getting entire list of users in form of a string
@@ -135,49 +156,20 @@ public class UsersEndpointTest {
         try{
             String user = target.path("users").path("30").request().get(String.class);
             assertNotNull(user);
+            assert (user.equalsIgnoreCase("java.lang.NullPointerException"));
         } catch (Exception e){
             System.out.println(e.toString());
         }
 
     }
 
-    @Test
-    public void testAValidDelete() throws Exception {
-        Response msg;
-        String output;
-        //Deleting an existing place
-        msg = target.path("users").path("6").request().accept(MediaType.APPLICATION_JSON).delete();
-        output = msg.readEntity(String.class);
-        assertNotNull(msg);
-        assertNotNull(output);
-        System.out.println("MSG: " + output);
-        assert (output.toLowerCase().indexOf("username".toLowerCase()) != -1);
-    }
 
-    @Test
-    public void testAnotherValidDelete() throws Exception {
-        Response msg = target.path("users").path("5").request().accept(MediaType.APPLICATION_JSON).delete();
-        String output = msg.readEntity(String.class);
-        assertNotNull(msg);
-        assertNotNull(output);
-        assert (output.toLowerCase().indexOf("username".toLowerCase()) != -1);
-    }
-
-    @Test
-    public void testAnInValidDelete() throws Exception {
-        //Deleting a non-existing place
-        Response msg = target.path("users").path("15").request().accept(MediaType.APPLICATION_JSON).delete();
-        String output = msg.readEntity(String.class);
-        assertNotNull(msg);
-        assertNotNull(output);
-        assert (output.equalsIgnoreCase("<html><head><title>Grizzly 2.4.0</title><style><!--div.header {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#003300;font-size:22px;-moz-border-radius-topleft: 10px;border-top-left-radius: 10px;-moz-border-radius-topright: 10px;border-top-right-radius: 10px;padding-left: 5px}div.body {font-family:Tahoma,Arial,sans-serif;color:black;background-color:#FFFFCC;font-size:16px;padding-top:10px;padding-bottom:10px;padding-left:10px}div.footer {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#666633;font-size:14px;-moz-border-radius-bottomleft: 10px;border-bottom-left-radius: 10px;-moz-border-radius-bottomright: 10px;border-bottom-right-radius: 10px;padding-left: 5px}BODY {font-family:Tahoma,Arial,sans-serif;color:black;background-color:white;}B {font-family:Tahoma,Arial,sans-serif;color:black;}A {color : black;}HR {color : #999966;}--></style> </head><body><div class=\"header\">Request failed.</div><div class=\"body\">Request failed.</div><div class=\"footer\">Grizzly 2.4.0</div></body></html>"));
-    }
-
+    /******************************* @PUT tests *******************************/
     @Test
     public void testPutUpdateJustLatLng() throws Exception {
         //updating an existing entry
         String test = "{\"latitude\": 465, \"longitude\": 123}";
-        Response msg = target.path("users").path("39").request().accept(MediaType.APPLICATION_JSON).put(Entity.json(test));
+        Response msg = target.path("users").path("2").request().accept(MediaType.APPLICATION_JSON).put(Entity.json(test));
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
@@ -188,7 +180,7 @@ public class UsersEndpointTest {
     public void testPutUpdateAllFields() throws Exception {
         //updating a non-existing entry
         String test = "{\"username\": \"james\", \"email\": \"asf.com\", \"usersPassword\": \"stone\",\"fullName\":\'Simon\', \"latitude\": 123, \"longitude\": 123}";
-        Response msg = target.path("users").path("40").request().accept(MediaType.APPLICATION_JSON).put(Entity.json(test));
+        Response msg = target.path("users").path("3").request().accept(MediaType.APPLICATION_JSON).put(Entity.json(test));
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
@@ -204,5 +196,39 @@ public class UsersEndpointTest {
         assertNotNull(msg);
         assertNotNull(output);
         assert (output.equalsIgnoreCase("java.lang.NullPointerException"));
+    }
+
+
+
+    /******************************* @DELETE tests *******************************/
+    @Test
+    public void testAValidDelete() throws Exception {
+        Response msg;
+        String output;
+        //Deleting an existing place
+        msg = target.path("users").path("2").request().accept(MediaType.APPLICATION_JSON).delete();
+        output = msg.readEntity(String.class);
+        assertNotNull(msg);
+        assertNotNull(output);
+        assert (output.toLowerCase().indexOf("username".toLowerCase()) != -1);
+    }
+
+    @Test
+    public void testAnotherValidDelete() throws Exception {
+        Response msg = target.path("users").path("5").request().accept(MediaType.APPLICATION_JSON).delete();
+        String output = msg.readEntity(String.class);
+        assertNotNull(msg);
+        assertNotNull(output);
+        assert (output.toLowerCase().indexOf("username".toLowerCase()) != -1);
+    }
+
+    @Test
+    public void testAnInValidDelete() throws Exception {
+        //Deleting a non-existing place
+        Response msg = target.path("users").path("60").request().accept(MediaType.APPLICATION_JSON).delete();
+        String output = msg.readEntity(String.class);
+        assertNotNull(msg);
+        assertNotNull(output);
+        assert (output.equalsIgnoreCase("<html><head><title>Grizzly 2.4.0</title><style><!--div.header {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#003300;font-size:22px;-moz-border-radius-topleft: 10px;border-top-left-radius: 10px;-moz-border-radius-topright: 10px;border-top-right-radius: 10px;padding-left: 5px}div.body {font-family:Tahoma,Arial,sans-serif;color:black;background-color:#FFFFCC;font-size:16px;padding-top:10px;padding-bottom:10px;padding-left:10px}div.footer {font-family:Tahoma,Arial,sans-serif;color:white;background-color:#666633;font-size:14px;-moz-border-radius-bottomleft: 10px;border-bottom-left-radius: 10px;-moz-border-radius-bottomright: 10px;border-bottom-right-radius: 10px;padding-left: 5px}BODY {font-family:Tahoma,Arial,sans-serif;color:black;background-color:white;}B {font-family:Tahoma,Arial,sans-serif;color:black;}A {color : black;}HR {color : #999966;}--></style> </head><body><div class=\"header\">Request failed.</div><div class=\"body\">Request failed.</div><div class=\"footer\">Grizzly 2.4.0</div></body></html>"));
     }
 }
