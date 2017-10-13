@@ -107,9 +107,15 @@ public class PlacesEndpoint {
                 PlaceDB place = session.get(PlaceDB.class, Integer.valueOf(id));
 
                 JSONObject json = new JSONObject(placeJson);
-                place.setPlaceName(json.getString("placeName"));
-                place.setLatitude(json.getDouble("latitude"));
-                place.setLongitude(json.getDouble("longitude"));
+                if(json.has("placeName")){
+                    place.setPlaceName(json.getString("placeName"));
+                }
+                if(json.has("latitude")){
+                    place.setLatitude(json.getDouble("latitude"));
+                }
+                if(json.has("longitude")){
+                    place.setLongitude(json.getDouble("longitude"));
+                }
                 session.update(place);
                 session.getTransaction().commit();
                 JSONObject returnJson = new JSONObject(place);
