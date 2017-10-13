@@ -28,7 +28,7 @@ public class UsersEndpointTest {
         // create the client
         HttpAuthenticationFeature feature = HttpAuthenticationFeature.basicBuilder()
                 .nonPreemptive()
-                .credentials("matt@gmail.com", "habibi")
+                .credentials("Luca@gmail.com", "harris")
                 .build();
 
         ClientConfig clientConfig = new ClientConfig();
@@ -45,34 +45,6 @@ public class UsersEndpointTest {
     /**
      * Test to see that the message "Got it!" is sent in the response.
      */
-    @Test
-    public void testGetAllUsers() {
-        //getting entire list of users in form of a string
-        String allUsers = target.path("users").request().get(String.class);
-        assertNotNull(allUsers);
-        assert allUsers.toLowerCase().contains("users: ".toLowerCase());
-    }
-
-    @Test
-    public void testGetParticularUser(){
-        //getting a specific user in form of a string
-        String user = target.path("users").path("1").request().get(String.class);
-        assertNotNull(user);
-        assert user.toLowerCase().contains("fullName".toLowerCase());
-    }
-
-    @Test
-    public void testGetParticularUser_empty(){
-        //getting a specific user that doesn't exist
-        try{
-            String user = target.path("users").path("30").request().get(String.class);
-            assertNotNull(user);
-        } catch (Exception e){
-            System.out.println(e.toString());
-        }
-
-    }
-
     @Test
     public void testPOSTCompleteUser() throws Exception {
         //Complete data with lat or long
@@ -109,7 +81,7 @@ public class UsersEndpointTest {
 
     @Test
     public void testPOSTwithoutPassword() throws Exception {
-        String test = "{\"username\": \"Luca Harris\", \"email\": \"asf@gsddf.com\",\"fullName\":\'Simon\', \"latitude\": 123, \"longitude\": 123}";
+        String test = "{\"username\": \"Ashkan Habibi\", \"email\": \"asf@gsddf.com\",\"fullName\":\'Simon\', \"latitude\": 123, \"longitude\": 123}";
         Response msg = target.path("users").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test), Response.class);
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
@@ -130,7 +102,7 @@ public class UsersEndpointTest {
 
     @Test
     public void testPOSTmissingEmailAgain() throws Exception {
-        String test_04 = "{\"username\": \"Luca\", \"usersPassword\": \"harris\",\"fullName\":\'ashkan Habibi\'}";
+        String test_04 = "{\"username\": \"Simon\", \"usersPassword\": \"harris\",\"fullName\":\'ashkan Habibi\'}";
         Response msg = target.path("users").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test_04), Response.class);
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
@@ -138,26 +110,57 @@ public class UsersEndpointTest {
         assert output.equals("org.json.JSONException: JSONObject[\"email\"] not found.");
     }
 
+
+
+
+    @Test
+    public void testGetAllUsers() {
+        //getting entire list of users in form of a string
+        String allUsers = target.path("users").request().get(String.class);
+        assertNotNull(allUsers);
+        assert allUsers.toLowerCase().contains("users: ".toLowerCase());
+    }
+
+    @Test
+    public void testGetParticularUser(){
+        //getting a specific user in form of a string
+        String user = target.path("users").path("1").request().get(String.class);
+        assertNotNull(user);
+        assert user.toLowerCase().contains("fullName".toLowerCase());
+    }
+
+    @Test
+    public void testGetParticularUser_empty(){
+        //getting a specific user that doesn't exist
+        try{
+            String user = target.path("users").path("30").request().get(String.class);
+            assertNotNull(user);
+        } catch (Exception e){
+            System.out.println(e.toString());
+        }
+
+    }
+
     @Test
     public void testAValidDelete() throws Exception {
         Response msg;
         String output;
         //Deleting an existing place
-        msg = target.path("users").path("1").request().accept(MediaType.APPLICATION_JSON).delete();
+        msg = target.path("users").path("6").request().accept(MediaType.APPLICATION_JSON).delete();
         output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
         System.out.println("MSG: " + output);
-        assert (output.toLowerCase().indexOf("username: ".toLowerCase()) != -1);
+        assert (output.toLowerCase().indexOf("username".toLowerCase()) != -1);
     }
 
     @Test
     public void testAnotherValidDelete() throws Exception {
-        Response msg = target.path("users").path("2").request().accept(MediaType.APPLICATION_JSON).delete();
+        Response msg = target.path("users").path("5").request().accept(MediaType.APPLICATION_JSON).delete();
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
-        assert (output.toLowerCase().indexOf("username: ".toLowerCase()) != -1);
+        assert (output.toLowerCase().indexOf("username".toLowerCase()) != -1);
     }
 
     @Test
@@ -173,22 +176,23 @@ public class UsersEndpointTest {
     @Test
     public void testPutUpdateJustLatLng() throws Exception {
         //updating an existing entry
-        String test = "{\"latitude\": 123, \"longitude\": 123}";
-        Response msg = target.path("users").path("1").request().accept(MediaType.APPLICATION_JSON).put(Entity.json(test));
+        String test = "{\"latitude\": 465, \"longitude\": 123}";
+        Response msg = target.path("users").path("39").request().accept(MediaType.APPLICATION_JSON).put(Entity.json(test));
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
+        assert (output.toLowerCase().indexOf("username".toLowerCase()) != -1);
     }
 
     @Test
     public void testPutUpdateAllFields() throws Exception {
         //updating a non-existing entry
-        String test = "{\"username\": \"james\", \"email\": \"asf@gsddf.com\", \"usersPassword\": \"stone\",\"fullName\":\'Simon\', \"latitude\": 123, \"longitude\": 123}";
-        Response msg = target.path("users").path("4").request().accept(MediaType.APPLICATION_JSON).put(Entity.json(test));
+        String test = "{\"username\": \"james\", \"email\": \"asf.com\", \"usersPassword\": \"stone\",\"fullName\":\'Simon\', \"latitude\": 123, \"longitude\": 123}";
+        Response msg = target.path("users").path("40").request().accept(MediaType.APPLICATION_JSON).put(Entity.json(test));
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
-        assert (output.toLowerCase().indexOf("username: ".toLowerCase()) != -1);
+        assert (output.toLowerCase().indexOf("username".toLowerCase()) != -1);
     }
 
     @Test
@@ -199,6 +203,6 @@ public class UsersEndpointTest {
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
-        assert (output.toLowerCase().indexOf("username: ".toLowerCase()) != -1);
+        assert (output.equalsIgnoreCase("java.lang.NullPointerException"));
     }
 }
