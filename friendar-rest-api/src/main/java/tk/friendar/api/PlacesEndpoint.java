@@ -29,7 +29,7 @@ public class PlacesEndpoint {
             List<PlaceDB> placesDB = session.createCriteria(PlaceDB.class).list();
             JSONObject json = new JSONObject();
             for (PlaceDB place : placesDB) {
-                json.append("places", place.toJson(true));
+                json.append("places: ", place.toJson(true));
             }
 
             return json.toString();
@@ -47,7 +47,6 @@ public class PlacesEndpoint {
             JSONObject json = new JSONObject(placeJson);
             PlaceDB place = new PlaceDB();
             place.setPlaceName(json.getString("placeName"));
-            //place.setPlaceName(json.getString("placeName"));
             place.setLatitude(json.getDouble("latitude"));
             place.setLongitude(json.getDouble("longitude"));
 
@@ -109,7 +108,6 @@ public class PlacesEndpoint {
 
                 JSONObject json = new JSONObject(placeJson);
                 place.setPlaceName(json.getString("placeName"));
-                //place.setPlaceName(json.getString("placeName"));
                 place.setLatitude(json.getDouble("latitude"));
                 place.setLongitude(json.getDouble("longitude"));
                 session.update(place);
@@ -120,6 +118,5 @@ public class PlacesEndpoint {
                 return e.toString();
             }
         }
-        //return null;
     }
 }
