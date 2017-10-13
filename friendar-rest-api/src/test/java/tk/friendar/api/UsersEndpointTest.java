@@ -158,7 +158,7 @@ public class UsersEndpointTest {
             assertNotNull(user);
             assert (user.equalsIgnoreCase("java.lang.NullPointerException"));
         } catch (Exception e){
-            System.out.println(e.toString());
+
         }
 
     }
