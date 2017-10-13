@@ -7,7 +7,7 @@ services:
     links:
       - db
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost"]
+      test: ["CMD", "curl", "-f", "http://localhost/1/application.wadl"]
       interval: 10s
       timeout: 10s
       retries: 2
