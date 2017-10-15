@@ -167,8 +167,16 @@ public class UserDB implements Serializable {
             throw new IllegalArgumentException("Empty passwords are not supported.");
         }
         passChar = password.toCharArray();
-        this.salt = new String(SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLen));
+        this.salt = genSalt();
         return String.valueOf(hashPas(passChar, salt.getBytes(), iterations, desiredKeyLen));
+    }
+
+    private String genSalt() throws NoSuchAlgorithmException {
+        String salt = new String(SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLen));
+        if(salt.contains("\u0000")){
+            return genSalt();
+        }
+        return salt;
     }
 
     JSONObject toJson(Boolean nextLevelDeep) throws JSONException {
