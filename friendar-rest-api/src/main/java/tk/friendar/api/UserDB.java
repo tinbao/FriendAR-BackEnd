@@ -31,10 +31,13 @@ public class UserDB implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "userid", nullable = false)
     public int userID;
+    @Column(name = "fullname", nullable = false)
     public String fullName;
-    @Column(unique = true, nullable = false)
+    @Column(name = "username", unique = true, nullable = false)
     public String usersname;
+    @Column(name = "userspassword")
     public String usersPassword;
+    @Column(name = "email")
     public String email;
     @OneToMany(targetEntity = FriendshipDB.class, mappedBy = "userA_ID", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     //@OneToMany (targetEntity = FriendshipDB.class, mappedBy = "userB_ID", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
@@ -50,6 +53,7 @@ public class UserDB implements Serializable {
     @Column(nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date locationLastUpdated;
+    @Column(name = "salt")
     private String salt;
 
     private static char[] hashPas(char[] password, byte[] salt, int iterationNum, int keyLen) throws NoSuchAlgorithmException, InvalidKeySpecException {
