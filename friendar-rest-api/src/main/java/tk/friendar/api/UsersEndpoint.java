@@ -50,7 +50,7 @@ public class UsersEndpoint {
             boolean update = false;
 
             user.setFullName(json.getString("fullName"));
-            user.setUsersname(json.getString("username"));
+            user.setUsername(json.getString("username"));
             user.setUsersPassword(json.getString("usersPassword"));
             user.setEmail(json.getString("email"));
             if (json.has("latitude")) {
