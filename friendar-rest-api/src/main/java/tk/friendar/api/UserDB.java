@@ -23,7 +23,7 @@ import java.util.List;
 @Table(name = "users")
 public class UserDB implements Serializable {
 
-    private static final int iterations = 5;
+    private static final int iterations = 1; // too high a value adds minimal increases in security and significantly slows down processing.
     private static final int saltLen = 32;
     private static final int desiredKeyLen = 256;
     private static char[] passChar;
