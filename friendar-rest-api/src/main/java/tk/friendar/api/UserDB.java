@@ -171,7 +171,7 @@ public class UserDB implements Serializable {
     }
 
     private String genSalt() {
-        return randomString(10);
+        return randomString(saltLen);
     }
 
     static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
