@@ -230,7 +230,7 @@ public class UsersEndpointTest {
 
     @Test
     public void Q_testAnotherValidDelete() throws Exception {
-        Response msg = target.path("users").path("5").request().accept(MediaType.APPLICATION_JSON).delete();
+        Response msg = target.path("users").path("4").request().accept(MediaType.APPLICATION_JSON).delete();
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
