@@ -32,6 +32,7 @@ public class ChatEndpoint {
                 json.append("messages: ", place.toJson(true));
             }
 
+            session.close();
             return json.toString();
         } catch (Exception e) {
             return e.toString();
@@ -56,6 +57,7 @@ public class ChatEndpoint {
                 session.save(message);
                 session.getTransaction().commit();
                 String response = message.toJson(true).toString();
+                session.close();
                 return response;
             }
         } catch (Exception e) {
@@ -69,8 +71,10 @@ public class ChatEndpoint {
     public String get(@PathParam("id") String id) {
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             try {
-                return session.get(MessageDB.class, Integer.valueOf(id)).toJson(false).toString();
-            } catch (JSONException e) {
+                String result = session.get(MessageDB.class, Integer.valueOf(id)).toJson(false).toString();
+                session.close();
+                return result;
+            } catch (Exception e) {
                 return e.toString();
             }
         }

@@ -188,7 +188,7 @@ public class PlacesEndpointTest {
         try{
             String responseMsg = target.path("places").path("10").request().get(String.class);
         } catch (Exception e){
-            assert e.toString().equalsIgnoreCase("javax.ws.rs.InternalServerErrorException: HTTP 500 Internal Server Error");
+            assert e.toString().equalsIgnoreCase("java.lang.NullPointerException");
         }
     }
 

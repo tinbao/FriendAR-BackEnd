@@ -51,7 +51,6 @@ public class UsersEndpointTest {
 
 
     /******************************* @POST tests *******************************/
-    @Test
     public void A_testPOSTCompleteUser() throws Exception {
         //Complete data with lat or long
         String test = "{\"username\": \"Luca@gmail.com\", \"email\": \"luca@gmail.com\", \"usersPassword\": \"harris\",\"fullName\":\"Luca Harris\", \"latitude\": 120, \"longitude\": 120}";
