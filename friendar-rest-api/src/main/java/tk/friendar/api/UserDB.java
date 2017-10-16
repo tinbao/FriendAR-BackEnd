@@ -1,6 +1,5 @@
 package tk.friendar.api;
 
-
 import org.apache.commons.codec.binary.Base64;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -171,12 +170,19 @@ public class UserDB implements Serializable {
         return String.valueOf(hashPas(passChar, salt.getBytes(), iterations, desiredKeyLen));
     }
 
-    private String genSalt() throws NoSuchAlgorithmException {
-        String salt = new String(SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLen));
-        if(salt.contains("\u0000")){
-            return genSalt();
+    private String genSalt() {
+        return randomString(saltLen);
+    }
+
+    static final String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
+    static SecureRandom rnd = new SecureRandom();
+
+    String randomString( int len ){
+        StringBuilder sb = new StringBuilder( len );
+        for( int i = 0; i < len; i++ ) {
+            sb.append(AB.charAt(rnd.nextInt(AB.length())));
         }
-        return salt;
+        return sb.toString();
     }
 
     JSONObject toJson(Boolean nextLevelDeep) throws JSONException {
