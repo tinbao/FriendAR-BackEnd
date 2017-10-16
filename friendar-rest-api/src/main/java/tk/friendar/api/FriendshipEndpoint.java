@@ -7,7 +7,6 @@ import org.json.JSONObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -48,7 +47,6 @@ public class FriendshipEndpoint {
 
             JSONObject json = new JSONObject(friendshipJson);
             FriendshipDB friendship = new FriendshipDB();
-            boolean update = false;
 
             friendship.setUserA_ID(json.getInt("userA_ID"));
             friendship.setUserB_ID(json.getInt("userB_ID"));
