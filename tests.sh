@@ -6,9 +6,16 @@ docker-compose down # ensure we are fresh and clean.
 docker-compose build --force-rm --no-cache --pull | grep -v 'Download.* http'
 docker-compose run web sh -c "mvn pmd:cpd-check && mvn pmd:check"
 
+docker-compose down # ensure we are fresh and clean.
 docker-compose run web sh -c "mvn clean test -Dtest=ChatEndpointTest"
+docker-compose down # ensure we are fresh and clean.
 docker-compose run web sh -c "mvn clean test -Dtest=FriendshipEndpointTest"
+docker-compose down # ensure we are fresh and clean.
 docker-compose run web sh -c "mvn clean test -Dtest=MeetingEndpointTest"
+docker-compose down # ensure we are fresh and clean.
 docker-compose run web sh -c "mvn clean test -Dtest=MeetingUserEndpointTest"
+docker-compose down # ensure we are fresh and clean.
 docker-compose run web sh -c "mvn clean test -Dtest=PlacesEndpointTest"
+docker-compose down # ensure we are fresh and clean.
 docker-compose run web sh -c "mvn clean test -Dtest=UsersEndpointTest"
+docker-compose down # ensure we are fresh and clean for next time
