@@ -23,7 +23,7 @@ import java.util.List;
 @Table(name = "users")
 public class UserDB implements Serializable {
 
-    private static final int iterations = 5;
+    private static final int iterations = 1; // too high a value adds minimal increases in security and significantly slows down processing.
     private static final int saltLen = 32;
     private static final int desiredKeyLen = 256;
     private static char[] passChar;
@@ -31,10 +31,13 @@ public class UserDB implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "userid", nullable = false)
     public int userID;
+    @Column(name = "fullname", nullable = false)
     public String fullName;
-    @Column(unique = true, nullable = false)
+    @Column(name = "username", unique = true, nullable = false)
     public String username;
+    @Column(name = "userspassword")
     public String usersPassword;
+    @Column(name = "email")
     public String email;
     @OneToMany(targetEntity = FriendshipDB.class, mappedBy = "userA_ID", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     //@OneToMany (targetEntity = FriendshipDB.class, mappedBy = "userB_ID", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
@@ -50,6 +53,7 @@ public class UserDB implements Serializable {
     @Column(nullable = true)
     @Temporal(TemporalType.TIMESTAMP)
     private Date locationLastUpdated;
+    @Column(name = "salt")
     private String salt;
 
     private static char[] hashPas(char[] password, byte[] salt, int iterationNum, int keyLen) throws NoSuchAlgorithmException, InvalidKeySpecException {
@@ -146,7 +150,6 @@ public class UserDB implements Serializable {
 
     public void setUsersPassword(String usersPassword) throws Exception {
         this.usersPassword = setUserPassword(usersPassword);
-
         assert validPassword(usersPassword);
     }
 
@@ -164,8 +167,16 @@ public class UserDB implements Serializable {
             throw new IllegalArgumentException("Empty passwords are not supported.");
         }
         passChar = password.toCharArray();
-        this.salt = new String(SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLen));
+        this.salt = genSalt();
         return String.valueOf(hashPas(passChar, salt.getBytes(), iterations, desiredKeyLen));
+    }
+
+    private String genSalt() throws NoSuchAlgorithmException {
+        String salt = new String(SecureRandom.getInstance("SHA1PRNG").generateSeed(saltLen));
+        if(salt.contains("\u0000")){
+            return genSalt();
+        }
+        return salt;
     }
 
     JSONObject toJson(Boolean nextLevelDeep) throws JSONException {

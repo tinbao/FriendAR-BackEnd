@@ -35,6 +35,7 @@ public class UsersEndpoint {
 
             return json.toString();
         } catch (Exception e) {
+            System.err.println(e.toString());
             return e.toString();
         }
     }
@@ -75,6 +76,7 @@ public class UsersEndpoint {
                 return returnJson.toString();
             }
         } catch (Exception e) {
+            System.err.println(e.toString());
             return e.toString();
         }
     }
