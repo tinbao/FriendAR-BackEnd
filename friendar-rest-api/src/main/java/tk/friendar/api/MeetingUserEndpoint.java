@@ -25,15 +25,20 @@ public class MeetingUserEndpoint {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String get() throws JSONException {
-        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
-
-            List<MeetingUserDB> meetingUsersDB = session.createCriteria(MeetingUserDB.class).list();
-            JSONObject json = new JSONObject();
-            for (MeetingUserDB meetingUser : meetingUsersDB) {
-                json.append("meetingUsers: ", meetingUser.toJson(true));
+        try{
+            Session session = SessionFactorySingleton.getInstance().openSession();
+            try{
+                List<MeetingUserDB> meetingUsersDB = session.createCriteria(MeetingUserDB.class).list();
+                JSONObject json = new JSONObject();
+                for (MeetingUserDB meetingUser : meetingUsersDB) {
+                    json.append("meetingUsers: ", meetingUser.toJson(true));
+                }
+                return json.toString();
+            } catch (Exception e){
+                return  e.toString();
+            } finally {
+                session.close();
             }
-            session.close();
-            return json.toString();
         } catch (Exception e) {
             return e.toString();
         }
@@ -44,7 +49,7 @@ public class MeetingUserEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public String create(String meetinguserJson) throws JSONException {
         try {
-
+            Session session = SessionFactorySingleton.getInstance().openSession();
             JSONObject json = new JSONObject(meetinguserJson);
             MeetingUserDB meetingUser = new MeetingUserDB();
             boolean update = false;
@@ -52,13 +57,16 @@ public class MeetingUserEndpoint {
             meetingUser.setMeetingID(json.getInt("meetingID"));
             meetingUser.setUserID(json.getInt("userID"));
 
-            try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+            try {
                 session.beginTransaction();
                 session.save(meetingUser);
                 String response = meetingUser.toJson(false).toString();
                 session.getTransaction().commit();
-                session.close();
                 return response;
+            } catch (Exception e){
+                return  e.toString();
+            } finally {
+                session.close();
             }
         } catch (Exception e) {
             return e.toString();
@@ -69,14 +77,18 @@ public class MeetingUserEndpoint {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String get(@PathParam("id") String id) {
-        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+        try {
+            Session session = SessionFactorySingleton.getInstance().openSession();
             try {
                 String result = session.get(MeetingUserDB.class, Integer.valueOf(id)).toJson(false).toString();
-                session.close();
                 return result;
             } catch (Exception e) {
                 return e.toString();
+            } finally {
+                session.close();
             }
+        } catch (Exception e) {
+            return e.toString();
         }
     }
 
@@ -85,17 +97,21 @@ public class MeetingUserEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public String delete(@PathParam("id") String id) {
-        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+        try {
+            Session session = SessionFactorySingleton.getInstance().openSession();
             try {
                 session.beginTransaction();
                 MeetingUserDB meetingUser = session.get(MeetingUserDB.class, Integer.valueOf(id));
                 session.delete(meetingUser);
                 session.getTransaction().commit();
-                session.close();
                 return meetingUser.toJson(false).toString();
             } catch (HibernateException | JSONException e) {
                 return e.toString();
+            } finally {
+                session.close();
             }
+        } catch (Exception e){
+            return e.toString();
         }
     }
 }

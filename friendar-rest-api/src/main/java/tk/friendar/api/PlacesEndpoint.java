@@ -24,15 +24,21 @@ public class PlacesEndpoint {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String get() throws JSONException {
-        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
-
-            List<PlaceDB> placesDB = session.createCriteria(PlaceDB.class).list();
-            JSONObject json = new JSONObject();
-            for (PlaceDB place : placesDB) {
-                json.append("places: ", place.toJson(true));
+        try {
+            Session session = SessionFactorySingleton.getInstance().openSession();
+            try{
+                List<PlaceDB> placesDB = session.createCriteria(PlaceDB.class).list();
+                JSONObject json = new JSONObject();
+                for (PlaceDB place : placesDB) {
+                    json.append("places: ", place.toJson(true));
+                }
+                return json.toString();
+            } catch (Exception e){
+                return e.toString();
+            } finally {
+                session.close();
             }
-            session.close();
-            return json.toString();
+
         } catch (Exception e) {
             return e.toString();
         }
@@ -43,20 +49,23 @@ public class PlacesEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public String create(String placeJson) throws JSONException {
         try {
-
+            Session session = SessionFactorySingleton.getInstance().openSession();
             JSONObject json = new JSONObject(placeJson);
             PlaceDB place = new PlaceDB();
             place.setPlaceName(json.getString("placeName"));
             place.setLatitude(json.getDouble("latitude"));
             place.setLongitude(json.getDouble("longitude"));
 
-            try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+            try {
                 session.beginTransaction();
                 session.save(place);
                 String response = place.toJson(true).toString();
                 session.getTransaction().commit();
-                session.close();
                 return response;
+            }catch (Exception e) {
+                throw new JSONException(e);
+            } finally {
+                session.close();
             }
         } catch (Exception e) {
             throw new JSONException(e);
@@ -67,14 +76,18 @@ public class PlacesEndpoint {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String get(@PathParam("id") String id) {
-        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+        try {
+            Session session = SessionFactorySingleton.getInstance().openSession();
             try {
                 String result = session.get(PlaceDB.class, Integer.valueOf(id)).toJson(true).toString();
-                session.close();
                 return result;
             } catch (Exception e) {
                 return e.toString();
+            } finally {
+                session.close();
             }
+        } catch (Exception e) {
+            return e.toString();
         }
     }
 
@@ -84,7 +97,8 @@ public class PlacesEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public String delete(@PathParam("id") String id) {
-        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+        try {
+            Session session = SessionFactorySingleton.getInstance().openSession();
             try {
                 session.beginTransaction();
                 PlaceDB place = session.get(PlaceDB.class, Integer.valueOf(id));
@@ -94,7 +108,11 @@ public class PlacesEndpoint {
                 return place.toJson(true).toString();
             } catch (Exception e) {
                 return e.toString();
+            } finally {
+                session.close();
             }
+        } catch (Exception e) {
+            return e.toString();
         }
     }
 
@@ -105,7 +123,8 @@ public class PlacesEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     public String put(@PathParam("id") String id, String placeJson) {
         // Do a call to a DAO Implementation that does a JDBC call to delete resource from  Mongo based on JSON
-        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+        try  {
+            Session session = SessionFactorySingleton.getInstance().openSession();
             try {
                 session.beginTransaction();
                 PlaceDB place = session.get(PlaceDB.class, Integer.valueOf(id));
@@ -130,7 +149,11 @@ public class PlacesEndpoint {
                 return response;
             } catch (Exception e) {
                 return e.toString();
+            } finally {
+                session.close();
             }
+        }catch (Exception e) {
+            return e.toString();
         }
     }
 }

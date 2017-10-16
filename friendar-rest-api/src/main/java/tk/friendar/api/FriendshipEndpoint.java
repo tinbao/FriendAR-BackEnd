@@ -25,16 +25,20 @@ public class FriendshipEndpoint {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String get() throws JSONException {
-        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
-
-            List<FriendshipDB> friendshipsDB = session.createCriteria(FriendshipDB.class).list();
-            JSONObject json = new JSONObject();
-            for (FriendshipDB friendship : friendshipsDB) {
-                json.append("friendships: ", friendship.toJson());
+        try {
+            Session session = SessionFactorySingleton.getInstance().openSession();
+            try{
+                List<FriendshipDB> friendshipsDB = session.createCriteria(FriendshipDB.class).list();
+                JSONObject json = new JSONObject();
+                for (FriendshipDB friendship : friendshipsDB) {
+                    json.append("friendships: ", friendship.toJson());
+                }
+                return json.toString();
+            } catch (Exception e){
+                return e.toString();
+            } finally {
+                session.close();
             }
-
-            session.close();
-            return json.toString();
         } catch (Exception e) {
             return e.toString();
         }
@@ -45,7 +49,7 @@ public class FriendshipEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public String create(String friendshipJson) throws JSONException {
         try {
-
+            Session session = SessionFactorySingleton.getInstance().openSession();
             JSONObject json = new JSONObject(friendshipJson);
             FriendshipDB friendship = new FriendshipDB();
             boolean update = false;
@@ -53,13 +57,17 @@ public class FriendshipEndpoint {
             friendship.setUserA_ID(json.getInt("userA_ID"));
             friendship.setUserB_ID(json.getInt("userB_ID"));
 
-            try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+            try {
                 session.beginTransaction();
                 session.save(friendship);
                 String respone = friendship.toJson().toString();
                 session.getTransaction().commit();
                 session.close();
                 return respone;
+            } catch (Exception e){
+                return e.toString();
+            } finally {
+                session.close();
             }
         } catch (Exception e) {
             return e.toString();
@@ -70,14 +78,19 @@ public class FriendshipEndpoint {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String get(@PathParam("id") String id) {
-        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+        try {
+            Session session = SessionFactorySingleton.getInstance().openSession();
             try {
                 String result = session.get(FriendshipDB.class, Integer.valueOf(id)).toJson().toString();
                 session.close();
                 return result;
             } catch (Exception e) {
                 return e.toString();
+            } finally {
+                session.close();
             }
+        } catch (Exception e) {
+            return e.toString();
         }
     }
 
@@ -86,7 +99,8 @@ public class FriendshipEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public String delete(@PathParam("id") String id) {
-        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+        try {
+            Session session = SessionFactorySingleton.getInstance().openSession();
             try {
                 session.beginTransaction();
                 FriendshipDB friendship = session.get(FriendshipDB.class, Integer.valueOf(id));
@@ -96,7 +110,11 @@ public class FriendshipEndpoint {
                 return friendship.toJson().toString();
             } catch (HibernateException | JSONException e) {
                 return e.toString();
+            } finally {
+                session.close();
             }
+        }catch (Exception e) {
+            return e.toString();
         }
     }
 }

@@ -27,16 +27,20 @@ public class MeetingEndpoint {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String get() throws JSONException {
-        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
-
-            List<MeetingDB> meetingsDB = session.createCriteria(MeetingDB.class).list();
-            JSONObject json = new JSONObject();
-            for (MeetingDB meeting : meetingsDB) {
-                json.append("meetings: ", meeting.toJson(true));
+        try {
+            Session session = SessionFactorySingleton.getInstance().openSession();
+            try{
+                List<MeetingDB> meetingsDB = session.createCriteria(MeetingDB.class).list();
+                JSONObject json = new JSONObject();
+                for (MeetingDB meeting : meetingsDB) {
+                    json.append("meetings: ", meeting.toJson(true));
+                }
+                return json.toString();
+            } catch (Exception e){
+                return e.toString();
+            } finally {
+                session.close();
             }
-
-            session.close();
-            return json.toString();
         } catch (Exception e) {
             return e.toString();
         }
@@ -47,7 +51,7 @@ public class MeetingEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public String create(String meetingJson) throws JSONException {
         try {
-
+            Session session = SessionFactorySingleton.getInstance().openSession();
             JSONObject json = new JSONObject(meetingJson);
             MeetingDB meeting = new MeetingDB();
 
@@ -55,13 +59,16 @@ public class MeetingEndpoint {
             meeting.setPlace(json.getInt("placeID"));
             meeting.setTimeDate(Timestamp.valueOf(json.getString("time")));
 
-            try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+            try {
                 session.beginTransaction();
                 session.save(meeting);
                 String test = meeting.toJson(true).toString();
                 session.getTransaction().commit();
-                session.close();
                 return test;
+            } catch (Exception e){
+                return e.toString();
+            } finally {
+                session.close();
             }
         } catch (Exception e) {
             return e.toString();
@@ -72,14 +79,18 @@ public class MeetingEndpoint {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String get(@PathParam("id") String id) {
-        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+        try {
+            Session session = SessionFactorySingleton.getInstance().openSession();
             try {
                 String result = session.get(MeetingDB.class, Integer.valueOf(id)).toJson(true).toString();
-                session.close();
                 return  result;
             } catch (Exception e) {
                 return e.toString();
+            } finally {
+                session.close();
             }
+        } catch (Exception e) {
+            return e.toString();
         }
     }
 
@@ -89,7 +100,8 @@ public class MeetingEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     public String put(@PathParam("id") String id, String userJson) {
         // Do a call to a DAO Implementation that does a JDBC call to delete resource from  Mongo based on JSON
-        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+        try {
+            Session session = SessionFactorySingleton.getInstance().openSession();
             try {
                 Boolean update = false;
                 session.beginTransaction();
@@ -108,11 +120,14 @@ public class MeetingEndpoint {
                 session.save(meeting);
                 String test = meeting.toJson(true).toString();
                 session.getTransaction().commit();
-                session.close();
                 return test;
             } catch (Exception e) {
                 return e.toString();
+            } finally {
+                session.close();
             }
+        } catch (Exception e) {
+            return e.toString();
         }
     }
 }
