@@ -1,7 +1,5 @@
 package tk.friendar.api;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Metamodel;
 import org.hibernate.Session;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,7 +7,6 @@ import org.json.JSONObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -76,7 +73,7 @@ public class MeetingEndpoint {
             try {
                 String result = session.get(MeetingDB.class, Integer.valueOf(id)).toJson(true).toString();
                 session.close();
-                return  result;
+                return result;
             } catch (Exception e) {
                 return e.toString();
             }
@@ -91,18 +88,17 @@ public class MeetingEndpoint {
         // Do a call to a DAO Implementation that does a JDBC call to delete resource from  Mongo based on JSON
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             try {
-                Boolean update = false;
                 session.beginTransaction();
                 MeetingDB meeting = session.get(MeetingDB.class, Integer.valueOf(id));
 
                 JSONObject json = new JSONObject(userJson);
-                if(json.has("time")){
+                if (json.has("time")) {
                     meeting.setTimeDate(Timestamp.valueOf(json.getString("time")));
                 }
-                if(json.has("placeID")){
+                if (json.has("placeID")) {
                     meeting.setPlace(json.getInt("placeID"));
                 }
-                if(json.has("meetingName")){
+                if (json.has("meetingName")) {
                     meeting.setMeetingName(json.getString("meetingName"));
                 }
                 session.save(meeting);
