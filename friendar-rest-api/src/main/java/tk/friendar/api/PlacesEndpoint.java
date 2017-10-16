@@ -10,7 +10,7 @@ import javax.ws.rs.core.MediaType;
 import java.util.List;
 
 /**
- * Root resource (exposed at "users" path)
+ * Root resource (exposed at "places" path)
  */
 @Path("places")
 public class PlacesEndpoint {
@@ -53,9 +53,9 @@ public class PlacesEndpoint {
             try (Session session = SessionFactorySingleton.getInstance().openSession()) {
                 session.beginTransaction();
                 session.save(place);
+                String response = place.toJson(true).toString();
                 session.getTransaction().commit();
-                JSONObject returnJson = new JSONObject(place);
-                return returnJson.toString();
+                return response;
             }
         } catch (Exception e) {
             throw new JSONException(e);
@@ -84,10 +84,10 @@ public class PlacesEndpoint {
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             try {
                 session.beginTransaction();
-                PlaceDB user = session.get(PlaceDB.class, Integer.valueOf(id));
-                session.delete(user);
+                PlaceDB place = session.get(PlaceDB.class, Integer.valueOf(id));
+                session.delete(place);
                 session.getTransaction().commit();
-                return user.toJson(true).toString();
+                return place.toJson(true).toString();
             } catch (HibernateException | JSONException e) {
                 return e.toString();
             }
@@ -118,8 +118,8 @@ public class PlacesEndpoint {
                 }
                 session.update(place);
                 session.getTransaction().commit();
-                JSONObject returnJson = new JSONObject(place);
-                return returnJson.toString();
+                String response = place.toJson(true).toString();
+                return response;
             } catch (Exception e) {
                 return e.toString();
             }

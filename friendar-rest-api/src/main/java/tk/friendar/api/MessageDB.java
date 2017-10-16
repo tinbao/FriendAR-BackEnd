@@ -6,8 +6,7 @@ import org.json.JSONObject;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
-
+import java.util.Date;
 @Entity
 @Table(name = "messages")
 public class MessageDB implements Serializable {
@@ -26,7 +25,9 @@ public class MessageDB implements Serializable {
     private UserDB user; //not null
 
     private String content;
-    private Timestamp timeSent;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timeSent;
 
     public int getMessageID() {
         return messageID;
@@ -64,11 +65,11 @@ public class MessageDB implements Serializable {
         this.content = content;
     }
 
-    public Timestamp getTimeSent() {
+    public Date getTimeSent() {
         return timeSent;
     }
 
-    public void setTimeSent(Timestamp timeSent) {
+    public void setTimeSent(Date timeSent) {
         this.timeSent = timeSent;
     }
 
@@ -76,9 +77,9 @@ public class MessageDB implements Serializable {
         JSONObject messageJson = new JSONObject();
         messageJson.put("messageID", this.getMessageID());
         messageJson.put("content", this.getContent());
-        messageJson.put("meeting", this.getMeeting());
+        messageJson.put("meeting", this.getMeeting().toJson(false).toString());
         messageJson.put("time sent", this.getTimeSent());
-        messageJson.put("user", this.getUser());
+        messageJson.put("user", this.getUser().toJson(false).toString());
         return messageJson;
 
     }

@@ -76,8 +76,12 @@ public class MeetingDB implements Serializable {
         JSONObject meetingJSON = new JSONObject();
         meetingJSON.put("id", this.getMeetingID());
         meetingJSON.put("meetingName", this.getMeetingName());
-        meetingJSON.put("meetingUsers", this.getMeetingUsers());
-        meetingJSON.put("place", this.getPlace());
+        if(nextLevelDeep){
+            for (MeetingUserDB meetingUsers : this.getMeetingUsers()) {
+                meetingJSON.append("meeting users", meetingUsers.toJson(false));
+            }
+            meetingJSON.put("place", this.getPlace().toJson(false).toString());
+        }
         meetingJSON.put("Time", this.getTimeDate());
         return meetingJSON;
 

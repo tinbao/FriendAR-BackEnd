@@ -6,10 +6,11 @@ import org.json.JSONObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import java.util.Date;
 import java.util.List;
 
 /**
- * Root resource (exposed at "chats" path)
+ * Root resource (exposed at "messages" path)
  */
 @Path("messages")
 public class ChatEndpoint {
@@ -22,15 +23,17 @@ public class ChatEndpoint {
      */
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public String get() {
+    public String get() throws JSONException {
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
-            List<MessageDB> messages = session.createCriteria(MessageDB.class).list();
+
+            List<MessageDB> messagesDB = session.createCriteria(MessageDB.class).list();
             JSONObject json = new JSONObject();
-            for (MessageDB message : messages) {
-                json.append("messages", message.toJson(true));
+            for (MessageDB place : messagesDB) {
+                json.append("messages: ", place.toJson(true));
             }
+
             return json.toString();
-        } catch (JSONException e) {
+        } catch (Exception e) {
             return e.toString();
         }
     }
@@ -39,25 +42,25 @@ public class ChatEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public String create(String messageJson) throws JSONException {
-        JSONObject json = new JSONObject(messageJson);
-        MessageDB message = new MessageDB();
-
         try {
+
+            JSONObject json = new JSONObject(messageJson);
+            MessageDB message = new MessageDB();
             message.setContent(json.getString("content"));
             message.setMeeting(json.getInt("meetingID"));
             message.setUser(json.getInt("userID"));
+            message.setTimeSent(new Date());
+
+            try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+                session.beginTransaction();
+                session.save(message);
+                session.getTransaction().commit();
+                String response = message.toJson(true).toString();
+                return response;
+            }
         } catch (Exception e) {
-            return e.toString();
+            throw new JSONException(e);
         }
-
-        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
-            session.beginTransaction();
-            session.save(message);
-            session.getTransaction().commit();
-            //JSONObject messageJSON = new JSONObject(message);
-            return message.toJson(true).toString();
-        }
-
     }
 
     @Path("{id}")
@@ -65,9 +68,11 @@ public class ChatEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public String get(@PathParam("id") String id) {
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
-            return session.get(MessageDB.class, Integer.valueOf(id)).toJson(true).toString();
-        } catch (JSONException e) {
-            return e.toString();
+            try {
+                return session.get(MessageDB.class, Integer.valueOf(id)).toJson(false).toString();
+            } catch (JSONException e) {
+                return e.toString();
+            }
         }
     }
 }

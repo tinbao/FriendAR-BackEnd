@@ -63,12 +63,17 @@ public class PlaceDB implements Serializable {
 	}
 
     JSONObject toJson(Boolean nextLevelDeep) throws JSONException {
-        JSONObject userJSON = new JSONObject();
-        userJSON.put("id", this.getPlaceID());
-        userJSON.put("placeName", this.getPlaceName());
-        userJSON.put("latitude", this.getLatitude());
-        userJSON.put("longitude", this.getLongitude());
-        return userJSON;
+        JSONObject placeJson = new JSONObject();
+        placeJson.put("id", this.getPlaceID());
+        placeJson.put("placeName", this.getPlaceName());
+        placeJson.put("latitude", this.getLatitude());
+        placeJson.put("longitude", this.getLongitude());
+        if (nextLevelDeep) {
+            for (MeetingDB meeting : this.getMeetings()) {
+                placeJson.append("meetings: ", meeting.toJson(nextLevelDeep));
+            }
+        }
+        return placeJson;
 
     }
 }

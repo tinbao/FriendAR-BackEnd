@@ -73,6 +73,18 @@ public class UsersEndpointTest {
     }
 
     @Test
+    public void testPOSTCompleteAnotherUser_NoLatLong() throws Exception {
+        //Complete data without lat or long
+        String test = "{\"username\": \"Gold@gmail.com\", \"email\": \"matt@gmail.com\", \"usersPassword\": \"Stone\",\"fullName\":\"Tin Bao\"}";
+        Response msg = target.path("users").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test), Response.class);
+        String output = msg.readEntity(String.class);
+        assertNotNull(msg);
+        assertNotNull(output);
+        assert (output.toLowerCase().indexOf("username".toLowerCase()) != -1);
+
+    }
+
+    @Test
     public void testAnotherPOST() throws Exception {
         String test = "{\"username\": \"james\", \"email\": \"asf@gsddf.com\", \"usersPassword\": \"stone\",\"fullName\":\"Simon\"}";
         Response msg = target.path("users").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test), Response.class);
@@ -145,7 +157,7 @@ public class UsersEndpointTest {
     @Test
     public void testGetParticularUser(){
         //getting a specific user in form of a string
-        String user = target.path("users").path("1").request().get(String.class);
+        String user = target.path("users").path("4").request().get(String.class);
         assertNotNull(user);
         assert user.toLowerCase().contains("fullName".toLowerCase());
     }

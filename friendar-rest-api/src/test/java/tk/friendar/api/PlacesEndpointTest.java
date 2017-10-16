@@ -203,7 +203,7 @@ public class PlacesEndpointTest {
         String output;
 
         //updating an existing entry
-        String test_01 = "{\"Lonitdue\":678}";
+        String test_01 = "{\"longitude\":678}";
         msg = target.path("places").path("2").request().accept(MediaType.APPLICATION_JSON).put(Entity.json(test_01));
         output = msg.readEntity(String.class);
         assertNotNull(msg);
@@ -218,7 +218,7 @@ public class PlacesEndpointTest {
         String output;
 
         //updating an existing entry
-        String test_01 = "{\"Lonitdue\":678}";
+        String test_01 = "{\"longitude\":678}";
         msg = target.path("places").path("15").request().accept(MediaType.APPLICATION_JSON).put(Entity.json(test_01));
         output = msg.readEntity(String.class);
         assertNotNull(msg);
@@ -243,7 +243,7 @@ public class PlacesEndpointTest {
     }
 
     @Test
-    public void testDelete_invalidUser() throws Exception {
+    public void testDelete_invalidPlace() throws Exception {
         Response msg;
         String output;
         //Deleting an exisiting place

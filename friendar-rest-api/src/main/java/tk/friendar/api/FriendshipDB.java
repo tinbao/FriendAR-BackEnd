@@ -1,5 +1,6 @@
 package tk.friendar.api;
 
+import org.hibernate.Session;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -20,7 +21,7 @@ public class FriendshipDB implements Serializable {
     private UserDB userA_ID; //not null
 
     @ManyToOne
-    @JoinColumn(name = "userB_id")
+    @JoinColumn(name = "userb_id")
     private UserDB userB_ID;
 
 
@@ -37,8 +38,11 @@ public class FriendshipDB implements Serializable {
         return userA_ID;
     }
 
-    public void setUserA_ID(UserDB userA_ID) {
-        this.userA_ID = userA_ID;
+    public void setUserA_ID(int userA_ID) {
+
+        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+            this.userA_ID = session.get(UserDB.class,userA_ID);
+        }
     }
 
 
@@ -46,15 +50,17 @@ public class FriendshipDB implements Serializable {
         return userB_ID;
     }
 
-    public void setUserB_ID(UserDB userB_ID) {
-        this.userB_ID = userB_ID;
+    public void setUserB_ID(int userB_ID) {
+        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+            this.userB_ID = session.get(UserDB.class,userB_ID);
+        }
     }
 
     JSONObject toJson() throws JSONException {
         JSONObject friendshipJSON = new JSONObject();
         friendshipJSON.put("id", this.getFriendshipID());
-        friendshipJSON.put("userA_ID", this.getUserA_ID());
-        friendshipJSON.put("userB_ID", this.getUserB_ID());
+        friendshipJSON.put("userA_ID", this.getUserA_ID().toJson(false));
+        friendshipJSON.put("userB_ID", this.getUserB_ID().toJson(false));
         return friendshipJSON;
 
     }
