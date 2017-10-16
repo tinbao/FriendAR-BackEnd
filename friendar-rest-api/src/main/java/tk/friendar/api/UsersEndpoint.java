@@ -34,6 +34,7 @@ public class UsersEndpoint {
 
             return json.toString();
         } catch (Exception e) {
+            System.err.println(e.toString());
             return e.toString();
         }
     }
@@ -49,7 +50,7 @@ public class UsersEndpoint {
             boolean update = false;
 
             user.setFullName(json.getString("fullName"));
-            user.setUsersname(json.getString("username"));
+            user.setUsername(json.getString("username"));
             user.setUsersPassword(json.getString("usersPassword"));
             user.setEmail(json.getString("email"));
             if (json.has("latitude")) {
@@ -74,7 +75,8 @@ public class UsersEndpoint {
                 return returnJson.toString();
             }
         } catch (Exception e) {
-            throw new JSONException(e);
+            System.err.println(e.toString());
+            return e.toString();
         }
     }
 
