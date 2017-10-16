@@ -3,9 +3,8 @@ package tk.friendar.api;
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.*;
+import org.junit.runners.MethodSorters;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -14,14 +13,15 @@ import javax.ws.rs.client.WebTarget;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import java.util.Objects;
 
 import static org.junit.Assert.assertNotNull;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class PlacesEndpointTest {
 
     private HttpServer server;
     private WebTarget target;
+    private static boolean userMade = false;
 
     @Before
     public void setUp() throws Exception {
@@ -38,6 +38,17 @@ public class PlacesEndpointTest {
         clientConfig.register(feature);
         Client client = ClientBuilder.newClient(clientConfig);
         target = client.target(Main.BASE_URI);
+        if(userMade == false){
+            createUser_Auth();
+        }
+        userMade = true;
+
+    }
+
+    private void createUser_Auth() throws Exception{
+        String test = "{\"username\": \"Luca@gmail.com\", \"email\": \"luca@gmail.com\", \"usersPassword\": \"harris\",\"fullName\":\"Luca Harris\", \"latitude\": 120, \"longitude\": 120}";
+        Response msg = target.path("users").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test), Response.class);
+        userMade = true;
     }
 
     @After
@@ -52,7 +63,7 @@ public class PlacesEndpointTest {
     /********************* @POST tests *********************/
 
     @Test
-    public void testPost_CompletePlace() throws Exception {
+    public void A_testPost_CompletePlace() throws Exception {
         Response msg;
         String output;
         //Complete tests
@@ -65,7 +76,7 @@ public class PlacesEndpointTest {
     }
 
     @Test
-    public void testPost_CompletePlaceAnother() throws Exception {
+    public void B_testPost_CompletePlaceAnother() throws Exception {
         Response msg;
         String output;
         String test = "{\"latitude\":256,\"placeName\":\"Etihad Stadium\",\"longitude\":1024}";
@@ -73,11 +84,12 @@ public class PlacesEndpointTest {
         output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
+        System.out.println("MSG: " + output);
         assert (output.toLowerCase().indexOf("placeName".toLowerCase()) != -1);
     }
 
     @Test
-    public void testPost_CompletePlaceOther() throws Exception {
+    public void C_testPost_CompletePlaceOther() throws Exception {
         Response msg;
         String output;
         String test = "{\"latitude\":128,\"placeName\":\"AAMI Park Stadium\",\"longitude\":2048}";
@@ -90,7 +102,7 @@ public class PlacesEndpointTest {
 
 
     @Test
-    public void testPost_Unimelb() throws Exception {
+    public void D_testPost_Unimelb() throws Exception {
         Response msg;
         String output;
         String test = "{\"latitude\":12,\"placeName\":\"University of Melbourne\",\"longitude\":24}";
@@ -103,7 +115,7 @@ public class PlacesEndpointTest {
 
 
     @Test
-    public void testPost_Maccas() throws Exception {
+    public void E_testPost_Maccas() throws Exception {
         Response msg;
         String output;
         String test = "{\"latitude\":10,\"placeName\":\"Swanston Maccas\",\"longitude\":35}";
@@ -115,7 +127,7 @@ public class PlacesEndpointTest {
     }
 
     @Test
-    public void testPost_IncompleteNoLat() throws Exception {
+    public void F_testPost_IncompleteNoLat() throws Exception {
         Response msg;
         String output;
         String test = "{\"placeName\":\"Etihad Stadium\",\"longitude\":123}";
@@ -128,7 +140,7 @@ public class PlacesEndpointTest {
 
 
     @Test
-    public void testPost_IncompleteNoLong() throws Exception {
+    public void G_testPost_IncompleteNoLong() throws Exception {
         Response msg;
         String output;
         String test = "{\"placeName\":\"Etihad Stadium\",\"latitude\":123}";
@@ -140,7 +152,7 @@ public class PlacesEndpointTest {
     }
 
     @Test
-    public void testPost_IncompleteNoName() throws Exception {
+    public void H_testPost_IncompleteNoName() throws Exception {
         Response msg;
         String output;
         String test = "{\"latitude\":\"12\",\"longitude\":123}";
@@ -154,7 +166,7 @@ public class PlacesEndpointTest {
     /********************* @GET tests *********************/
 
     @Test
-    public void testGetItAll() {
+    public void I_testGetItAll() {
         //getting entire list of places in form of a string
         String responseMsg = target.path("places").request().get(String.class);
         assertNotNull(responseMsg);
@@ -163,7 +175,7 @@ public class PlacesEndpointTest {
     }
 
     @Test
-    public void testGetASpecificPlace() {
+    public void J_testGetASpecificPlace() {
         //getting a specific entry list of places in form of a string
         String responseMsg = target.path("places").path("1").request().get(String.class);
         assertNotNull(responseMsg);
@@ -171,7 +183,7 @@ public class PlacesEndpointTest {
     }
 
     @Test
-    public void testGetInvalidPlace() {
+    public void K_testGetInvalidPlace() {
         //getting a specific entry list of places in form of a string
         try{
             String responseMsg = target.path("places").path("10").request().get(String.class);
@@ -184,7 +196,7 @@ public class PlacesEndpointTest {
     /********************* @PUT tests *********************/
 
     @Test
-    public void testPut_FullData() throws Exception {
+    public void L_testPut_FullData() throws Exception {
         Response msg;
         String output;
 
@@ -198,7 +210,7 @@ public class PlacesEndpointTest {
     }
 
     @Test
-    public void testPut_LatOnly() throws Exception {
+    public void M_testPut_LatOnly() throws Exception {
         Response msg;
         String output;
 
@@ -213,7 +225,7 @@ public class PlacesEndpointTest {
 
 
     @Test
-    public void testPut_InvalidID() throws Exception {
+    public void N_testPut_InvalidID() throws Exception {
         Response msg;
         String output;
 
@@ -223,7 +235,7 @@ public class PlacesEndpointTest {
         output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
-        assert (output.equalsIgnoreCase("java.lang.IllegalArgumentException: attempt to create saveOrUpdate event with null entity"));
+        assert (output.equalsIgnoreCase("java.lang.IllegalArgumentException"));
     }
 
 
@@ -231,11 +243,11 @@ public class PlacesEndpointTest {
     /********************* @DELETE tests *********************/
 
     @Test
-    public void testDelete() throws Exception {
+    public void O_testDelete() throws Exception {
         Response msg;
         String output;
         //Deleting an exisiting place
-        msg = target.path("places").path("2").request().accept(MediaType.APPLICATION_JSON).delete();
+        msg = target.path("places").path("5").request().accept(MediaType.APPLICATION_JSON).delete();
         output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
@@ -243,7 +255,7 @@ public class PlacesEndpointTest {
     }
 
     @Test
-    public void testDelete_invalidPlace() throws Exception {
+    public void P_testDelete_invalidPlace() throws Exception {
         Response msg;
         String output;
         //Deleting an exisiting place

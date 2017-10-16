@@ -5,7 +5,9 @@ import org.glassfish.jersey.client.ClientConfig;
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
@@ -16,10 +18,12 @@ import javax.ws.rs.core.Response;
 
 import static org.junit.Assert.assertNotNull;
 
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class FriendshipEndpointTest {
 
     private HttpServer server;
     private WebTarget target;
+    private static boolean userMade = false;
 
     @Before
     public void setUp() throws Exception {
@@ -35,7 +39,31 @@ public class FriendshipEndpointTest {
         clientConfig.register(feature);
         Client client = ClientBuilder.newClient(clientConfig);
         target = client.target(Main.BASE_URI);
+        if (userMade == false) {
+            createUser_Auth();
+        }
+        userMade = true;
+        Populate();
     }
+
+
+    private void createUser_Auth() throws Exception{
+        String test = "{\"username\": \"Luca@gmail.com\", \"email\": \"luca@gmail.com\", \"usersPassword\": \"harris\",\"fullName\":\"Luca Harris\", \"latitude\": 120, \"longitude\": 120}";
+        Response msg = target.path("users").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test), Response.class);
+        userMade = true;
+    }
+    public void Populate() throws Exception{
+        String test;
+        Response msg;
+
+        test = "{\"username\": \"tin@gmail.com\", \"email\": \"matt@gmail.com\", \"usersPassword\": \"bao\",\"fullName\":\"Tin Bao\"}";
+        msg = target.path("users").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test), Response.class);
+
+        test = "{\"username\": \"james\", \"email\": \"asf@gsddf.com\", \"usersPassword\": \"stone\",\"fullName\":\"Simon\"}";
+        msg = target.path("users").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test), Response.class);
+
+    }
+
 
     @After
     public void tearDown() throws Exception {
@@ -49,9 +77,9 @@ public class FriendshipEndpointTest {
 
     /******************************* @POST tests *******************************/
     @Test
-    public void testPOSTCompleteFriendship() throws Exception {
+    public void A_testPOSTCompleteFriendship() throws Exception {
         //Complete data with lat or long
-        String test = "{\"userA_ID\": 1, \"userB_ID\": 4}";
+        String test = "{\"userA_ID\": 1, \"userB_ID\": 2}";
         Response msg = target.path("friendships").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test), Response.class);
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
@@ -60,7 +88,7 @@ public class FriendshipEndpointTest {
     }
 
     @Test
-    public void testPOSTCompleteFriendshipsAnother() throws Exception {
+    public void B_testPOSTCompleteFriendshipsAnother() throws Exception {
         //Complete data with lat or long
         String test = "{\"userA_ID\": 1, \"userB_ID\": 3}";
         Response msg = target.path("friendships").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test), Response.class);
@@ -73,7 +101,7 @@ public class FriendshipEndpointTest {
     }
 
     @Test
-    public void testPOSTwithoutA_ID() throws Exception {
+    public void C_testPOSTwithoutA_ID() throws Exception {
         //Complete data with lat or long
         String test = "{\"userB_ID\": 4}";
         Response msg = target.path("friendships").request().accept(MediaType.APPLICATION_JSON).post(Entity.json(test), Response.class);
@@ -86,7 +114,7 @@ public class FriendshipEndpointTest {
 
     /******************************* @GET tests *******************************/
     @Test
-    public void testGetAllAllFriendships() {
+    public void D_testGetAllAllFriendships() {
         //getting entire list of users in form of a string
         String allMeetingUsers = target.path("friendships").request().get(String.class);
         assertNotNull(allMeetingUsers);
@@ -94,7 +122,7 @@ public class FriendshipEndpointTest {
     }
 
     @Test
-    public void testGetParticularFriendship() {
+    public void E_testGetParticularFriendship() {
         //getting a specific user in form of a string
         String friendship = target.path("friendships").path("1").request().get(String.class);
         assertNotNull(friendship);
@@ -102,7 +130,7 @@ public class FriendshipEndpointTest {
     }
 
     @Test
-    public void testGetParticularMeetingUser_empty() {
+    public void F_testGetParticularMeetingUser_empty() {
         //getting a specific user that doesn't exist
         try {
             //getting a specific user in form of a string
@@ -118,7 +146,7 @@ public class FriendshipEndpointTest {
 
     /******************************* @Delete tests *******************************/
     @Test
-    public void testAValidDelete() throws Exception {
+    public void G_testAValidDelete() throws Exception {
         Response msg;
         String output;
         //Deleting an existing place
@@ -126,11 +154,11 @@ public class FriendshipEndpointTest {
         output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
-        assert (output.toLowerCase().indexOf("meetingUserID".toLowerCase()) != -1);
+        assert (output.toLowerCase().indexOf("id".toLowerCase()) != -1);
     }
 
     @Test
-    public void testAnInvalidDelete() throws Exception {
+    public void H_testAnInvalidDelete() throws Exception {
         Response msg;
         String output;
         //Deleting an existing place

@@ -106,6 +106,9 @@ public class PlacesEndpoint {
                 session.beginTransaction();
                 PlaceDB place = session.get(PlaceDB.class, Integer.valueOf(id));
 
+                if(place == null){
+                    throw new IllegalArgumentException();
+                }
                 JSONObject json = new JSONObject(placeJson);
                 if(json.has("placeName")){
                     place.setPlaceName(json.getString("placeName"));
