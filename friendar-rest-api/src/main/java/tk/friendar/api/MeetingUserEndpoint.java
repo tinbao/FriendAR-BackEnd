@@ -32,7 +32,7 @@ public class MeetingUserEndpoint {
             for (MeetingUserDB meetingUser : meetingUsersDB) {
                 json.append("meetingUsers: ", meetingUser.toJson(true));
             }
-
+            session.close();
             return json.toString();
         } catch (Exception e) {
             return e.toString();
@@ -57,6 +57,7 @@ public class MeetingUserEndpoint {
                 session.save(meetingUser);
                 String response = meetingUser.toJson(false).toString();
                 session.getTransaction().commit();
+                session.close();
                 return response;
             }
         } catch (Exception e) {
@@ -70,7 +71,9 @@ public class MeetingUserEndpoint {
     public String get(@PathParam("id") String id) {
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             try {
-                return session.get(MeetingUserDB.class, Integer.valueOf(id)).toJson(false).toString();
+                String result = session.get(MeetingUserDB.class, Integer.valueOf(id)).toJson(false).toString();
+                session.close();
+                return result;
             } catch (Exception e) {
                 return e.toString();
             }
@@ -88,6 +91,7 @@ public class MeetingUserEndpoint {
                 MeetingUserDB meetingUser = session.get(MeetingUserDB.class, Integer.valueOf(id));
                 session.delete(meetingUser);
                 session.getTransaction().commit();
+                session.close();
                 return meetingUser.toJson(false).toString();
             } catch (HibernateException | JSONException e) {
                 return e.toString();

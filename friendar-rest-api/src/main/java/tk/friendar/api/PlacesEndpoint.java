@@ -31,7 +31,7 @@ public class PlacesEndpoint {
             for (PlaceDB place : placesDB) {
                 json.append("places: ", place.toJson(true));
             }
-
+            session.close();
             return json.toString();
         } catch (Exception e) {
             return e.toString();
@@ -55,6 +55,7 @@ public class PlacesEndpoint {
                 session.save(place);
                 String response = place.toJson(true).toString();
                 session.getTransaction().commit();
+                session.close();
                 return response;
             }
         } catch (Exception e) {
@@ -68,8 +69,10 @@ public class PlacesEndpoint {
     public String get(@PathParam("id") String id) {
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             try {
-                return session.get(PlaceDB.class, Integer.valueOf(id)).toJson(true).toString();
-            } catch (JSONException e) {
+                String result = session.get(PlaceDB.class, Integer.valueOf(id)).toJson(true).toString();
+                session.close();
+                return result;
+            } catch (Exception e) {
                 return e.toString();
             }
         }
@@ -87,8 +90,9 @@ public class PlacesEndpoint {
                 PlaceDB place = session.get(PlaceDB.class, Integer.valueOf(id));
                 session.delete(place);
                 session.getTransaction().commit();
+                session.close();
                 return place.toJson(true).toString();
-            } catch (HibernateException | JSONException e) {
+            } catch (Exception e) {
                 return e.toString();
             }
         }
@@ -122,6 +126,7 @@ public class PlacesEndpoint {
                 session.update(place);
                 session.getTransaction().commit();
                 String response = place.toJson(true).toString();
+                session.close();
                 return response;
             } catch (Exception e) {
                 return e.toString();

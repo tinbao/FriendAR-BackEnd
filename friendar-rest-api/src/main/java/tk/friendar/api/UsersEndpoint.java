@@ -32,7 +32,7 @@ public class UsersEndpoint {
             for (UserDB user : usersDB) {
                 json.append("users: ", user.toJson(true));
             }
-
+            session.close();
             return json.toString();
         } catch (Exception e) {
             System.err.println(e.toString());
@@ -73,6 +73,7 @@ public class UsersEndpoint {
                 session.getTransaction().commit();
                 JSONObject returnJson = new JSONObject(user);
                 returnJson.remove("usersPassword");
+                session.close();
                 return returnJson.toString();
             }
         } catch (Exception e) {
@@ -87,7 +88,9 @@ public class UsersEndpoint {
     public String get(@PathParam("id") String id) {
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             try {
-                return session.get(UserDB.class, Integer.valueOf(id)).toJson(true).toString();
+                String result = session.get(UserDB.class, Integer.valueOf(id)).toJson(true).toString();
+                session.close();
+                return result;
             } catch (Exception e) {
                 return e.toString();
             }
@@ -105,6 +108,7 @@ public class UsersEndpoint {
                 UserDB user = session.get(UserDB.class, Integer.valueOf(id));
                 session.delete(user);
                 session.getTransaction().commit();
+                session.close();
                 return user.toJson(true).toString();
             } catch (HibernateException | JSONException e) {
                 return e.toString();
@@ -155,6 +159,7 @@ public class UsersEndpoint {
                 session.getTransaction().commit();
                 JSONObject returnJson = new JSONObject(user);
                 returnJson.remove("usersPassword");
+                session.close();
                 return returnJson.toString();
             } catch (Exception e) {
                 return e.toString();

@@ -33,6 +33,7 @@ public class FriendshipEndpoint {
                 json.append("friendships: ", friendship.toJson());
             }
 
+            session.close();
             return json.toString();
         } catch (Exception e) {
             return e.toString();
@@ -57,6 +58,7 @@ public class FriendshipEndpoint {
                 session.save(friendship);
                 String respone = friendship.toJson().toString();
                 session.getTransaction().commit();
+                session.close();
                 return respone;
             }
         } catch (Exception e) {
@@ -70,7 +72,9 @@ public class FriendshipEndpoint {
     public String get(@PathParam("id") String id) {
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             try {
-                return session.get(FriendshipDB.class, Integer.valueOf(id)).toJson().toString();
+                String result = session.get(FriendshipDB.class, Integer.valueOf(id)).toJson().toString();
+                session.close();
+                return result;
             } catch (Exception e) {
                 return e.toString();
             }
@@ -88,6 +92,7 @@ public class FriendshipEndpoint {
                 FriendshipDB friendship = session.get(FriendshipDB.class, Integer.valueOf(id));
                 session.delete(friendship);
                 session.getTransaction().commit();
+                session.close();
                 return friendship.toJson().toString();
             } catch (HibernateException | JSONException e) {
                 return e.toString();
