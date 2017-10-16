@@ -1,7 +1,5 @@
 package tk.friendar.api;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Metamodel;
 import org.hibernate.Session;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,7 +7,6 @@ import org.json.JSONObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -83,7 +80,12 @@ public class MeetingEndpoint {
             Session session = SessionFactorySingleton.getInstance().openSession();
             try {
                 String result = session.get(MeetingDB.class, Integer.valueOf(id)).toJson(true).toString();
+<<<<<<< HEAD
                 return  result;
+=======
+                session.close();
+                return result;
+>>>>>>> e20849cdfa14ba7b7b56e98ced50c267d3e3187f
             } catch (Exception e) {
                 return e.toString();
             } finally {
@@ -103,18 +105,17 @@ public class MeetingEndpoint {
         try {
             Session session = SessionFactorySingleton.getInstance().openSession();
             try {
-                Boolean update = false;
                 session.beginTransaction();
                 MeetingDB meeting = session.get(MeetingDB.class, Integer.valueOf(id));
 
                 JSONObject json = new JSONObject(userJson);
-                if(json.has("time")){
+                if (json.has("time")) {
                     meeting.setTimeDate(Timestamp.valueOf(json.getString("time")));
                 }
-                if(json.has("placeID")){
+                if (json.has("placeID")) {
                     meeting.setPlace(json.getInt("placeID"));
                 }
-                if(json.has("meetingName")){
+                if (json.has("meetingName")) {
                     meeting.setMeetingName(json.getString("meetingName"));
                 }
                 session.save(meeting);
