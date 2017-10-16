@@ -1,6 +1,5 @@
 package tk.friendar.api;
 
-import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.json.JSONException;
 import org.json.JSONObject;
