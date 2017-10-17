@@ -16,12 +16,12 @@ public class MeetingDB implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "meetingid", nullable = false)
-    private int meetingID; //not null
+    public int meetingid; //not null
 
     private String meetingName;
     private Timestamp timeDate;
 
-    @OneToMany (targetEntity = MeetingUserDB.class, mappedBy = "meetingID", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
+    @OneToMany (targetEntity = MeetingUserDB.class, mappedBy = "meetingid", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
 	public Collection<MeetingUserDB> meetingUsers = new ArrayList<MeetingUserDB>();
 
     @OneToMany (targetEntity = MessageDB.class, mappedBy = "meeting", cascade = CascadeType.ALL, fetch=FetchType.LAZY)
@@ -31,12 +31,12 @@ public class MeetingDB implements Serializable {
     @JoinColumn(name = "placeid")
     private PlaceDB place;
 
-    public int getMeetingID() {
-        return meetingID;
+    public int getMeetingid() {
+        return meetingid;
     }
 
-    public void setMeetingID(int meetingID) {
-        this.meetingID = meetingID;
+    public void setMeetingid(int meetingID) {
+        this.meetingid = meetingID;
     }
 
     public Timestamp getTimeDate() {
@@ -74,7 +74,7 @@ public class MeetingDB implements Serializable {
 
     JSONObject toJson(Boolean nextLevelDeep) throws JSONException {
         JSONObject meetingJSON = new JSONObject();
-        meetingJSON.put("id", this.getMeetingID());
+        meetingJSON.put("id", this.getMeetingid());
         meetingJSON.put("meetingName", this.getMeetingName());
         if(nextLevelDeep){
             for (MeetingUserDB meetingUsers : this.getMeetingUsers()) {

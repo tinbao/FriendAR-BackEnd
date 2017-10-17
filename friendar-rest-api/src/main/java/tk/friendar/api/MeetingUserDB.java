@@ -19,7 +19,7 @@ public class MeetingUserDB implements Serializable {
 
     @ManyToOne
     @JoinColumn(name="meetingid")
-    private MeetingDB meetingID; //not null
+    private MeetingDB meetingid; //not null
 
     @ManyToOne
     @JoinColumn(name="userid")
@@ -33,14 +33,14 @@ public class MeetingUserDB implements Serializable {
         this.meetingUserID = meetingUserID;
     }
 
-    public MeetingDB getMeetingID() {
-        return meetingID;
+    public MeetingDB getMeetingid() {
+        return meetingid;
     }
 
-    public void setMeetingID(int meetingID) {
+    public void setMeetingid(int meetingID) {
 
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
-            this.meetingID = session.get(MeetingDB.class,meetingID);
+            this.meetingid = session.get(MeetingDB.class,meetingID);
         }
     }
 
@@ -59,7 +59,7 @@ public class MeetingUserDB implements Serializable {
         JSONObject messageJson = new JSONObject();
         messageJson.put("meetingUserID", this.getMeetingUserID());
         if(nextLevelDeep){
-            messageJson.put("meeting", this.getMeetingID().toJson(false).toString());
+            messageJson.put("meeting", this.getMeetingid().toJson(false).toString());
         }
         messageJson.put("user", this.getUserID().toJson(false).toString());
         return messageJson;

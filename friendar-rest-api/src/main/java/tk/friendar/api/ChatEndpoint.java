@@ -1,6 +1,7 @@
 package tk.friendar.api;
 
 import org.hibernate.Session;
+import org.hibernate.criterion.Restrictions;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -69,10 +70,20 @@ public class ChatEndpoint {
     public String get(@PathParam("id") String id) {
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             try {
-                return session.get(MessageDB.class, Integer.valueOf(id)).toJson(false).toString();
+                List<MessageDB> messagesDB = session.createCriteria(MessageDB.class).list();
+                JSONObject json = new JSONObject();
+                for (MessageDB message : messagesDB) {
+                    if (message.getMeeting().getMeetingid() == Integer.valueOf(id)) {
+                        json.append("messages: ", message.toJson(false));
+                    }
+                }
+                return json.toString();
             } catch (JSONException e) {
                 return e.toString();
             }
+        } catch (Exception e) {
+            System.out.println(e.toString());
         }
+        return "error";
     }
 }

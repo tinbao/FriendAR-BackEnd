@@ -14,11 +14,11 @@ public class MessageDB implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "messageid", nullable=false)
-    private int messageID; //not null
+    public int messageid; //not null
 
     @ManyToOne
-    @JoinColumn(name="meetingID")
-    private MeetingDB meeting; //not null
+    @JoinColumn(name="meetingid")
+    public MeetingDB meeting; //not null
 
     @ManyToOne
     @JoinColumn(name="userid")
@@ -29,12 +29,12 @@ public class MessageDB implements Serializable {
     @Temporal(TemporalType.TIMESTAMP)
     private Date timeSent;
 
-    public int getMessageID() {
-        return messageID;
+    public int getMessageid() {
+        return messageid;
     }
 
-    public void setMessageID(int messageID) {
-        this.messageID = messageID;
+    public void setMessageid(int messageID) {
+        this.messageid = messageID;
     }
 
     public MeetingDB getMeeting() {
@@ -75,7 +75,7 @@ public class MessageDB implements Serializable {
 
     JSONObject toJson(Boolean nextLevelDeep) throws JSONException {
         JSONObject messageJson = new JSONObject();
-        messageJson.put("messageID", this.getMessageID());
+        messageJson.put("messageID", this.getMessageid());
         messageJson.put("content", this.getContent());
         messageJson.put("meeting", this.getMeeting().toJson(false).toString());
         messageJson.put("time sent", this.getTimeSent());

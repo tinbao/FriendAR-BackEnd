@@ -7,7 +7,6 @@ import org.json.JSONObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -49,7 +48,7 @@ public class MeetingUserEndpoint {
             MeetingUserDB meetingUser = new MeetingUserDB();
             boolean update = false;
 
-            meetingUser.setMeetingID(json.getInt("meetingID"));
+            meetingUser.setMeetingid(json.getInt("meetingID"));
             meetingUser.setUserID(json.getInt("userID"));
 
             try (Session session = SessionFactorySingleton.getInstance().openSession()) {
