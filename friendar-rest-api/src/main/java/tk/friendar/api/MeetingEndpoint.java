@@ -80,12 +80,7 @@ public class MeetingEndpoint {
             Session session = SessionFactorySingleton.getInstance().openSession();
             try {
                 String result = session.get(MeetingDB.class, Integer.valueOf(id)).toJson(true).toString();
-<<<<<<< HEAD
                 return  result;
-=======
-                session.close();
-                return result;
->>>>>>> e20849cdfa14ba7b7b56e98ced50c267d3e3187f
             } catch (Exception e) {
                 return e.toString();
             } finally {
