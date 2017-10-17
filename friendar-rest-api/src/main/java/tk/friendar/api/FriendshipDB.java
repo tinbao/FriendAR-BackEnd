@@ -40,8 +40,11 @@ public class FriendshipDB implements Serializable {
 
     public void setUserA_ID(int userA_ID) {
 
-        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
-            this.userA_ID = session.get(UserDB.class,userA_ID);
+        Session session = SessionFactorySingleton.getInstance().openSession();
+        try {
+            this.userA_ID = session.get(UserDB.class, userA_ID);
+        } finally {
+            session.close();
         }
     }
 

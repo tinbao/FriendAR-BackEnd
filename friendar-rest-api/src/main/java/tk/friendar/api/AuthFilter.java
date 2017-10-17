@@ -37,22 +37,17 @@ public class AuthFilter implements ContainerRequestFilter {
         auth = auth.replaceFirst("[Bb]asic ", "");
         String[] userColonPass = new String(Base64.getDecoder().decode(auth.getBytes(StandardCharsets.UTF_8)), StandardCharsets.UTF_8).split(":");
 
-        try {
-            Session session = SessionFactorySingleton.getInstance().openSession();
-            try {
-                UserDB user = (UserDB) session.createCriteria(UserDB.class).add(Restrictions.eq("username", userColonPass[0])).uniqueResult();
-                if (user == null) {
-                    // invalid username
-                    containerRequest.abortWith(UnAuth);
-                    return;
-                }
-                if (!user.validPassword(userColonPass[1])) {
-                    // invalid password
-                    containerRequest.abortWith(UnAuth);
-                    return;
-                }
-            } finally {
-                session.close();
+        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+            UserDB user = (UserDB) session.createCriteria(UserDB.class).add(Restrictions.eq("username", userColonPass[0])).uniqueResult();
+            if (user == null) {
+                // invalid username
+                containerRequest.abortWith(UnAuth);
+                return;
+            }
+            if (!user.validPassword(userColonPass[1])) {
+                // invalid password
+                containerRequest.abortWith(UnAuth);
+                return;
             }
         } catch (Exception e) {
             System.out.println(e.toString());

@@ -25,20 +25,15 @@ public class UsersEndpoint {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String get() throws JSONException {
-        try {
-            Session session = SessionFactorySingleton.getInstance().openSession();
-            try{
-                List<UserDB> usersDB = session.createCriteria(UserDB.class).list();
-                JSONObject json = new JSONObject();
-                for (UserDB user : usersDB) {
-                    json.append("users: ", user.toJson(true));
-                }
-                return json.toString();
-            } catch (Exception e){
-                return e.toString();
-            } finally {
-                session.close();
+        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+
+            List<UserDB> usersDB = session.createCriteria(UserDB.class).list();
+            JSONObject json = new JSONObject();
+            for (UserDB user : usersDB) {
+                json.append("users: ", user.toJson(true));
             }
+
+            return json.toString();
         } catch (Exception e) {
             System.err.println(e.toString());
             return e.toString();
@@ -50,7 +45,7 @@ public class UsersEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public String create(String userJson) throws JSONException {
         try {
-            Session session = SessionFactorySingleton.getInstance().openSession();
+
             JSONObject json = new JSONObject(userJson);
             UserDB user = new UserDB();
             boolean update = false;
@@ -67,21 +62,18 @@ public class UsersEndpoint {
                 user.setLongitude(json.getDouble("longitude"));
                 update = true;
             }
+
             if (update) {
                 user.setLocationLastUpdated(new Date());
             }
 
-            try {
+            try (Session session = SessionFactorySingleton.getInstance().openSession()) {
                 session.beginTransaction();
                 session.save(user);
                 session.getTransaction().commit();
                 JSONObject returnJson = new JSONObject(user);
                 returnJson.remove("usersPassword");
                 return returnJson.toString();
-            } catch (Exception e){
-                return e.toString();
-            } finally {
-                session.close();
             }
         } catch (Exception e) {
             System.err.println(e.toString());
@@ -93,18 +85,12 @@ public class UsersEndpoint {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String get(@PathParam("id") String id) {
-        try {
-            Session session = SessionFactorySingleton.getInstance().openSession();
+        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             try {
-                String result = session.get(UserDB.class, Integer.valueOf(id)).toJson(true).toString();
-                return result;
+                return session.get(UserDB.class, Integer.valueOf(id)).toJson(true).toString();
             } catch (Exception e) {
                 return e.toString();
-            } finally {
-                session.close();
             }
-        }catch (Exception e) {
-            return e.toString();
         }
     }
 
@@ -113,22 +99,16 @@ public class UsersEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public String delete(@PathParam("id") String id) {
-        try {
-            Session session = SessionFactorySingleton.getInstance().openSession();
+        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             try {
                 session.beginTransaction();
                 UserDB user = session.get(UserDB.class, Integer.valueOf(id));
                 session.delete(user);
                 session.getTransaction().commit();
                 return user.toJson(true).toString();
-
             } catch (HibernateException | JSONException e) {
                 return e.toString();
-            } finally {
-                session.close();
             }
-        }catch (Exception e) {
-            return e.toString();
         }
     }
 
@@ -138,8 +118,7 @@ public class UsersEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     public String put(@PathParam("id") String id, String userJson) {
         // Do a call to a DAO Implementation that does a JDBC call to delete resource from  Mongo based on JSON
-        try {
-            Session session = SessionFactorySingleton.getInstance().openSession();
+        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             try {
                 Boolean update = false;
                 session.beginTransaction();
@@ -179,11 +158,7 @@ public class UsersEndpoint {
                 return returnJson.toString();
             } catch (Exception e) {
                 return e.toString();
-            } finally {
-                session.close();
             }
-        } catch (Exception e) {
-            return e.toString();
         }
     }
 }

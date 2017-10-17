@@ -1,5 +1,6 @@
 package tk.friendar.api;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -23,22 +24,23 @@ public class PlacesEndpoint {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String get() throws JSONException {
-        try {
-            Session session = SessionFactorySingleton.getInstance().openSession();
-            try{
-                List<PlaceDB> placesDB = session.createCriteria(PlaceDB.class).list();
-                JSONObject json = new JSONObject();
-                for (PlaceDB place : placesDB) {
-                    json.append("places: ", place.toJson(true));
-                }
-                return json.toString();
-            } catch (Exception e){
-                return e.toString();
-            } finally {
-                session.close();
+        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+            System.out.println(Thread.currentThread().getStackTrace()[1].toString());
+            List<PlaceDB> placesDB = session.createCriteria(PlaceDB.class).list();
+            System.out.println(Thread.currentThread().getStackTrace()[1].toString());
+            JSONObject json = new JSONObject();
+            System.out.println(Thread.currentThread().getStackTrace()[1].toString());
+            for (PlaceDB place : placesDB) {
+                System.out.println(Thread.currentThread().getStackTrace()[1].toString());
+                json.append("places: ", place.toJson(true));
             }
+            System.out.println(Thread.currentThread().getStackTrace()[1].toString());
 
+            return json.toString();
         } catch (Exception e) {
+
+            System.out.println(Thread.currentThread().getStackTrace()[1].toString());
+            System.out.println(e.toString());
             return e.toString();
         }
     }
@@ -48,23 +50,19 @@ public class PlacesEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public String create(String placeJson) throws JSONException {
         try {
-            Session session = SessionFactorySingleton.getInstance().openSession();
+
             JSONObject json = new JSONObject(placeJson);
             PlaceDB place = new PlaceDB();
             place.setPlaceName(json.getString("placeName"));
             place.setLatitude(json.getDouble("latitude"));
             place.setLongitude(json.getDouble("longitude"));
 
-            try {
+            try (Session session = SessionFactorySingleton.getInstance().openSession()) {
                 session.beginTransaction();
                 session.save(place);
                 String response = place.toJson(true).toString();
                 session.getTransaction().commit();
                 return response;
-            }catch (Exception e) {
-                throw new JSONException(e);
-            } finally {
-                session.close();
             }
         } catch (Exception e) {
             throw new JSONException(e);
@@ -75,18 +73,12 @@ public class PlacesEndpoint {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public String get(@PathParam("id") String id) {
-        try {
-            Session session = SessionFactorySingleton.getInstance().openSession();
+        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             try {
-                String result = session.get(PlaceDB.class, Integer.valueOf(id)).toJson(true).toString();
-                return result;
-            } catch (Exception e) {
+                return session.get(PlaceDB.class, Integer.valueOf(id)).toJson(true).toString();
+            } catch (JSONException e) {
                 return e.toString();
-            } finally {
-                session.close();
             }
-        } catch (Exception e) {
-            return e.toString();
         }
     }
 
@@ -96,22 +88,16 @@ public class PlacesEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public String delete(@PathParam("id") String id) {
-        try {
-            Session session = SessionFactorySingleton.getInstance().openSession();
+        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             try {
                 session.beginTransaction();
                 PlaceDB place = session.get(PlaceDB.class, Integer.valueOf(id));
                 session.delete(place);
                 session.getTransaction().commit();
-                session.close();
                 return place.toJson(true).toString();
-            } catch (Exception e) {
+            } catch (HibernateException | JSONException e) {
                 return e.toString();
-            } finally {
-                session.close();
             }
-        } catch (Exception e) {
-            return e.toString();
         }
     }
 
@@ -122,8 +108,7 @@ public class PlacesEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     public String put(@PathParam("id") String id, String placeJson) {
         // Do a call to a DAO Implementation that does a JDBC call to delete resource from  Mongo based on JSON
-        try  {
-            Session session = SessionFactorySingleton.getInstance().openSession();
+        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             try {
                 session.beginTransaction();
                 PlaceDB place = session.get(PlaceDB.class, Integer.valueOf(id));
@@ -144,15 +129,10 @@ public class PlacesEndpoint {
                 session.update(place);
                 session.getTransaction().commit();
                 String response = place.toJson(true).toString();
-                session.close();
                 return response;
             } catch (Exception e) {
                 return e.toString();
-            } finally {
-                session.close();
             }
-        }catch (Exception e) {
-            return e.toString();
         }
     }
 }
