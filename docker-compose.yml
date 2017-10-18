@@ -18,9 +18,11 @@ services:
     build: ./DB/
     restart: always
     volumes:
-      - ./localDB:/var/lib/postgresql
+      - localDB:/var/lib/postgresql
   
     environment:
       POSTGRES_USER: pguser
       POSTGRES_PASSWORD: pguser
       POSTGRES_DB: pgdb
+volumes:
+  localDB:
