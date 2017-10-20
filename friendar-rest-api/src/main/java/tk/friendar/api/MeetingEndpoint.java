@@ -1,7 +1,5 @@
 package tk.friendar.api;
 
-import org.hibernate.HibernateException;
-import org.hibernate.Metamodel;
 import org.hibernate.Session;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -9,7 +7,6 @@ import org.json.JSONObject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.sql.Timestamp;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -87,7 +84,6 @@ public class MeetingEndpoint {
         // Do a call to a DAO Implementation that does a JDBC call to delete resource from  Mongo based on JSON
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             try {
-                Boolean update = false;
                 session.beginTransaction();
                 MeetingDB meeting = session.get(MeetingDB.class, Integer.valueOf(id));
 

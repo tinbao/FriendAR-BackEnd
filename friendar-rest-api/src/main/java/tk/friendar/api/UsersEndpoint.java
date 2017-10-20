@@ -157,8 +157,12 @@ public class UsersEndpoint {
                 returnJson.remove("usersPassword");
                 return returnJson.toString();
             } catch (Exception e) {
+                System.out.println(e.toString());
                 return e.toString();
             }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            return e.toString();
         }
     }
 }

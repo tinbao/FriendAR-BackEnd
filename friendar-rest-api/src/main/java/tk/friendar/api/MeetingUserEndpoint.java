@@ -46,7 +46,6 @@ public class MeetingUserEndpoint {
 
             JSONObject json = new JSONObject(meetinguserJson);
             MeetingUserDB meetingUser = new MeetingUserDB();
-            boolean update = false;
 
             meetingUser.setMeetingid(json.getInt("meetingID"));
             meetingUser.setUserID(json.getInt("userID"));
