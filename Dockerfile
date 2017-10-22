@@ -11,7 +11,7 @@ RUN mvn install -Dmaven.test.skip=true
 
 # rest of the project
 COPY ./friendar-rest-api/src /opt/app/src
-RUN mvn package -Dmaven.test.skip=true
+RUN mvn package -Dmaven.test.skip=true && mvn dependency:resolve && mvn test-compile compile && mvn process-test-classes && mvn dependency:go-offline
 
 # local application port
 EXPOSE 80
