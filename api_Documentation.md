@@ -48,7 +48,7 @@ Post /users
 
             500: Request Failed
 
-Put /Users
+PUT /Users
 
     Updates a user in the database
 
@@ -68,7 +68,7 @@ Put /Users
 
             500: Request Failed
 
-Delete /Users
+DELETE /Users
 
         Deletes a user in the database
 
@@ -144,7 +144,7 @@ Post /places
 
             500: Request Failed
 
-Put /places
+PUT /places
 
     Updates a place/landmark in the database
 
@@ -164,7 +164,7 @@ Put /places
 
             500: Request Failed
 
-Delete /places
+DELETE /places
 
         Deletes a landmark/place in the database
 
@@ -237,7 +237,7 @@ Post /friendships
 
 
 
-Delete /friendships
+DELETE /friendships
 
     Deletes a friendship in the database
 
@@ -309,7 +309,7 @@ Post /meetings
 
             500: Request Failed
 
-Put /meetings
+PUT /meetings
 
     Updates a meeting in the database
 
@@ -331,7 +331,7 @@ Put /meetings
 
             500: Request Failed
 
-Delete /meetings
+DELETE /meetings
 
     Deletes a friendship in the database
 
@@ -405,7 +405,7 @@ Post /meetingusers
 
 
 
-Delete /meetingusers
+DELETE /meetingusers
 
     Deletes a user from a meeting in the database
 
