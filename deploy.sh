@@ -2,7 +2,7 @@
 #set -eox
 
 server(){
-  ssh -i ssh_key -o StrictHostKeyChecking=no ubuntu@01.server.friendar.tk. "$@"
+  ssh -i ssh_key -o StrictHostKeyChecking=no ubuntu@115.146.85.46 "$@"
 }
 
 server "cd /home/ubuntu/friendar && ls "
