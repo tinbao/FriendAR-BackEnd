@@ -8,6 +8,9 @@ For [COMP30022](https://handbook.unimelb.edu.au/2017/subjects/comp30022/)
 
 [![Build Status](https://travis-ci.com/COMP30022/Nitrogen-BackEnd.svg?token=p8yLcFuVj6kMWC4pZF7s&branch=master)](https://travis-ci.com/COMP30022/Nitrogen-BackEnd)
 
+# Documentation 
+Complete documenation on how to use the HTTP API can be found [here](api_Documentation.md).
+
 
 # Pre-requirements and Install
 
