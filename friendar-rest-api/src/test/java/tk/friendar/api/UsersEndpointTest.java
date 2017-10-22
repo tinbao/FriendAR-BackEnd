@@ -45,12 +45,13 @@ public class UsersEndpointTest {
         server.shutdownNow();
     }
 
-    /**
+    /*
      * Test to see that the message "Got it!" is sent in the response.
      */
 
 
     /******************************* @POST tests *******************************/
+    @Test
     public void A_testPOSTCompleteUser() throws Exception {
         //Complete data with lat or long
         String test = "{\"username\": \"Luca@gmail.com\", \"email\": \"luca@gmail.com\", \"usersPassword\": \"harris\",\"fullName\":\"Luca Harris\", \"latitude\": 120, \"longitude\": 120}";
@@ -58,7 +59,7 @@ public class UsersEndpointTest {
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
-        assert (output.toLowerCase().indexOf("username".toLowerCase()) != -1);
+        assert output.toLowerCase().contains("username".toLowerCase());
 
     }
 
@@ -70,7 +71,7 @@ public class UsersEndpointTest {
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
-        assert (output.toLowerCase().indexOf("username".toLowerCase()) != -1);
+        assert output.toLowerCase().contains("username".toLowerCase());
 
     }
 
@@ -82,7 +83,7 @@ public class UsersEndpointTest {
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
-        assert (output.toLowerCase().indexOf("username".toLowerCase()) != -1);
+        assert output.toLowerCase().contains("username".toLowerCase());
 
     }
 
@@ -105,6 +106,7 @@ public class UsersEndpointTest {
         assertNotNull(output);
 
     }
+
     @Test
     public void F_testAnotherPOST_tutor() throws Exception {
         String test = "{\"username\": \"lucaM@gmail.com\", \"email\": \"lucaM@gmail.com\", \"usersPassword\": \"Morandini\",\"fullName\":\"Luca Morandini\"}";
@@ -122,7 +124,7 @@ public class UsersEndpointTest {
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
-        assert (output.toLowerCase().indexOf("org.json.JSONException: JSONObject[\"usersPassword\"] not found.".toLowerCase()) != -1);
+        assert output.toLowerCase().contains("org.json.JSONException: JSONObject[\"usersPassword\"] not found.".toLowerCase());
     }
 
     @Test
@@ -157,7 +159,7 @@ public class UsersEndpointTest {
     }
 
     @Test
-    public void K_testGetParticularUser(){
+    public void K_testGetParticularUser() {
         //getting a specific user in form of a string
         String user = target.path("users").path("4").request().get(String.class);
         assertNotNull(user);
@@ -165,16 +167,11 @@ public class UsersEndpointTest {
     }
 
     @Test
-    public void L_testGetParticularUser_empty(){
+    public void L_testGetParticularUser_empty() {
         //getting a specific user that doesn't exist
-        try{
-            String user = target.path("users").path("30").request().get(String.class);
-            assertNotNull(user);
-            assert (user.equalsIgnoreCase("java.lang.NullPointerException"));
-        } catch (Exception e){
-
-        }
-
+        String user = target.path("users").path("30").request().get(String.class);
+        assertNotNull(user);
+        assert user.equalsIgnoreCase("java.lang.NullPointerException");
     }
 
 
@@ -187,7 +184,7 @@ public class UsersEndpointTest {
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
-        assert (output.toLowerCase().indexOf("username".toLowerCase()) != -1);
+        assert output.toLowerCase().contains("username".toLowerCase());
     }
 
     @Test
@@ -198,7 +195,7 @@ public class UsersEndpointTest {
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
-        assert (output.toLowerCase().indexOf("username".toLowerCase()) != -1);
+        assert output.toLowerCase().contains("username".toLowerCase());
     }
 
     @Test
@@ -213,7 +210,6 @@ public class UsersEndpointTest {
     }
 
 
-
     /******************************* @DELETE tests *******************************/
     @Test
     public void P_testAValidDelete() throws Exception {
@@ -224,7 +220,7 @@ public class UsersEndpointTest {
         output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
-        assert (output.toLowerCase().indexOf("username".toLowerCase()) != -1);
+        assert output.toLowerCase().contains("username".toLowerCase());
     }
 
     @Test
@@ -233,7 +229,7 @@ public class UsersEndpointTest {
         String output = msg.readEntity(String.class);
         assertNotNull(msg);
         assertNotNull(output);
-        assert (output.toLowerCase().indexOf("username".toLowerCase()) != -1);
+        assert output.toLowerCase().contains("username".toLowerCase());
     }
 
     @Test
