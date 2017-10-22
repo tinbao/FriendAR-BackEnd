@@ -2,28 +2,20 @@
 set -ex
 set -o pipefail
 
-docker-compose down # ensure we are fresh and clean.
-docker-compose build --force-rm --no-cache --pull
+runTest(){
+	docker-compose down # ensure we are fresh and clean.
+	docker-compose run -T web sh -c "$1" | tee out.txt || true; grep -q "BUILD SUCCESS" out.txt; rm out.txt
+	# ensure we are fresh and clean.
+	docker-compose rm -v
+	docker-compose down
+}
 
-docker-compose run -T web sh -c "mvn pmd:cpd-check && mvn pmd:check"
-
 docker-compose down # ensure we are fresh and clean.
-docker-compose rm -v
-docker-compose run web sh -c "mvn clean test -Dtest=ChatEndpointTest"
-docker-compose down # ensure we are fresh and clean.
-docker-compose rm -v
-docker-compose run web sh -c "mvn clean test -Dtest=FriendshipEndpointTest"
-docker-compose down # ensure we are fresh and clean.
-docker-compose rm -v
-docker-compose run web sh -c "mvn clean test -Dtest=MeetingEndpointTest"
-docker-compose down # ensure we are fresh and clean.
-docker-compose rm -v
-docker-compose run web sh -c "mvn clean test -Dtest=MeetingUserEndpointTest"
-docker-compose down # ensure we are fresh and clean.
-docker-compose rm -v
-docker-compose run web sh -c "mvn clean test -Dtest=PlacesEndpointTest"
-docker-compose down # ensure we are fresh and clean.
-docker-compose rm -v
-docker-compose run web sh -c "mvn clean test -Dtest=UsersEndpointTest"
-docker-compose down # ensure we are fresh and clean.
-docker-compose rm -v
+docker-compose build
+runTest "mvn pmd:cpd-check && mvn pmd:check"
+runTest "mvn clean test -Dtest=ChatEndpointTest"
+runTest "mvn clean test -Dtest=FriendshipEndpointTest"
+runTest "mvn clean test -Dtest=MeetingEndpointTest"
+runTest "mvn clean test -Dtest=MeetingUserEndpointTest"
+runTest "mvn clean test -Dtest=PlacesEndpointTest"
+runTest "mvn clean test -Dtest=UsersEndpointTest"
