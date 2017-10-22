@@ -48,7 +48,7 @@ Post /users
 
             500: Request Failed
 
-PUT /Users
+PUT /users
 
     Updates a user in the database
 
@@ -68,7 +68,7 @@ PUT /Users
 
             500: Request Failed
 
-DELETE /Users
+DELETE /users
 
         Deletes a user in the database
 
