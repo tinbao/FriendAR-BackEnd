@@ -184,11 +184,11 @@ public class PlacesEndpointTest {
 
     @Test
     public void K_testGetInvalidPlace() {
-        //getting a specific entry list of places in form of a string
+        //getting a specific entry list of places in form of a string that doesn't exist
         try{
-            String responseMsg = target.path("places").path("10").request().get(String.class);
+            target.path("places").path("10").request().get(String.class);
         } catch (Exception e){
-            assert e.toString().equalsIgnoreCase("java.lang.NullPointerException");
+            assert e.toString().contains("ErrorException:");
         }
     }
 
