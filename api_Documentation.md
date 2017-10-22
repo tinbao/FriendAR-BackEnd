@@ -1,6 +1,6 @@
 # API Documentation
 
-# User:
+## User:
 
 GET /users
 
@@ -94,7 +94,7 @@ DELETE /users
                 
 
                 
-# Places:
+## Places:
 
 GET /places
 
@@ -190,7 +190,7 @@ DELETE /places
 
 
                 
-# Friendships:
+## Friendships:
 
 GET /friendship
 
@@ -261,7 +261,7 @@ DELETE /friendships
 
 
 
-# Meetings:
+## Meetings:
 
 GET /meetings
 
@@ -353,7 +353,7 @@ DELETE /meetings
 
 
 
-# MeetingUsers:
+## MeetingUsers:
 
 GET /meetingusers
 
@@ -427,7 +427,7 @@ DELETE /meetingusers
 
 
 
-# Messages:
+## Messages:
 
 GET /messages
 
