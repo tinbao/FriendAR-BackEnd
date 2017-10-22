@@ -1,11 +1,12 @@
 package tk.friendar.api;
 
 import org.hibernate.Session;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.sql.Timestamp;
-
+import java.util.Date;
 @Entity
 @Table(name = "messages")
 public class MessageDB implements Serializable {
@@ -13,25 +14,27 @@ public class MessageDB implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "messageid", nullable=false)
-    private int messageID; //not null
+    public int messageid; //not null
 
     @ManyToOne
-    @JoinColumn(name="meetingID")
-    private MeetingDB meeting; //not null
+    @JoinColumn(name="meetingid")
+    public MeetingDB meeting; //not null
 
     @ManyToOne
     @JoinColumn(name="userid")
     private UserDB user; //not null
 
     private String content;
-    private Timestamp timeSent;
 
-    public int getMessageID() {
-        return messageID;
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date timeSent;
+
+    public int getMessageid() {
+        return messageid;
     }
 
-    public void setMessageID(int messageID) {
-        this.messageID = messageID;
+    public void setMessageid(int messageID) {
+        this.messageid = messageID;
     }
 
     public MeetingDB getMeeting() {
@@ -62,11 +65,22 @@ public class MessageDB implements Serializable {
         this.content = content;
     }
 
-    public Timestamp getTimeSent() {
+    public Date getTimeSent() {
         return timeSent;
     }
 
-    public void setTimeSent(Timestamp timeSent) {
+    public void setTimeSent(Date timeSent) {
         this.timeSent = timeSent;
+    }
+
+    JSONObject toJson(Boolean nextLevelDeep) throws JSONException {
+        JSONObject messageJson = new JSONObject();
+        messageJson.put("messageID", this.getMessageid());
+        messageJson.put("content", this.getContent());
+        messageJson.put("meeting", this.getMeeting().toJson(false).toString());
+        messageJson.put("time sent", this.getTimeSent());
+        messageJson.put("user", this.getUser().toJson(false).toString());
+        return messageJson;
+
     }
 }

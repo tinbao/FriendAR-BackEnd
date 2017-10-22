@@ -1,19 +1,19 @@
 package tk.friendar.api;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
-import java.sql.Timestamp;
 import java.util.List;
 
 /**
- * Root resource (exposed at "meetings  " path)
+ * Root resource (exposed at "meetingusers" path)
  */
-@Path("meetings")
-public class MeetingEndpoint {
+@Path("meetingusers")
+public class MeetingUserEndpoint {
 
     /**
      * Method handling HTTP GET requests. The returned object will be sent
@@ -26,10 +26,10 @@ public class MeetingEndpoint {
     public String get() throws JSONException {
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
 
-            List<MeetingDB> meetingsDB = session.createCriteria(MeetingDB.class).list();
+            List<MeetingUserDB> meetingUsersDB = session.createCriteria(MeetingUserDB.class).list();
             JSONObject json = new JSONObject();
-            for (MeetingDB meeting : meetingsDB) {
-                json.append("meetings: ", meeting.toJson(true));
+            for (MeetingUserDB meetingUser : meetingUsersDB) {
+                json.append("meetingUsers: ", meetingUser.toJson(true));
             }
 
             return json.toString();
@@ -41,22 +41,21 @@ public class MeetingEndpoint {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public String create(String meetingJson) throws JSONException {
+    public String create(String meetinguserJson) throws JSONException {
         try {
 
-            JSONObject json = new JSONObject(meetingJson);
-            MeetingDB meeting = new MeetingDB();
+            JSONObject json = new JSONObject(meetinguserJson);
+            MeetingUserDB meetingUser = new MeetingUserDB();
 
-            meeting.setMeetingName(json.getString("meetingName"));
-            meeting.setPlace(json.getInt("placeID"));
-            meeting.setTimeDate(Timestamp.valueOf(json.getString("time")));
+            meetingUser.setMeetingid(json.getInt("meetingID"));
+            meetingUser.setUserID(json.getInt("userID"));
 
             try (Session session = SessionFactorySingleton.getInstance().openSession()) {
                 session.beginTransaction();
-                session.save(meeting);
-                String test = meeting.toJson(true).toString();
+                session.save(meetingUser);
+                String response = meetingUser.toJson(false).toString();
                 session.getTransaction().commit();
-                return test;
+                return response;
             }
         } catch (Exception e) {
             return e.toString();
@@ -69,7 +68,7 @@ public class MeetingEndpoint {
     public String get(@PathParam("id") String id) {
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             try {
-                return session.get(MeetingDB.class, Integer.valueOf(id)).toJson(true).toString();
+                return session.get(MeetingUserDB.class, Integer.valueOf(id)).toJson(false).toString();
             } catch (Exception e) {
                 return e.toString();
             }
@@ -77,31 +76,18 @@ public class MeetingEndpoint {
     }
 
     @Path("{id}")
-    @PUT
+    @DELETE
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String put(@PathParam("id") String id, String userJson) {
-        // Do a call to a DAO Implementation that does a JDBC call to delete resource from  Mongo based on JSON
+    public String delete(@PathParam("id") String id) {
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             try {
                 session.beginTransaction();
-                MeetingDB meeting = session.get(MeetingDB.class, Integer.valueOf(id));
-
-                JSONObject json = new JSONObject(userJson);
-                if(json.has("time")){
-                    meeting.setTimeDate(Timestamp.valueOf(json.getString("time")));
-                }
-                if(json.has("placeID")){
-                    meeting.setPlace(json.getInt("placeID"));
-                }
-                if(json.has("meetingName")){
-                    meeting.setMeetingName(json.getString("meetingName"));
-                }
-                session.save(meeting);
-                String test = meeting.toJson(true).toString();
+                MeetingUserDB meetingUser = session.get(MeetingUserDB.class, Integer.valueOf(id));
+                session.delete(meetingUser);
                 session.getTransaction().commit();
-                return test;
-            } catch (Exception e) {
+                return meetingUser.toJson(false).toString();
+            } catch (HibernateException | JSONException e) {
                 return e.toString();
             }
         }

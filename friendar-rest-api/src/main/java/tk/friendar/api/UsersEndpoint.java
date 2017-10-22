@@ -1,5 +1,6 @@
 package tk.friendar.api;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -29,7 +30,7 @@ public class UsersEndpoint {
             List<UserDB> usersDB = session.createCriteria(UserDB.class).list();
             JSONObject json = new JSONObject();
             for (UserDB user : usersDB) {
-                json.append("users", user.toJson(true));
+                json.append("users: ", user.toJson(true));
             }
 
             return json.toString();
@@ -87,9 +88,81 @@ public class UsersEndpoint {
         try (Session session = SessionFactorySingleton.getInstance().openSession()) {
             try {
                 return session.get(UserDB.class, Integer.valueOf(id)).toJson(true).toString();
-            } catch (JSONException e) {
+            } catch (Exception e) {
                 return e.toString();
             }
+        }
+    }
+
+    @Path("{id}")
+    @DELETE
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String delete(@PathParam("id") String id) {
+        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+            try {
+                session.beginTransaction();
+                UserDB user = session.get(UserDB.class, Integer.valueOf(id));
+                session.delete(user);
+                session.getTransaction().commit();
+                return user.toJson(true).toString();
+            } catch (HibernateException | JSONException e) {
+                return e.toString();
+            }
+        }
+    }
+
+    @Path("{id}")
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public String put(@PathParam("id") String id, String userJson) {
+        // Do a call to a DAO Implementation that does a JDBC call to delete resource from  Mongo based on JSON
+        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+            try {
+                Boolean update = false;
+                session.beginTransaction();
+                UserDB user = session.get(UserDB.class, Integer.valueOf(id));
+
+                JSONObject json = new JSONObject(userJson);
+                if(json.has("fullName")){
+                    user.setFullName(json.getString("fullName"));
+                }
+                if(json.has("username")){
+                    user.setUsername(json.getString("username"));
+                }
+                if(json.has("usersPassword")){
+                    user.setUsersPassword(json.getString("usersPassword"));
+                }
+                if(json.has("email")){
+                    user.setEmail(json.getString("email"));
+                }
+
+                if (json.has("latitude")) {
+                    user.setLatitude(json.getDouble("latitude"));
+                    update = true;
+                }
+                if (json.has("longitude")) {
+                    user.setLongitude(json.getDouble("longitude"));
+                    update = true;
+                }
+
+                if (update) {
+                    user.setLocationLastUpdated(new Date());
+                }
+
+                session.update(user);
+                session.getTransaction().commit();
+                JSONObject returnJson = new JSONObject(user);
+                returnJson.remove("usersPassword");
+                return returnJson.toString();
+            } catch (Exception e) {
+                System.out.println(e.toString());
+                return e.toString();
+            }
+        } catch (Exception e) {
+            System.out.println(e.toString());
+            return e.toString();
         }
     }
 }

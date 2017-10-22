@@ -1,5 +1,8 @@
 package tk.friendar.api;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.*;
@@ -58,4 +61,19 @@ public class PlaceDB implements Serializable {
 	public void setMeetings(ArrayList<MeetingDB> meetings) {
 		this.meetings = meetings;
 	}
+
+    JSONObject toJson(Boolean nextLevelDeep) throws JSONException {
+        JSONObject placeJson = new JSONObject();
+        placeJson.put("id", this.getPlaceID());
+        placeJson.put("placeName", this.getPlaceName());
+        placeJson.put("latitude", this.getLatitude());
+        placeJson.put("longitude", this.getLongitude());
+        if (nextLevelDeep) {
+            for (MeetingDB meeting : this.getMeetings()) {
+                placeJson.append("meetings: ", meeting.toJson(nextLevelDeep));
+            }
+        }
+        return placeJson;
+
+    }
 }

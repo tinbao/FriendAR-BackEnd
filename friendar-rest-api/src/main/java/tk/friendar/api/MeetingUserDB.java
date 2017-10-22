@@ -1,6 +1,10 @@
 package tk.friendar.api;
 
 //import org.hibernate.annotations.Table;
+import org.hibernate.Session;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import javax.persistence.*;
 import java.io.Serializable;
 
@@ -15,7 +19,7 @@ public class MeetingUserDB implements Serializable {
 
     @ManyToOne
     @JoinColumn(name="meetingid")
-    private MeetingDB meetingID; //not null
+    private MeetingDB meetingid; //not null
 
     @ManyToOne
     @JoinColumn(name="userid")
@@ -29,20 +33,37 @@ public class MeetingUserDB implements Serializable {
         this.meetingUserID = meetingUserID;
     }
 
-    public MeetingDB getMeetingID() {
-        return meetingID;
+    public MeetingDB getMeetingid() {
+        return meetingid;
     }
 
-    public void setMeetingID(MeetingDB meetingID) {
-        this.meetingID = meetingID;
+    public void setMeetingid(int meetingID) {
+
+        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+            this.meetingid = session.get(MeetingDB.class,meetingID);
+        }
     }
 
     public UserDB getUserID() {
         return userID;
     }
 
-    public void setUserID(UserDB userID) {
-        this.userID = userID;
+    public void setUserID(int userID)
+    {
+        try (Session session = SessionFactorySingleton.getInstance().openSession()) {
+            this.userID = session.get(UserDB.class,userID);
+        }
+    }
+
+    JSONObject toJson(Boolean nextLevelDeep) throws JSONException {
+        JSONObject messageJson = new JSONObject();
+        messageJson.put("meetingUserID", this.getMeetingUserID());
+        if(nextLevelDeep){
+            messageJson.put("meeting", this.getMeetingid().toJson(false).toString());
+        }
+        messageJson.put("user", this.getUserID().toJson(false).toString());
+        return messageJson;
+
     }
 
 }
