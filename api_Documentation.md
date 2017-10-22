@@ -24,7 +24,7 @@ GET /users
 
             500: Request Failed
 
-Post /users
+POST /users
 
     Creates a new user in the database
 
@@ -118,7 +118,7 @@ GET /places
 
             500: Request Failed
 
-Post /places
+POST /places
 
     Creates a new landmark in the database
 
@@ -212,7 +212,7 @@ GET /friendship
 
             500: Request Failed
 
-Post /friendships
+POST /friendships
 
     Creates a new friendship in the database
 
@@ -285,7 +285,7 @@ GET /meetings
 
             500: Request Failed
 
-Post /meetings
+POST /meetings
 
     Creates a new friendship in the database
 
@@ -375,7 +375,7 @@ GET /meetingusers
 
                     500: Request Failed
 
-Post /meetingusers
+POST /meetingusers
 
     Creates a new user in a meeting in the database
 
@@ -449,7 +449,7 @@ GET /messages
 
             500: Request Failed
 
-Post /messages
+POST /messages
 
     Creates a new message in the database
 
