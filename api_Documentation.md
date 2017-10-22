@@ -1,4 +1,11 @@
 # API Documentation
+All endpoints listed below can be accessed over HTTP at [https://api.friendar.tk](https://api.friendar.tk).
+
+This API uses semantic versioning, so any breaking change will cause a major release number change. 
+
+The APIs version is specified is prepend to any of the following endpoints.
+
+**For example:** The complete `user` endpoint is [https://api.friendar.tk/1/users](https://api.friendar.tk/1/users). 
 
 ## User:
 
